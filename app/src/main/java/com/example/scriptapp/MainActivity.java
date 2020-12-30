@@ -1,5 +1,11 @@
 package com.example.scriptapp;
 
+import android.app.Fragment;
+
+import androidx.fragment.app.FragmentManager;
+//import android.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+//import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -7,11 +13,16 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import static com.example.scriptapp.R.id.linear_layout_actions_list;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,9 +36,14 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View view)  {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+
+                fragment_first_part f = new fragment_first_part();
+                f.
+                ft.add(R.id.linear_layout_actions_list, f);
+                ft.commit();
             }
         });
     }
