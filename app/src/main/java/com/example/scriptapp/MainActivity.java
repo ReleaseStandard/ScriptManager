@@ -18,13 +18,14 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
         // set the theme to green
-        setTheme(R.style.Theme_Scriptapp_Night);
+        setTheme(R.style.Theme_Scriptapp_Light);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,14 +34,20 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
+
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
-                ConfigureJobFragment f = ConfigureJobFragment.newInstance("my text");
+                // ex : setting remove animations
+                // not very visible lol
+                ft.setCustomAnimations(FragmentTransaction.TRANSIT_NONE,
+                        FragmentTransaction.TRANSIT_NONE,
+                        FragmentTransaction.TRANSIT_NONE,
+                        FragmentTransaction.TRANSIT_NONE);
 
+                ConfigureJobFragment f = ConfigureJobFragment.newInstance("my text");
                 ft.add(R.id.linear_layout_actions_list, f);
                 ft.commit();
-
             }
         });
     }
@@ -62,13 +69,15 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-         //   Toolbar toolbar_for_settings = findViewById(R.id.toolbar_for_settings);
-            //   setSupportActionBar(toolbar_for_settings);
+            //Toolbar settings_toolbar_fragment = findViewById(R.id.settings_toolbar_fragment);
+            //setSupportActionBar(settings_toolbar_fragment);
             //Toolbar toolbar_for_settings = new Toolbar(getApplicationContext());
             //setSupportActionBar(toolbar_for_settings);
 
+            findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.nav_host_fragment, new SettingsFragment());
+            ft.replace(R.id.nav_host_fragment, new SettingsFragment());
             ft.commit();
 
             return true;
