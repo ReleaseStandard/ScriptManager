@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     tools:context=".FirstFragment">
 
     <LinearLayout
         android:id="@+id/linear_layout_actions_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:orientation="vertical"/>
+        android:background="?colorPrimary"
+        android:orientation="vertical" />
 </LinearLayout>
