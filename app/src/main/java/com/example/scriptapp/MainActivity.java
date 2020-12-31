@@ -1,5 +1,7 @@
 package com.example.scriptapp;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,14 +23,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
 
-        // set the theme to green
-        setTheme(R.style.Theme_Scriptapp_Light);
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.main_activity);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // set the theme to green
+        //setTheme(R.style.Theme_Scriptapp_Light);
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,25 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            //Toolbar settings_toolbar_fragment = findViewById(R.id.settings_toolbar_fragment);
-            //setSupportActionBar(settings_toolbar_fragment);
-            //Toolbar toolbar_for_settings = new Toolbar(getApplicationContext());
-            //setSupportActionBar(toolbar_for_settings);
+            ActionBar ab = super.getSupportActionBar();
+            ab.setTitle(R.string.settings_page_title);
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayUseLogoEnabled(false);
 
             findViewById(R.id.fab).setVisibility(View.INVISIBLE);
 
@@ -81,6 +84,21 @@ public class MainActivity extends AppCompatActivity {
             ft.commit();
 
             return true;
+        }
+
+        if ( id == android.R.id.home) {
+
+            ActionBar ab = super.getSupportActionBar();
+            ab.setTitle(R.string.app_name);
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setDisplayUseLogoEnabled(true);
+
+            findViewById(R.id.fab).setVisibility(View.VISIBLE);
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.nav_host_fragment, new ViewJobsFragment());
+            ft.commit();
+
         }
 
         return super.onOptionsItemSelected(item);

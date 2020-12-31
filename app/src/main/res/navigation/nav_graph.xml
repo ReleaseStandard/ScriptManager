@@ -9,7 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.example.scriptapp.ViewJobsFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/ViewJobsFragment">
+        tools:layout="@layout/view_jobs_fragment">
 
     </fragment>
 </navigation>
