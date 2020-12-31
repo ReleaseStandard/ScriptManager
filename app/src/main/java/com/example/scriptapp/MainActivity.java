@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 //import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,7 +15,9 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.system.ErrnoException;
 import android.view.View;
 
 import android.view.Menu;
@@ -40,10 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
-                fragment_first_part f = new fragment_first_part();
-                f.
+                fragment_first_part f = fragment_first_part.newInstance("my text");
+
                 ft.add(R.id.linear_layout_actions_list, f);
                 ft.commit();
+
             }
         });
     }
@@ -64,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.nav_host_fragment, new Settings());
+            ft.commit();
             return true;
         }
 

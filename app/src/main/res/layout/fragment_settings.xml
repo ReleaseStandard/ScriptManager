@@ -26,6 +26,7 @@
                 android:layout_width="378dp"
                 android:layout_height="71dp"
                 android:text="Random color for play button"
+                android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.491"
@@ -43,6 +44,23 @@
                 android:layout_width="376dp"
                 android:layout_height="65dp"
                 android:text="Dark mode"
+                android:textColor="#000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="375dp"
+                android:layout_height="61dp"
+                android:text="Example settings 4"
+                android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

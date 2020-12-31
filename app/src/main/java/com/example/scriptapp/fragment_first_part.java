@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link fragment_first_part#newInstance} factory method to
@@ -51,4 +53,6 @@ public class fragment_first_part extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first_part, container, false);
     }
+
+
 }

@@ -12,12 +12,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:orientation="vertical">
-
-        <fragment
-            android:id="@+id/fragment3"
-            android:name="com.example.scriptapp.fragment_first_part"
-            android:layout_width="match_parent"
-            android:layout_height="61dp" />
-    </LinearLayout>
+        android:orientation="vertical"/>
 </LinearLayout>
