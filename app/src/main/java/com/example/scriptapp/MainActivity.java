@@ -1,41 +1,30 @@
 package com.example.scriptapp;
 
-import android.app.Fragment;
-
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 //import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.system.ErrnoException;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import static com.example.scriptapp.R.id.linear_layout_actions_list;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
         // set the theme to green
-        setTheme(R.style.Theme_Scriptapp_Green);
+        setTheme(R.style.Theme_Scriptapp_Night);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
-                fragment_first_part f = fragment_first_part.newInstance("my text");
+                ConfigureJobFragment f = ConfigureJobFragment.newInstance("my text");
 
                 ft.add(R.id.linear_layout_actions_list, f);
                 ft.commit();
@@ -73,9 +62,13 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            Toolbar toolbar = findViewById(R.id.toolbar);
+         //   Toolbar toolbar_for_settings = findViewById(R.id.toolbar_for_settings);
+            //   setSupportActionBar(toolbar_for_settings);
+            //Toolbar toolbar_for_settings = new Toolbar(getApplicationContext());
+            //setSupportActionBar(toolbar_for_settings);
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.nav_host_fragment, new Settings());
+            ft.add(R.id.nav_host_fragment, new SettingsFragment());
             ft.commit();
 
             return true;

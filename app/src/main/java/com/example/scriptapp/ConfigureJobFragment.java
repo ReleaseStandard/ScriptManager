@@ -8,20 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_first_part#newInstance} factory method to
+ * Use the {@link ConfigureJobFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_first_part extends Fragment {
+public class ConfigureJobFragment extends Fragment {
 
     private static final String sname = "test";
 
     private String msname;
 
-    public fragment_first_part() {
+    public ConfigureJobFragment() {
         // Required empty public constructor
     }
 
@@ -32,10 +30,10 @@ public class fragment_first_part extends Fragment {
      * @param sname SName.
      * @return A new instance of fragment fragment_first_part.
      */
-    public static fragment_first_part newInstance(String sname) {
-        fragment_first_part fragment = new fragment_first_part();
+    public static ConfigureJobFragment newInstance(String sname) {
+        ConfigureJobFragment fragment = new ConfigureJobFragment();
         Bundle args = new Bundle();
-        args.putString(fragment_first_part.sname, sname);
+        args.putString(ConfigureJobFragment.sname, sname);
         return fragment;
     }
 
@@ -51,7 +49,7 @@ public class fragment_first_part extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first_part, container, false);
+        return inflater.inflate(R.layout.configure_job_fragment, container, false);
     }
 
 

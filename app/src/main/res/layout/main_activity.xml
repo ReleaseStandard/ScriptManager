@@ -18,6 +18,7 @@
             app:popupTheme="@style/Theme.Scriptapp.PopupOverlay"
             app:titleTextColor="?colorSecondary" />
 
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
@@ -30,7 +31,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="?colorSecondary"
+        android:tint="#ffffff"
+        app:backgroundTint="?colorPrimaryVariant"
+        app:backgroundTintMode="src_over"
+        app:rippleColor="#ffffff"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
