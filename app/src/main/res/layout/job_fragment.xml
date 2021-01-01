@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?colorPrimary"
     android:padding="10dp"
-    tools:context=".ConfigureJobFragment">
+    tools:context=".JobFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"

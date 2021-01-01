@@ -1,7 +1,6 @@
 package com.example.scriptapp;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                         FragmentTransaction.TRANSIT_NONE,
                         FragmentTransaction.TRANSIT_NONE);
 
-                ConfigureJobFragment f = ConfigureJobFragment.newInstance("my text");
+                JobFragment f = JobFragment.newInstance("my text");
                 ft.add(R.id.linear_layout_actions_list, f);
                 ft.commit();
             }

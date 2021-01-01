@@ -8,18 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ConfigureJobFragment#newInstance} factory method to
+ * Use the {@link JobFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConfigureJobFragment extends Fragment {
+public class JobFragment extends Fragment {
 
     private static final String sname = "test";
 
     private String msname;
 
-    public ConfigureJobFragment() {
+    public JobFragment() {
         // Required empty public constructor
     }
 
@@ -30,16 +32,17 @@ public class ConfigureJobFragment extends Fragment {
      * @param sname SName.
      * @return A new instance of fragment fragment_first_part.
      */
-    public static ConfigureJobFragment newInstance(String sname) {
-        ConfigureJobFragment fragment = new ConfigureJobFragment();
+    public static JobFragment newInstance(String sname) {
+        JobFragment fragment = new JobFragment();
         Bundle args = new Bundle();
-        args.putString(ConfigureJobFragment.sname, sname);
+        args.putString(JobFragment.sname, sname);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             msname = getArguments().getString(sname);
         }
@@ -49,7 +52,15 @@ public class ConfigureJobFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.configure_job_fragment, container, false);
+        View v =  inflater.inflate(R.layout.job_fragment, container, false);
+        View button = v.findViewById(R.id.floatingActionButton2);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)  {
+                // launch the service here //
+            }
+        });
+        return v;
     }
 
 
