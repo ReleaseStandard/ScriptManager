@@ -49,4 +49,28 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.Scriptapp.Night" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- color used for overflow and UP button -->
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">@color/black</item>
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <!-- color used on '+' signs on buttons for example -->
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorAccent">@color/white</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+    </style>
+    <style name="Theme.Scriptapp.Night.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>

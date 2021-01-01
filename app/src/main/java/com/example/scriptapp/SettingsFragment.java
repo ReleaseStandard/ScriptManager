@@ -70,8 +70,7 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.dark_mode_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // change the theme to dark mode
-
+                //getActivity().setTheme(R.style.Theme_Scriptapp_Night_NoActionBar);
             }
         });
     }

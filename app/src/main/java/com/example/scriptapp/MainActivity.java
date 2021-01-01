@@ -20,21 +20,17 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    public Settings settings = new Settings();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //setTheme(R.style.Theme_Scriptapp_Light);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_activity);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // set the theme to green
-        //setTheme(R.style.Theme_Scriptapp_Light);
-
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -65,6 +61,18 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /*
+     * Hide or show the overflow menu
+     */
+    private void setMenuVisibility(boolean b) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Menu m = toolbar.getMenu();
+        for (int a = 0; a < m.size(); a = a + 1) {
+            MenuItem mi = m.getItem(a);
+            mi.setVisible(b);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -84,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.nav_host_fragment, new SettingsFragment());
             ft.commit();
 
+            setMenuVisibility(false);
+
             return true;
         }
 
@@ -100,8 +110,11 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.nav_host_fragment, new ViewJobsFragment());
             ft.commit();
 
+            setMenuVisibility(true);
+
             return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
