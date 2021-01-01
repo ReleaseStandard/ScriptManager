@@ -32,13 +32,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- insert point of fragments -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="64dp"
         android:layout_below="@+id/main_activity_appbarlayout"
+        android:layout_marginTop="64dp"
         android:background="?colorPrimary"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,6 +55,9 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="280dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="521dp"
         app:backgroundTint="?colorSecondary"
         app:backgroundTintMode="src_over"
         app:layout_constraintBottom_toBottomOf="parent"

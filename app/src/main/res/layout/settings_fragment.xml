@@ -7,67 +7,113 @@
     android:layout_height="match_parent"
     tools:context=".SettingsFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:background="?colorPrimary"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="87dp">
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:orientation="vertical">
 
             <Switch
                 android:id="@+id/switch2"
-                android:layout_width="378dp"
-                android:layout_height="71dp"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
                 android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="87dp">
-
-            <Switch
-                android:id="@+id/dark_mode_setting"
-                android:layout_width="376dp"
-                android:layout_height="65dp"
-                android:text="Dark mode"
-                android:textColor="?colorSecondary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp">
+                android:text="I'm the first"
+                android:textColor="?colorSecondary" />
 
             <Switch
                 android:id="@+id/switch1"
-                android:layout_width="375dp"
-                android:layout_height="61dp"
-                android:text="Example settings 4"
-                android:textColor="?colorSecondary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
 
-    </LinearLayout>
+            <Switch
+                android:id="@+id/switch9"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch10"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch11"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch12"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch13"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch14"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch15"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch16"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch17"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+            <Switch
+                android:id="@+id/switch18"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:shadowColor="#C30000"
+                android:text="Random color for play button"
+                android:textColor="?colorSecondary" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,11 +67,11 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.dark_mode_setting).setOnClickListener(new View.OnClickListener() {
+      /*  view.findViewById(R.id.dark_mode_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //getActivity().setTheme(R.style.Theme_Scriptapp_Night_NoActionBar);
             }
-        });
+        });*/
     }
 }
