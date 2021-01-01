@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //setTheme(R.style.Theme_Scriptapp_Light);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_activity);
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.nav_host_fragment, new ViewJobsFragment());
             ft.commit();
 
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

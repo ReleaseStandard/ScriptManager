@@ -26,6 +26,7 @@
                 android:id="@+id/switch2"
                 android:layout_width="378dp"
                 android:layout_height="71dp"
+                android:shadowColor="#C30000"
                 android:text="Random color for play button"
                 android:textColor="?colorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -51,12 +52,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?colorPrimaryVariant" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

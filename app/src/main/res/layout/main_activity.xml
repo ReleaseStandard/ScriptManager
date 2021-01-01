@@ -65,8 +65,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="#ffffff"
-            app:backgroundTint="?colorPrimaryVariant"
+            app:backgroundTint="?colorSecondary"
             app:backgroundTintMode="src_over"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +73,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.926"
-            app:rippleColor="#ffffff"
             app:srcCompat="@android:drawable/ic_input_add"
             tools:layout_conversion_absoluteHeight="56dp"
             tools:layout_conversion_absoluteWidth="56dp" />

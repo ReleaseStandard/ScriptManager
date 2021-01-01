@@ -14,12 +14,12 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:src="@android:drawable/ic_media_play"
-        app:backgroundTint="?colorPrimaryVariant"
+        android:tint="?colorSecondary"
+        app:backgroundTint="?colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="?colorPrimary" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
