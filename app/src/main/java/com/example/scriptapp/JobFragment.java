@@ -57,7 +57,9 @@ public class JobFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
-                // launch the service here //
+                // launch the script here //
+                Shell s = new Shell();
+                s.execCmd("date +'%s: %c' > /data/data/com.example.scriptapp/runtime.txt");
             }
         });
         return v;
