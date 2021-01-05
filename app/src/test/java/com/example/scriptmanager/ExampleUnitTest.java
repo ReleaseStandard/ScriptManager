@@ -1,4 +1,4 @@
-package com.example.scriptapp;
+package com.example.scriptmanager;
 
 import org.junit.Test;
 

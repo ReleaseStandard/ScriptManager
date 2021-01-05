@@ -1,25 +1,46 @@
-package com.example.scriptapp;
+package com.example.scriptmanager;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 //import android.app.FragmentTransaction;
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.scriptmanager.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     public Settings settings = new Settings();
+
+    @Override
+    protected  void onStart() {
+        super.onStart();
+
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                1);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +52,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Get Shell locations path
+        Shell s = new Shell(
+                getApplicationContext().getFilesDir().getAbsolutePath(),
+                getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
+
+                /* Start intent to get a file ex: allow user to export/import scripts from the application
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("application/pdf");
+                intent.putExtra(Intent.EXTRA_TITLE, "invoice.pdf");
+                // Optionally, specify a URI for the directory that should be opened in
+                // the system file picker when your app creates the document.
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("file:///sdcard/a"));
+                startActivityForResult(intent, 1);
+                */
 
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -52,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 ft.commit();
             }
         });
+
     }
 
     @Override

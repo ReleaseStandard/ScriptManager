@@ -1,4 +1,4 @@
-package com.example.scriptapp;
+package com.example.scriptmanager;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.scriptmanager.R;
 
 public class ViewJobsFragment extends Fragment {
 

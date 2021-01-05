@@ -1,4 +1,4 @@
-package com.example.scriptapp;
+package com.example.scriptmanager;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
+import com.example.scriptmanager.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +59,7 @@ public class JobFragment extends Fragment {
             public void onClick(View view)  {
                 // launch the script here //
                 Shell s = new Shell();
-                s.execCmd("date +'%s: %c' > /data/data/com.example.scriptapp/runtime.txt");
+                s.execScript("test.sh");
             }
         });
         return v;

@@ -1,4 +1,4 @@
-package com.example.scriptapp;
+package com.example.scriptmanager;
 
 /**
  * This object is used to store settings on the application.
