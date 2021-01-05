@@ -10,6 +10,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,6 +22,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Environment;
 import android.provider.DocumentsContract;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import android.view.Menu;
@@ -28,10 +31,14 @@ import android.view.MenuItem;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public Settings settings = new Settings();
+    private Toolbar toolbar = null;
+    public List<JobFragment> fragments = new ArrayList<JobFragment>();
 
     @Override
     protected  void onStart() {
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.main_activity);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Get Shell locations path
@@ -86,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                 JobFragment f = JobFragment.newInstance("my text");
                 ft.add(R.id.linear_layout_actions_list, f);
+                fragments.add(f);
                 ft.commit();
             }
         });
@@ -98,18 +106,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    /*
-     * Hide or show the overflow menu
-     */
-    private void setMenuVisibility(boolean b) {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Menu m = toolbar.getMenu();
-        for (int a = 0; a < m.size(); a = a + 1) {
-            MenuItem mi = m.getItem(a);
-            mi.setVisible(b);
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -117,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
             ActionBar ab = super.getSupportActionBar();
             ab.setTitle(R.string.settings_page_title);
             ab.setDisplayHomeAsUpEnabled(true);
@@ -127,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.nav_host_fragment, new SettingsFragment());
             ft.commit();
+
             setMenuVisibility(false);
 
             return true;
@@ -150,7 +148,45 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    // helpers
+    /*
+     * Hide or show the overflow menu
+     */
+    private void setMenuVisibility(boolean b) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Menu m = toolbar.getMenu();
+        for (int a = 0; a < m.size(); a = a + 1) {
+            MenuItem mi = m.getItem(a);
+            mi.setVisible(b);
+        }
+    }
+
+    /*
+     * get color associated with the current theme.
+     */
+    public static int getColorFromId(MainActivity main, int colorID) {
+        TypedValue typedValue = new TypedValue();
+        main.getTheme().resolveAttribute(colorID, typedValue, true);
+        return typedValue.data;
+    }
+    public void unselectAllFragments() {
+        for (JobFragment jf : fragments) {
+            jf.unselectView();
+        }
+    }
+    public int getNumberSelected() {
+        int count = 0;
+        for (JobFragment jf : fragments) {
+            if ( jf.isSelected ) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+    //
 }

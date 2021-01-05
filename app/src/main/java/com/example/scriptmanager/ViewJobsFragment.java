@@ -1,16 +1,25 @@
 package com.example.scriptmanager;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.scriptmanager.R;
 
+import java.util.List;
+
 public class ViewJobsFragment extends Fragment {
+
 
     @Override
     public View onCreateView(
@@ -18,12 +27,22 @@ public class ViewJobsFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.view_jobs_fragment, container, false);
+        View v =  inflater.inflate(R.layout.view_jobs_fragment, container, false);
+
+        return v;
+
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        View v2 = getActivity().findViewById(R.id.vjf_scroll_view);
+        v2.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event)  {
+                ((MainActivity)getActivity()).unselectAllFragments();
+                return true;
+            }
+        });
     }
 }
