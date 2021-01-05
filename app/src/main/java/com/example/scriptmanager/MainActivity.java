@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -116,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             ActionBar ab = super.getSupportActionBar();
             ab.setTitle(R.string.settings_page_title);
             ab.setDisplayHomeAsUpEnabled(true);
@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.nav_host_fragment, new SettingsFragment());
             ft.commit();
-
             setMenuVisibility(false);
 
             return true;

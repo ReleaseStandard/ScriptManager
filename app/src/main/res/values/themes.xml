@@ -8,6 +8,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">#00C0C0</item>
+        <item name="android:colorLongPressedHighlight">#00F1F1</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/black</item>
@@ -27,33 +28,11 @@
 
     <style name="Theme.Scriptapp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.Scriptapp.Green" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- color used for overflow and UP button -->
-        <item name="colorControlNormal">#00A907</item>
-        <item name="colorControlHighlight">#00DF09</item>
-
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">#002702</item>
-        <item name="colorPrimaryVariant">#004C03</item>
-
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorSecondaryVariant">@color/black</item>
-        <!-- color used on '+' signs on buttons for example -->
-        <item name="colorAccent">#00DF09</item>
-
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-    </style>
-    <style name="Theme.Scriptapp.Green.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="Theme.Scriptapp.Night" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- color used for overflow and UP button -->
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">@color/black</item>
-
+        <item name="android:colorLongPressedHighlight">#333333</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/black</item>
