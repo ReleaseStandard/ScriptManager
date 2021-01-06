@@ -85,11 +85,13 @@ public class JobFragment extends Fragment {
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)  {
-                if ( isSelected ) {
-                    unselectView(v);
-                }
-                else {
-                    selectView(v);
+                MainActivity main = (MainActivity)getActivity();
+                if ( main.getNumberSelected() > 0 ) {
+                    if (isSelected) {
+                        unselectView(v);
+                    } else {
+                        selectView(v);
+                    }
                 }
         /*        if ( ! isSelected ) {
                     Log.v("scriptmanager","test");
