@@ -1,31 +1,17 @@
 package com.example.scriptmanager;
 
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.ColorRes;
 import androidx.appcompat.app.ActionBar;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
-import com.example.scriptmanager.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -74,7 +60,7 @@ public class JobFragment extends Fragment {
 
     public void callUnselectAll() {
         MainActivity main = (MainActivity) getActivity();
-        main.unselectAllFragments();
+        main.jobs_view.unselectAllFragments();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,7 +79,7 @@ public class JobFragment extends Fragment {
             @Override
             public void onClick(View v)  {
                 MainActivity main = (MainActivity)getActivity();
-                if ( main.getNumberSelected() > 0 ) {
+                if ( main.jobs_view.getNumberSelected() > 0 ) {
                     if (isSelected) {
                         unselectView(v);
                     } else {
@@ -147,10 +133,10 @@ public class JobFragment extends Fragment {
             MainActivity main = (MainActivity) getActivity();
             int color =main.getColorFromId(main, R.attr.colorPrimary);
             view.setBackgroundColor(color);
-            if( main.getNumberSelected()  <= 0) {
+            if( main.jobs_view.getNumberSelected()  <= 0) {
                 main.ow_menu.leaveSelectMode();
             }
-            if( main.getNumberSelected() == 1) {
+            if( main.jobs_view.getNumberSelected() == 1) {
                 main.ow_menu.enterOneOnlySelectMode();
             }
         }
@@ -175,10 +161,10 @@ public class JobFragment extends Fragment {
         int color =main.getColorFromId(main, android.R.attr.colorLongPressedHighlight);
         ab.setBackgroundDrawable(new ColorDrawable(color));
         v.setBackgroundColor(color);
-        if( main.getNumberSelected()  == 1) {
+        if( main.jobs_view.getNumberSelected()  == 1) {
             main.ow_menu.enterSelectMode();
         }
-        if( main.getNumberSelected()  > 1) {
+        if( main.jobs_view.getNumberSelected()  > 1) {
             main.ow_menu.leaveOneOnlySelectMode();
         }
         if ( v != null ) {

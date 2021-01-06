@@ -11,20 +11,14 @@ import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.scriptmanager.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.Environment;
-import android.os.PersistableBundle;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -33,12 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean isInSelectMode = false;
 
      // Objects that encapsulate the data //
-     public ViewJobsFragment vjf = null;
+     public ViewJobsFragment jobs_view = null;
      public SettingsFragment sf = null;
      public OverflowMenu ow_menu = null;
      private Hashtable <Integer, Fragment> views = null;
@@ -76,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.views = new Hashtable<>();
-        vjf = new ViewJobsFragment();
+        jobs_view = new ViewJobsFragment();
         sf = new SettingsFragment();
-        views.put(R.id.nav_host_fragment, vjf);
+        views.put(R.id.nav_host_fragment, jobs_view);
         views.put(R.id.action_settings, sf);
 
         ActivityCompat.requestPermissions(MainActivity.this,
@@ -86,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 1);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.nav_host_fragment,vjf);
+        ft.replace(R.id.nav_host_fragment, jobs_view);
         ft.commit();
         Log.v("scriptmanager","onCreate");
     }
@@ -109,19 +98,19 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_stopselected) {
-            stopAllFragments(true);
-            unselectAllFragments();
+            jobs_view.stopAllFragments(true);
+            jobs_view.unselectAllFragments();
         }
         if (id == R.id.action_stopall) {
-            unselectAllFragments();
-            stopAllFragments();
+            jobs_view.unselectAllFragments();
+            jobs_view.stopAllFragments();
         }
         if (id == R.id.action_unselectall) {
-            unselectAllFragments();
+            jobs_view.unselectAllFragments();
         }
         if (id == R.id.action_settings) {
 
-            unselectAllFragments();
+            jobs_view.unselectAllFragments();
             ow_menu.leaveSelectMode();
 
             ActionBar ab = super.getSupportActionBar();
@@ -149,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             ab.setDisplayUseLogoEnabled(true);
 
             if( isInSelectMode ) {
-                unselectAllFragments();
+                jobs_view.unselectAllFragments();
                 ow_menu.leaveSelectMode();
             }
             else {
@@ -164,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if ( id == R.id.action_oneonly_edit) {
-            unselectAllFragments();
+            jobs_view.unselectAllFragments();
 
             Context context = getApplicationContext();
             String pvd = context.getApplicationContext().getPackageName() + ".provider";
@@ -195,18 +184,6 @@ public class MainActivity extends AppCompatActivity {
         main.getTheme().resolveAttribute(colorID, typedValue, true);
         return typedValue.data;
     }
-    public void unselectAllFragments() {
-        vjf.unselectAllFragments();
-    }
-    public void stopAllFragments() {
-        vjf.stopAllFragments();
-    }
-    public void stopAllFragments(boolean onlySelected) {
-        vjf.stopAllFragments(onlySelected);
-    }
-    public int getNumberSelected() {
-        return vjf.getNumberSelected();
-    }
 
     // Handlers for click on interface
     public void handlerFabClick() {
@@ -224,6 +201,6 @@ public class MainActivity extends AppCompatActivity {
         ft.add(R.id.linear_layout_actions_list, f);
         ft.commit();
 
-        vjf.fragments.add(f);
+        jobs_view.fragments.add(f);
     }
 }

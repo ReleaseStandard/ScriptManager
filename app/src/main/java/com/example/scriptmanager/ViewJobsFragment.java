@@ -47,10 +47,12 @@ public class ViewJobsFragment extends Fragment {
         return v;
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.v("scriptmanager","RESTORE");
     }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
