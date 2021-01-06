@@ -3,9 +3,12 @@ package com.example.scriptmanager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +52,24 @@ public class JobFragment extends Fragment {
         args.putString(JobFragment.sname, sname);
         return fragment;
     }
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.v("scriptmanager","JogFragment:onViewCreated");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.v("scriptmanager","JogFragment:onSaveInstanceState");
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.v("scriptmanager","JogFragment:ViewStateRestored");
+        restoreView();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +78,7 @@ public class JobFragment extends Fragment {
         if (getArguments() != null) {
             msname = getArguments().getString(sname);
         }
+        Log.v("scriptmanager","JogFragment:onCreate");
     }
 
     public void callUnselectAll() {
@@ -96,6 +118,7 @@ public class JobFragment extends Fragment {
             public void onClick(View view)  {
                 // update image
                 if ( started == null || (started != null && stopped != null)  ) {
+                    stopped = null;
                     startJob();
                 }
                 else {
@@ -107,26 +130,39 @@ public class JobFragment extends Fragment {
         });
         return v;
     }
-    public void startJob() {
+
+    public void restoreView() {
+        if( started != null && stopped == null) {
+            setViewStartJob();
+        }
+        else {
+            setViewStopJob();
+        }
+    }
+    public void setViewStartJob() {
         FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
-
-        shell.execScript("test.sh");
-
-        stopped = null;
         fab.setImageDrawable(
                 getResources().getDrawable(android.R.drawable.ic_media_pause)
         );
-        started = new Date();
     }
-    public void stopJob() {
-        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
 
-        shell.terminateAll();
-        stopped = new Date();
-        // some stuff
+    public void setViewStopJob() {
+        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
         fab.setImageDrawable(
                 getResources().getDrawable(android.R.drawable.ic_media_play)
         );
+    }
+
+    public void startJob() {
+        setViewStartJob();
+        shell.execScript("test.sh");
+        stopped = null;
+        started = new Date();
+    }
+    public void stopJob() {
+        setViewStopJob();
+        shell.terminateAll();
+        stopped = new Date();
     }
     public void unselectView() {
         this.isSelected = false;

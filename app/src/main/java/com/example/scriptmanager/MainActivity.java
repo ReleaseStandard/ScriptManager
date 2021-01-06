@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
      public OverflowMenu ow_menu = null;
      private Hashtable <Integer, Fragment> views = null;
 
-     public void showTimePickerDialog(View v) {
+    public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
@@ -131,10 +131,9 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.fab).setVisibility(View.INVISIBLE);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-            Fragment fg = views.get(R.id.action_settings);
-            ft.replace(R.id.nav_host_fragment,fg);
+            ft.replace(R.id.nav_host_fragment,sf);
             ft.commit();
+
 
             ow_menu.setMenuVisibility(false);
 
@@ -156,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment,jobs_view);
                 ft.commit();
+
                 ow_menu.setMenuVisibility(true);
             }
             return true;
@@ -196,17 +196,18 @@ public class MainActivity extends AppCompatActivity {
 
     // Handlers for click on interface
     public void handlerFabClick() {
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = jobs_view.getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
         // ex : setting remove animations
         // not very visible lol
-        ft.setCustomAnimations(FragmentTransaction.TRANSIT_NONE,
+        /*ft.setCustomAnimations(FragmentTransaction.TRANSIT_NONE,
                 FragmentTransaction.TRANSIT_NONE,
                 FragmentTransaction.TRANSIT_NONE,
                 FragmentTransaction.TRANSIT_NONE);
+        */
 
-        JobFragment f = JobFragment.newInstance("my text");
+        JobFragment f = new JobFragment();
         ft.add(R.id.linear_layout_actions_list, f);
         ft.commit();
 
