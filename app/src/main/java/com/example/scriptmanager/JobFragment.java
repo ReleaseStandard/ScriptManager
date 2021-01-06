@@ -102,16 +102,7 @@ public class JobFragment extends Fragment {
                 }
             }
         });
-        /*   v.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                if ( ! isSelected ) {
-                    callUnselectAll();
-                }
-                return false;
-            }
-        });
-*/
+
         View button = v.findViewById(R.id.floatingActionButton2);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +150,7 @@ public class JobFragment extends Fragment {
             if( main.getNumberSelected()  <= 0) {
                 ActionBar ab = main.getSupportActionBar();
                 ab.setBackgroundDrawable(new ColorDrawable(color));
+                main.leaveSelectMode();
             }
         }
     }
@@ -174,6 +166,7 @@ public class JobFragment extends Fragment {
         }
     }
     public void selectView(View v) {
+        this.isSelected = true;
         // The selection action
         // Hightlight the ActionBar
         MainActivity main = (MainActivity) getActivity();
@@ -181,7 +174,9 @@ public class JobFragment extends Fragment {
         int color =main.getColorFromId(main, android.R.attr.colorLongPressedHighlight);
         ab.setBackgroundDrawable(new ColorDrawable(color));
         v.setBackgroundColor(color);
-        this.isSelected = true;
+        if( main.getNumberSelected()  == 1) {
+            main.enterSelectMode();
+        }
         if ( v != null ) {
             this.view = v;
         }

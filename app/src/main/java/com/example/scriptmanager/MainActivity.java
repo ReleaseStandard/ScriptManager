@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar = null;
     public List<JobFragment> fragments = new ArrayList<JobFragment>();
 
+    private Menu optionsMenu = null;
+    private ArrayList <MenuItem> optionsMenuItemBackup = new ArrayList<MenuItem>();
+    private boolean isInSelectMode = false;
+
     @Override
     protected  void onStart() {
         super.onStart();
@@ -104,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        optionsMenu = menu;
         return true;
     }
 
@@ -112,10 +117,21 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
+        if (id == R.id.action_stopselected) {
+            stopAllFragments(true);
+            unselectAllFragments();
+        }
         if (id == R.id.action_stopall) {
+            unselectAllFragments();
             stopAllFragments();
         }
+        if (id == R.id.action_unselectall) {
+            unselectAllFragments();
+        }
         if (id == R.id.action_settings) {
+
+            unselectAllFragments();
+            leaveSelectMode();
 
             ActionBar ab = super.getSupportActionBar();
             ab.setTitle(R.string.settings_page_title);
@@ -134,20 +150,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if ( id == android.R.id.home) {
-
             ActionBar ab = super.getSupportActionBar();
             ab.setTitle(R.string.app_name);
             ab.setDisplayHomeAsUpEnabled(false);
             ab.setDisplayUseLogoEnabled(true);
 
-            findViewById(R.id.fab).setVisibility(View.VISIBLE);
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.nav_host_fragment, new ViewJobsFragment());
-            ft.commit();
-
-            setMenuVisibility(true);
-
+            if( isInSelectMode ) {
+                unselectAllFragments();
+                leaveSelectMode();
+            }
+            else {
+                findViewById(R.id.fab).setVisibility(View.VISIBLE);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.nav_host_fragment, new ViewJobsFragment());
+                ft.commit();
+                setMenuVisibility(true);
+            }
             return true;
         }
 
@@ -163,9 +181,21 @@ public class MainActivity extends AppCompatActivity {
     private void setMenuVisibility(boolean b) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Menu m = toolbar.getMenu();
-        for (int a = 0; a < m.size(); a = a + 1) {
-            MenuItem mi = m.getItem(a);
-            mi.setVisible(b);
+
+        if( b ) {
+            for (MenuItem mi : optionsMenuItemBackup) {
+                mi.setVisible(true);
+            }
+            optionsMenuItemBackup.clear();
+        }
+        else {
+            for (int a = 0; a < m.size(); a = a + 1) {
+                MenuItem mi = m.getItem(a);
+                if( mi.isVisible() ) {
+                    optionsMenuItemBackup.add(mi);
+                    mi.setVisible(false);
+                }
+            }
         }
     }
 
@@ -183,8 +213,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void stopAllFragments() {
+        stopAllFragments(false);
+    }
+    public void stopAllFragments(boolean onlySelected) {
         for (JobFragment jf : fragments) {
-            jf.stopJob();
+            if( onlySelected)  {
+                if(jf.isSelected) {
+                    jf.stopJob();
+                }
+            }
+            else
+            {
+                jf.stopJob();
+            }
         }
     }
     public int getNumberSelected() {
@@ -195,6 +236,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return count;
+    }
+    public void enterSelectMode() {
+            ActionBar ab = getSupportActionBar();
+            ab.setDisplayHomeAsUpEnabled(true);
+
+            int ids[] = {R.id.action_stopselected,
+                    R.id.action_unselectall};
+            for (int id : ids) {
+                MenuItem mi = optionsMenu.findItem(id);
+                mi.setVisible(true);
+            }
+        isInSelectMode = true;
+    }
+    public void leaveSelectMode() {
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(false);
+        int ids[] = {R.id.action_stopselected,
+                R.id.action_unselectall};
+        for (int id : ids) {
+            MenuItem mi = optionsMenu.findItem(id);
+            mi.setVisible(false);
+        }
+        isInSelectMode = false;
     }
     //
 }
