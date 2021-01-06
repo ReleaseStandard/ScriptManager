@@ -118,11 +118,10 @@ public class JobFragment extends Fragment {
             public void onClick(View view)  {
                 // update image
                 if ( started == null || (started != null && stopped != null)  ) {
-                    stopped = null;
                     startJob();
                 }
                 else {
-                    if( stopped == null ) {
+                    if ( isStarted() ) {
                         stopJob();
                     }
                 }
@@ -131,8 +130,12 @@ public class JobFragment extends Fragment {
         return v;
     }
 
+    public boolean isStarted() {
+        return (started != null && stopped == null);
+    }
+
     public void restoreView() {
-        if( started != null && stopped == null) {
+        if( isStarted() ) {
             setViewStartJob();
         }
         else {
@@ -154,6 +157,11 @@ public class JobFragment extends Fragment {
     }
 
     public void startJob() {
+        MainActivity main = (MainActivity)getActivity();
+        int i = main.jobs_view.getNumberStarted();
+        if ( i == 0) {
+            main.ow_menu.enterRunningMode();
+        }
         setViewStartJob();
         shell.execScript("test.sh");
         stopped = null;
@@ -163,6 +171,11 @@ public class JobFragment extends Fragment {
         setViewStopJob();
         shell.terminateAll();
         stopped = new Date();
+        MainActivity main = (MainActivity)getActivity();
+        int i = main.jobs_view.getNumberStarted();
+        if ( i == 0 ) {
+            main.ow_menu.leaveRunningMode();
+        }
     }
     public void unselectView() {
         this.isSelected = false;
