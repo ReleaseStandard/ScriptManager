@@ -3,6 +3,7 @@ package com.example.scriptmanager;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
@@ -41,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
      public OverflowMenu ow_menu = null;
      private Hashtable <Integer, Fragment> views = null;
 
+     public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -77,11 +86,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.nav_host_fragment, jobs_view);
         ft.commit();
-        Log.v("scriptmanager","onCreate");
+        Log.v("scriptmanager","MainActivity:onCreate");
     }
     @Override
     protected  void onStart() {
         super.onStart();
+        Log.v("scriptmanager","MainActivity:onStart");
     }
 
 
@@ -144,8 +154,7 @@ public class MainActivity extends AppCompatActivity {
             else {
                 findViewById(R.id.fab).setVisibility(View.VISIBLE);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                Fragment list_view = views.get(R.id.nav_host_fragment);
-                ft.replace(R.id.nav_host_fragment,list_view);
+                ft.replace(R.id.nav_host_fragment,jobs_view);
                 ft.commit();
                 ow_menu.setMenuVisibility(true);
             }

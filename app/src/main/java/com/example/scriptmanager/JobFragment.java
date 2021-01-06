@@ -25,6 +25,7 @@ public class JobFragment extends Fragment {
 
     // is this fragment selected user
     public boolean isSelected = false;
+    public String name = "";
     public Date started = null;
     public Date stopped = null;
     private View view = null;

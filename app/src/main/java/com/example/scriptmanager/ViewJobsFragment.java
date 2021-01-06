@@ -43,20 +43,25 @@ public class ViewJobsFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
+
+        if ( savedInstanceState == null ) {
+            Log.v("scriptmanager","ViewJobsFragment:saveInstanceNull");
+        }
         View v =  inflater.inflate(R.layout.view_jobs_fragment, container, false);
+        Log.v("scriptmanager","ViewJobsFragment:onCreateView");
         return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.v("scriptmanager","RESTORE");
+        Log.v("scriptmanager","ViewJobsFragment:onViewCreated");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.v("scriptmanager","SAVE");
+        Log.v("scriptmanager","ViewJobsFragment:onSaveInstanceState");
     }
 
 
