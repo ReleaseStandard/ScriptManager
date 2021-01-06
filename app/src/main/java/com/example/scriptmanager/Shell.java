@@ -4,6 +4,8 @@ import android.os.Environment;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,7 @@ public class Shell {
 
     static public String externalStorage = null;
     static public String internalStorage = null;
+    private List<Process> processes = new ArrayList<Process>();
 
     /**
      *  Constructor will build the storage required to store scripts.
@@ -36,7 +39,8 @@ public class Shell {
      */
     public int execCmd(String cmd) {
         try {
-            Runtime.getRuntime().exec(new String[]{"sh","-c",cmd});
+            Process p = Runtime.getRuntime().exec(new String[]{"sh","-c",cmd});
+            processes.add(p);
         } catch (IOException e) {
             return 1;
         }
@@ -55,10 +59,18 @@ public class Shell {
             script = externalStorage + "/" + script;
         }
         try {
-            Runtime.getRuntime().exec(new String[]{"sh","-c",". "+script});
+            Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". "+script});
+            processes.add(pr);
         } catch (IOException e) {
             return 1;
         }
         return 0;
+    }
+
+    public void terminateAll() {
+        for(Process p : processes) {
+            p.destroy();
+        }
+        processes = new ArrayList<Process>();
     }
 }

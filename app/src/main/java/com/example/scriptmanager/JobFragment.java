@@ -43,6 +43,8 @@ public class JobFragment extends Fragment {
     public Date stopped = null;
     private View view = null;
 
+    Shell shell = new Shell();
+
     private String msname;
 
     public JobFragment() {
@@ -119,14 +121,12 @@ public class JobFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
-                // launch the script here //
-                Shell s = new Shell();
-                s.execScript("test.sh");
-
                 // update image
                 FloatingActionButton fab = (FloatingActionButton) view;
 
                 if ( started == null || (started != null && stopped != null)  ) {
+                    shell.execScript("test.sh");
+
                     stopped = null;
                     fab.setImageDrawable(
                             getResources().getDrawable(android.R.drawable.ic_media_pause)
@@ -135,6 +135,7 @@ public class JobFragment extends Fragment {
                 }
                 else {
                     if( stopped == null ) {
+                        shell.terminateAll();
                        stopped = new Date();
                         // some stuff
                         fab.setImageDrawable(
