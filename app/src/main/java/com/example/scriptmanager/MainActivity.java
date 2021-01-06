@@ -286,6 +286,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void leaveSelectMode() {
         ActionBar ab = getSupportActionBar();
+        int color = getColorFromId(this, R.attr.colorPrimaryVariant);
+        ab.setBackgroundDrawable(new ColorDrawable(color));
         ab.setDisplayHomeAsUpEnabled(false);
 
         for (int id : any_selection_buttons) {

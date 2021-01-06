@@ -20,7 +20,7 @@
         <activity
             android:name="com.example.scriptmanager.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Scriptapp.Night.NoActionBar">
+            android:theme="@style/Theme.Scriptapp.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

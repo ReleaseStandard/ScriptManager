@@ -145,11 +145,9 @@ public class JobFragment extends Fragment {
         this.isSelected = false;
         if ( this.view != null) {
             MainActivity main = (MainActivity) getActivity();
-            int color =main.getColorFromId(main, R.attr.colorPrimaryVariant);
+            int color =main.getColorFromId(main, R.attr.colorPrimary);
             view.setBackgroundColor(color);
             if( main.getNumberSelected()  <= 0) {
-                ActionBar ab = main.getSupportActionBar();
-                ab.setBackgroundDrawable(new ColorDrawable(color));
                 main.leaveSelectMode();
             }
             if( main.getNumberSelected() == 1) {
