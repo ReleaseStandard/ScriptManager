@@ -2,6 +2,7 @@ package com.example.scriptmanager;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -43,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private Menu optionsMenu = null;
     private ArrayList <MenuItem> optionsMenuItemBackup = new ArrayList<MenuItem>();
     private boolean isInSelectMode = false;
+
+    // Collection off ids for the menu
+    int any_selection_buttons[] = {R.id.action_stopselected,
+                        R.id.action_unselectall};
+     int one_only_selection_buttons[] = {R.id.action_oneonly_edit};
 
     @Override
     protected  void onStart() {
@@ -169,6 +175,23 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if ( id == R.id.action_oneonly_edit) {
+            unselectAllFragments();
+
+            Context context = getApplicationContext();
+            String pvd = context.getApplicationContext().getPackageName() + ".provider";
+            Log.v("scriptmanager",pvd);
+            File f = new File(Shell.externalStorage+"/test.sh");
+            Uri uri = FileProvider.getUriForFile(context, pvd, f);
+
+            Intent myIntent = new Intent(Intent.ACTION_VIEW);
+            myIntent.setData(uri);
+            myIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(myIntent);
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -237,28 +260,40 @@ public class MainActivity extends AppCompatActivity {
         }
         return count;
     }
+    public void enterOneOnlySelectMode() {
+        for (int id : one_only_selection_buttons) {
+            MenuItem mi = optionsMenu.findItem(id);
+            mi.setVisible(true);
+        }
+    }
+    public void leaveOneOnlySelectMode() {
+        for (int id : one_only_selection_buttons) {
+            MenuItem mi = optionsMenu.findItem(id);
+            mi.setVisible(false);
+        }
+    }
     public void enterSelectMode() {
             ActionBar ab = getSupportActionBar();
             ab.setDisplayHomeAsUpEnabled(true);
 
-            int ids[] = {R.id.action_stopselected,
-                    R.id.action_unselectall};
-            for (int id : ids) {
+            for (int id : any_selection_buttons) {
                 MenuItem mi = optionsMenu.findItem(id);
                 mi.setVisible(true);
             }
         isInSelectMode = true;
+        enterOneOnlySelectMode();
     }
+
     public void leaveSelectMode() {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(false);
-        int ids[] = {R.id.action_stopselected,
-                R.id.action_unselectall};
-        for (int id : ids) {
+
+        for (int id : any_selection_buttons) {
             MenuItem mi = optionsMenu.findItem(id);
             mi.setVisible(false);
         }
         isInSelectMode = false;
+        leaveOneOnlySelectMode();
     }
     //
 }

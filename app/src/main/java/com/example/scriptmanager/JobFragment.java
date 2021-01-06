@@ -152,6 +152,9 @@ public class JobFragment extends Fragment {
                 ab.setBackgroundDrawable(new ColorDrawable(color));
                 main.leaveSelectMode();
             }
+            if( main.getNumberSelected() == 1) {
+                main.enterOneOnlySelectMode();
+            }
         }
     }
     public void unselectView(View v) {
@@ -176,6 +179,9 @@ public class JobFragment extends Fragment {
         v.setBackgroundColor(color);
         if( main.getNumberSelected()  == 1) {
             main.enterSelectMode();
+        }
+        if( main.getNumberSelected()  > 1) {
+            main.leaveOneOnlySelectMode();
         }
         if ( v != null ) {
             this.view = v;

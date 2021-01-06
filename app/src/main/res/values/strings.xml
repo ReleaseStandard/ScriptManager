@@ -4,6 +4,7 @@
     <string name="settings_stopselected">Stop selected</string>
     <string name="settings_stopall">Stop all</string>
     <string name="settings_unselectall">Unselect all</string>
+    <string name="settings_oneonly_edit">Edit</string>
 
 
     <!-- Strings used for fragments for navigation -->
