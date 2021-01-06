@@ -148,10 +148,10 @@ public class JobFragment extends Fragment {
             int color =main.getColorFromId(main, R.attr.colorPrimary);
             view.setBackgroundColor(color);
             if( main.getNumberSelected()  <= 0) {
-                main.leaveSelectMode();
+                main.ow_menu.leaveSelectMode();
             }
             if( main.getNumberSelected() == 1) {
-                main.enterOneOnlySelectMode();
+                main.ow_menu.enterOneOnlySelectMode();
             }
         }
     }
@@ -176,10 +176,10 @@ public class JobFragment extends Fragment {
         ab.setBackgroundDrawable(new ColorDrawable(color));
         v.setBackgroundColor(color);
         if( main.getNumberSelected()  == 1) {
-            main.enterSelectMode();
+            main.ow_menu.enterSelectMode();
         }
         if( main.getNumberSelected()  > 1) {
-            main.leaveOneOnlySelectMode();
+            main.ow_menu.leaveOneOnlySelectMode();
         }
         if ( v != null ) {
             this.view = v;

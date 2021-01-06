@@ -16,24 +16,81 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.scriptmanager.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewJobsFragment extends Fragment {
 
+    // list of Jobs
+    public List<JobFragment> fragments = new ArrayList<JobFragment>();
 
+    public ViewJobsFragment() {
+        // Required empty public constructor
+    }
+    public static SettingsFragment newInstance(String param1, String param2) {
+        SettingsFragment fragment = new SettingsFragment();
+        Bundle args = new Bundle();
+        return fragment;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    // here we need registerJobs
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.view_jobs_fragment, container, false);
-
         return v;
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.v("scriptmanager","RESTORE");
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.v("scriptmanager","SAVE");
+    }
+
+
+
+
+    // Tools
+    public void stopAllFragments() {
+        stopAllFragments(false);
+    }
+    public void stopAllFragments(boolean onlySelected) {
+        for (JobFragment jf : fragments) {
+            if( onlySelected)  {
+                if(jf.isSelected) {
+                    jf.stopJob();
+                }
+            }
+            else
+            {
+                jf.stopJob();
+            }
+        }
+    }
+
+    public void unselectAllFragments() {
+        for (JobFragment jf : fragments) {
+            jf.unselectView();
+        }
+    }
+
+    public int getNumberSelected() {
+        int count = 0;
+        for (JobFragment jf : fragments) {
+            if ( jf.isSelected ) {
+                count += 1;
+            }
+        }
+        return count;
     }
 }

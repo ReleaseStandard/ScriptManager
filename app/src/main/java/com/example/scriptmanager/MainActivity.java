@@ -3,6 +3,7 @@ package com.example.scriptmanager;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.provider.DocumentsContract;
 import android.util.Log;
 import android.util.TypedValue;
@@ -33,32 +35,22 @@ import android.view.MenuItem;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    public Settings settings = new Settings();
     private Toolbar toolbar = null;
-    public List<JobFragment> fragments = new ArrayList<JobFragment>();
 
-    private Menu optionsMenu = null;
-    private ArrayList <MenuItem> optionsMenuItemBackup = new ArrayList<MenuItem>();
-    private boolean isInSelectMode = false;
+    public boolean isInSelectMode = false;
 
-    // Collection off ids for the menu
-    int any_selection_buttons[] = {R.id.action_stopselected,
-                        R.id.action_unselectall};
-     int one_only_selection_buttons[] = {R.id.action_oneonly_edit};
-
-    @Override
-    protected  void onStart() {
-        super.onStart();
-
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                1);
-
-    }
+     // Objects that encapsulate the data //
+     public ViewJobsFragment vjf = null;
+     public SettingsFragment sf = null;
+     public OverflowMenu ow_menu = null;
+     private Hashtable <Integer, Fragment> views = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,42 +71,35 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
-
-                /* Start intent to get a file ex: allow user to export/import scripts from the application
-                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("application/pdf");
-                intent.putExtra(Intent.EXTRA_TITLE, "invoice.pdf");
-                // Optionally, specify a URI for the directory that should be opened in
-                // the system file picker when your app creates the document.
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("file:///sdcard/a"));
-                startActivityForResult(intent, 1);
-                */
-
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-
-                // ex : setting remove animations
-                // not very visible lol
-                ft.setCustomAnimations(FragmentTransaction.TRANSIT_NONE,
-                        FragmentTransaction.TRANSIT_NONE,
-                        FragmentTransaction.TRANSIT_NONE,
-                        FragmentTransaction.TRANSIT_NONE);
-
-                JobFragment f = JobFragment.newInstance("my text");
-                ft.add(R.id.linear_layout_actions_list, f);
-                fragments.add(f);
-                ft.commit();
-
+                handlerFabClick();
             }
         });
 
+        this.views = new Hashtable<>();
+        vjf = new ViewJobsFragment();
+        sf = new SettingsFragment();
+        views.put(R.id.nav_host_fragment, vjf);
+        views.put(R.id.action_settings, sf);
+
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                1);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.nav_host_fragment,vjf);
+        ft.commit();
+        Log.v("scriptmanager","onCreate");
     }
+    @Override
+    protected  void onStart() {
+        super.onStart();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        optionsMenu = menu;
+        ow_menu = new OverflowMenu(this, menu);
         return true;
     }
 
@@ -137,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
 
             unselectAllFragments();
-            leaveSelectMode();
+            ow_menu.leaveSelectMode();
 
             ActionBar ab = super.getSupportActionBar();
             ab.setTitle(R.string.settings_page_title);
@@ -147,10 +132,12 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.fab).setVisibility(View.INVISIBLE);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.nav_host_fragment, new SettingsFragment());
+
+            Fragment fg = views.get(R.id.action_settings);
+            ft.replace(R.id.nav_host_fragment,fg);
             ft.commit();
 
-            setMenuVisibility(false);
+            ow_menu.setMenuVisibility(false);
 
             return true;
         }
@@ -163,14 +150,15 @@ public class MainActivity extends AppCompatActivity {
 
             if( isInSelectMode ) {
                 unselectAllFragments();
-                leaveSelectMode();
+                ow_menu.leaveSelectMode();
             }
             else {
                 findViewById(R.id.fab).setVisibility(View.VISIBLE);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, new ViewJobsFragment());
+                Fragment list_view = views.get(R.id.nav_host_fragment);
+                ft.replace(R.id.nav_host_fragment,list_view);
                 ft.commit();
-                setMenuVisibility(true);
+                ow_menu.setMenuVisibility(true);
             }
             return true;
         }
@@ -196,31 +184,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // => tout ce qui est en rapport avec le menu
 
-    // helpers
-    /*
-     * Hide or show the overflow menu
-     */
-    private void setMenuVisibility(boolean b) {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Menu m = toolbar.getMenu();
-
-        if( b ) {
-            for (MenuItem mi : optionsMenuItemBackup) {
-                mi.setVisible(true);
-            }
-            optionsMenuItemBackup.clear();
-        }
-        else {
-            for (int a = 0; a < m.size(); a = a + 1) {
-                MenuItem mi = m.getItem(a);
-                if( mi.isVisible() ) {
-                    optionsMenuItemBackup.add(mi);
-                    mi.setVisible(false);
-                }
-            }
-        }
-    }
 
     /*
      * get color associated with the current theme.
@@ -231,71 +196,34 @@ public class MainActivity extends AppCompatActivity {
         return typedValue.data;
     }
     public void unselectAllFragments() {
-        for (JobFragment jf : fragments) {
-            jf.unselectView();
-        }
+        vjf.unselectAllFragments();
     }
     public void stopAllFragments() {
-        stopAllFragments(false);
+        vjf.stopAllFragments();
     }
     public void stopAllFragments(boolean onlySelected) {
-        for (JobFragment jf : fragments) {
-            if( onlySelected)  {
-                if(jf.isSelected) {
-                    jf.stopJob();
-                }
-            }
-            else
-            {
-                jf.stopJob();
-            }
-        }
+        vjf.stopAllFragments(onlySelected);
     }
     public int getNumberSelected() {
-        int count = 0;
-        for (JobFragment jf : fragments) {
-            if ( jf.isSelected ) {
-                count += 1;
-            }
-        }
-        return count;
-    }
-    public void enterOneOnlySelectMode() {
-        for (int id : one_only_selection_buttons) {
-            MenuItem mi = optionsMenu.findItem(id);
-            mi.setVisible(true);
-        }
-    }
-    public void leaveOneOnlySelectMode() {
-        for (int id : one_only_selection_buttons) {
-            MenuItem mi = optionsMenu.findItem(id);
-            mi.setVisible(false);
-        }
-    }
-    public void enterSelectMode() {
-            ActionBar ab = getSupportActionBar();
-            ab.setDisplayHomeAsUpEnabled(true);
-
-            for (int id : any_selection_buttons) {
-                MenuItem mi = optionsMenu.findItem(id);
-                mi.setVisible(true);
-            }
-        isInSelectMode = true;
-        enterOneOnlySelectMode();
+        return vjf.getNumberSelected();
     }
 
-    public void leaveSelectMode() {
-        ActionBar ab = getSupportActionBar();
-        int color = getColorFromId(this, R.attr.colorPrimaryVariant);
-        ab.setBackgroundDrawable(new ColorDrawable(color));
-        ab.setDisplayHomeAsUpEnabled(false);
+    // Handlers for click on interface
+    public void handlerFabClick() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
 
-        for (int id : any_selection_buttons) {
-            MenuItem mi = optionsMenu.findItem(id);
-            mi.setVisible(false);
-        }
-        isInSelectMode = false;
-        leaveOneOnlySelectMode();
+        // ex : setting remove animations
+        // not very visible lol
+        ft.setCustomAnimations(FragmentTransaction.TRANSIT_NONE,
+                FragmentTransaction.TRANSIT_NONE,
+                FragmentTransaction.TRANSIT_NONE,
+                FragmentTransaction.TRANSIT_NONE);
+
+        JobFragment f = JobFragment.newInstance("my text");
+        ft.add(R.id.linear_layout_actions_list, f);
+        ft.commit();
+
+        vjf.fragments.add(f);
     }
-    //
 }
