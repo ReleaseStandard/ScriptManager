@@ -19,10 +19,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.example.scriptmanager.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +39,8 @@ public class JobFragment extends Fragment {
 
     // is this fragment selected user
     public boolean isSelected = false;
+    public Date started = null;
+    public Date stopped = null;
     private View view = null;
 
     private String msname;
@@ -116,6 +122,26 @@ public class JobFragment extends Fragment {
                 // launch the script here //
                 Shell s = new Shell();
                 s.execScript("test.sh");
+
+                // update image
+                FloatingActionButton fab = (FloatingActionButton) view;
+
+                if ( started == null || (started != null && stopped != null)  ) {
+                    stopped = null;
+                    fab.setImageDrawable(
+                            getResources().getDrawable(android.R.drawable.ic_media_pause)
+                    );
+                    started = new Date();
+                }
+                else {
+                    if( stopped == null ) {
+                       stopped = new Date();
+                        // some stuff
+                        fab.setImageDrawable(
+                                getResources().getDrawable(android.R.drawable.ic_media_play)
+                        );
+                    }
+                }
             }
         });
         return v;

@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 ft.add(R.id.linear_layout_actions_list, f);
                 fragments.add(f);
                 ft.commit();
+
             }
         });
 
