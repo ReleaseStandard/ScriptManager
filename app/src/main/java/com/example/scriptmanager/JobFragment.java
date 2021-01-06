@@ -42,7 +42,6 @@ public class JobFragment extends Fragment {
     public Date started = null;
     public Date stopped = null;
     private View view = null;
-
     Shell shell = new Shell();
 
     private String msname;
@@ -101,10 +100,6 @@ public class JobFragment extends Fragment {
                         selectView(v);
                     }
                 }
-        /*        if ( ! isSelected ) {
-                    Log.v("scriptmanager","test");
-                    callUnselectAll();
-                }*/
             }
         });
         /*   v.setOnTouchListener(new View.OnTouchListener(){
@@ -122,30 +117,38 @@ public class JobFragment extends Fragment {
             @Override
             public void onClick(View view)  {
                 // update image
-                FloatingActionButton fab = (FloatingActionButton) view;
-
                 if ( started == null || (started != null && stopped != null)  ) {
-                    shell.execScript("test.sh");
-
-                    stopped = null;
-                    fab.setImageDrawable(
-                            getResources().getDrawable(android.R.drawable.ic_media_pause)
-                    );
-                    started = new Date();
+                    startJob();
                 }
                 else {
                     if( stopped == null ) {
-                        shell.terminateAll();
-                       stopped = new Date();
-                        // some stuff
-                        fab.setImageDrawable(
-                                getResources().getDrawable(android.R.drawable.ic_media_play)
-                        );
+                        stopJob();
                     }
                 }
             }
         });
         return v;
+    }
+    public void startJob() {
+        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+
+        shell.execScript("test.sh");
+
+        stopped = null;
+        fab.setImageDrawable(
+                getResources().getDrawable(android.R.drawable.ic_media_pause)
+        );
+        started = new Date();
+    }
+    public void stopJob() {
+        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+
+        shell.terminateAll();
+        stopped = new Date();
+        // some stuff
+        fab.setImageDrawable(
+                getResources().getDrawable(android.R.drawable.ic_media_play)
+        );
     }
     public void unselectView() {
         this.isSelected = false;

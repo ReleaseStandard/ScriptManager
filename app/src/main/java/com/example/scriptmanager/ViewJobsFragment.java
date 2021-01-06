@@ -35,14 +35,5 @@ public class ViewJobsFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        View v2 = getActivity().findViewById(R.id.vjf_scroll_view);
-        v2.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                ((MainActivity)getActivity()).unselectAllFragments();
-                return true;
-            }
-        });
     }
 }

@@ -7,4 +7,9 @@
         android:orderInCategory="100"
         android:title="@string/settings_page_title"
         app:showAsAction="never" />
+      <item
+          android:id="@+id/action_stopall"
+          android:orderInCategory="100"
+          android:title="@string/settings_stopall"
+          app:showAsAction="never" />
 </menu>

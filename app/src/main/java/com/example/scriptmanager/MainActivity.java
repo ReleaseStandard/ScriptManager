@@ -112,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_stopall) {
+            stopAllFragments();
+        }
         if (id == R.id.action_settings) {
 
             ActionBar ab = super.getSupportActionBar();
@@ -178,6 +180,11 @@ public class MainActivity extends AppCompatActivity {
     public void unselectAllFragments() {
         for (JobFragment jf : fragments) {
             jf.unselectView();
+        }
+    }
+    public void stopAllFragments() {
+        for (JobFragment jf : fragments) {
+            jf.stopJob();
         }
     }
     public int getNumberSelected() {

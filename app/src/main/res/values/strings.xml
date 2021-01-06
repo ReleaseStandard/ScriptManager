@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ScriptManager</string>
     <string name="settings_page_title">Settings</string>
+    <string name="settings_stopall">Stop all</string>
 
 
 
