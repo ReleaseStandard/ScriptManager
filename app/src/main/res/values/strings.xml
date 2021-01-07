@@ -6,6 +6,9 @@
     <string name="settings_unselectall">Unselect all</string>
     <string name="settings_oneonly_edit">Edit</string>
     <string name="settings_oneonly_rename">Rename</string>
+    <string name="action_oneonly_rename">Rename</string>
+    <string name="action_oneonly_rename_ok">Ok</string>
+    <string name="action_oneonly_rename_cancel">Cancel</string>
 
 
     <!-- Strings used for fragments for navigation -->

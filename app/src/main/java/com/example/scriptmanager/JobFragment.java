@@ -293,6 +293,11 @@ public class JobFragment extends Fragment {
             main.ow_menu.callbackSelectAndRunning(main);
         }
     }
+    public void setName(String name) {
+        this.name = name;
+        TextView tv = getView().findViewById(R.id.job_fragment_textView);
+        tv.setText(name);
+    }
     public void stopJob() {
         setViewStopJob();
         shell.terminateAll();

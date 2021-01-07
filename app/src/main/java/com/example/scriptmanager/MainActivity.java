@@ -29,7 +29,10 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        MainActivity main = this;
         int id = item.getItemId();
 
         if (id == R.id.action_stopselected) {
@@ -188,35 +192,31 @@ public class MainActivity extends AppCompatActivity {
 
         // Browse scripts
         // Import
-        // Rename
         if ( R.id.action_oneonly_rename == id ) {
+            JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
-            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View customLayout = getLayoutInflater().inflate(R.layout.rename_dialog, null);
             builder.setView(customLayout);
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.action_oneonly_rename_ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            finish();
+                            EditText et = (EditText)customLayout.findViewById(R.id.editText);
+                            jf.setName(et.getText().toString());
                         }
                     });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.action_oneonly_rename_cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
             });
             AlertDialog alert = builder.create();
-            alert.setTitle("Rename");
-            alert.show();*/
+            alert.setTitle(R.string.action_oneonly_rename);
+            alert.show();
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    // => tout ce qui est en rapport avec le menu
-
-
+    
     /*
      * get color associated with the current theme.
      */
