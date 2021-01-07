@@ -15,11 +15,14 @@ import androidx.fragment.app.Fragment;
 
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -74,6 +77,20 @@ public class JobFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(JobFragment.sname, sname);
         return fragment;
+    }
+    public static int[] str2sched(String s) {
+        int sched[] = {EACH_TIME,EACH_TIME,EACH_TIME,EACH_TIME,EACH_TIME};
+        int i = 0;
+        for(String ss : s.split(" ")) {
+            if ( ! ss.equals(new String("*"))) {
+                sched[i] = EACH_TIME;
+            }
+            else {
+                sched[i]=(int)Integer.parseInt(ss);
+            }
+            i = i + 1;
+        }
+        return sched;
     }
     public static String sched2str(int [] s) {
         String res = "";
@@ -189,6 +206,9 @@ public class JobFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
+                EditText et = v.findViewById(R.id.editTextTextPersonName2);
+                String s = et.getText().toString();
+                sched = str2sched(s);
                 // update image
                 if ( started == null || (started != null && stopped != null)  ) {
                     startJob();
@@ -209,7 +229,7 @@ public class JobFragment extends Fragment {
                 showScheduleJob(v);
             }
         });
-        Log.v("scriptmanager","onCreateView");
+
         return v;
     }
 
@@ -246,7 +266,10 @@ public class JobFragment extends Fragment {
             main.ow_menu.enterRunningMode();
         }
         setViewStartJob();
+
+        // HERE we need to specify at which time we want to execute the script and also start a service at a specified time //
         shell.execScript("test.sh");
+
         stopped = null;
         started = new Date();
     }

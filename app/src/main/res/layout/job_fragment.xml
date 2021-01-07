@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="* * * * *"
+                android:hint="m h d m y"
                 android:inputType="textPersonName" />
 
             <Button
