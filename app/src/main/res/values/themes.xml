@@ -4,11 +4,13 @@
         <!-- color used for overflow and UP button -->
         <item name="colorControlNormal">@color/black</item>
         <item name="colorControlHighlight">#C0C0C0</item>
-
+        <item name="android:textColorHint">#FFBABABA</item>
+        <!-- this is for switchies (default color) -->
+        <item name="android:colorForeground">#FFBABABA</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">#FF00C0C0</item>
-        <item name="android:colorLongPressedHighlight">#FF00F1F1</item>
+        <item name="android:colorLongPressedHighlight">#005F5F</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/black</item>
@@ -33,10 +35,11 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">#FF000000</item>
         <item name="android:colorLongPressedHighlight">#333333</item>
+        <item name="android:colorForeground">#FFBABABA</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">#FF000000</item>
         <item name="colorPrimaryVariant">#FF000000</item>
-
+        <item name="android:textColorHint">#FFBABABA</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/white</item>
@@ -45,11 +48,21 @@
         <item name="colorAccent">@color/white</item>
 
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-
     </style>
     <style name="Theme.Scriptapp.Night.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <!-- Theme style for the date & time picker -->
+    <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">?colorPrimaryVariant</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!-- change letter on the date picker : android:textColorPrimary -->
+        <!-- change title of date picker : android:textColorPrimaryInverse, android:textColorSecondary -->
+        <!-- useless:
+                colorPrimary,colorPrimaryDark,android:textColor ,
+                android:textColorAlertDialogListItem,colorSecondary
+         -->
+    </style>
 </resources>

@@ -43,13 +43,15 @@
                 android:id="@+id/job_fragment_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="?colorSecondary" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="?android:textColorHint" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,7 +67,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="m h d m y"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="?colorSecondary" />
 
             <Button
                 android:id="@+id/job_fragment_time_picker_button"

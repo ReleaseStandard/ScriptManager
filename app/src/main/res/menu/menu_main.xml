@@ -2,8 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
       android:id="@+id/action_menu"
-    tools:context="com.example.scriptmanager.MainActivity">
+      tools:context="com.example.scriptmanager.MainActivity">
     <item
+        android:tooltipText="open settings"
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/settings_page_title"

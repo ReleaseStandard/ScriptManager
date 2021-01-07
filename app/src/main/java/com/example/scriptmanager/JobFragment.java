@@ -29,6 +29,8 @@ import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +48,7 @@ public class JobFragment extends Fragment {
     // is this fragment selected user
     public boolean isSelected = false;
     public String name = "das ist ein test";
+    public String path = "test.sh";
     public Date started = null;
     public Date stopped = null;
     public final static Integer EACH_TIME = -1;
@@ -123,12 +126,12 @@ public class JobFragment extends Fragment {
         TextView tv = vpg.findViewById(R.id.editTextTextPersonName2);
 
         // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),R.style.TimePickerTheme,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),R.style.TimePickerTheme,
                                 new DatePickerDialog.OnDateSetListener() {
                                     @Override
                                     public void onDateSet(DatePicker view, int year,
@@ -181,6 +184,8 @@ public class JobFragment extends Fragment {
         View v =  inflater.inflate(R.layout.job_fragment, container, false);
         TextView tv = v.findViewById(R.id.job_fragment_textView);
         tv.setText(name);
+        TextView tv2 = v.findViewById(R.id.textView3);
+        tv2.setText(path);
 
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -268,7 +273,7 @@ public class JobFragment extends Fragment {
         setViewStartJob();
 
         // HERE we need to specify at which time we want to execute the script and also start a service at a specified time //
-        shell.execScript("test.sh");
+        shell.execScript(path);
 
         stopped = null;
         started = new Date();
