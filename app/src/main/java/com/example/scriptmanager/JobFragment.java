@@ -65,7 +65,12 @@ public class JobFragment extends Fragment {
     private String msname;
 
     public JobFragment() {
-
+        Calendar rn = Calendar.getInstance();
+        sched[0] = rn.get(Calendar.MINUTE);
+        sched[1] = rn.get(Calendar.HOUR);
+        sched[2] = rn.get(Calendar.DAY_OF_MONTH);
+        sched[3] = rn.get(Calendar.MONTH);
+        sched[4] = rn.get(Calendar.YEAR);
     }
 
     /**
