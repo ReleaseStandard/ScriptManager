@@ -1,22 +1,35 @@
 package com.example.scriptmanager;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.DatePicker;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +45,14 @@ public class JobFragment extends Fragment {
     public String name = "das ist ein test";
     public Date started = null;
     public Date stopped = null;
+    public final static Integer EACH_TIME = -1;
+    int sched[] = {
+                    EACH_TIME,        // minutes
+                    EACH_TIME,        // hours
+                    EACH_TIME,        // day of month
+                    EACH_TIME,        // month
+                    EACH_TIME };      // year
+
     private View view = null;
     Shell shell = new Shell();
 
@@ -54,10 +75,59 @@ public class JobFragment extends Fragment {
         args.putString(JobFragment.sname, sname);
         return fragment;
     }
+    public static String sched2str(int [] s) {
+        String res = "";
+        for (int i : s) {
+            if ( i < 0 ) {
+                res += "* ";
+            }
+            else {
+                Integer ii = new Integer(i);
+                res += ii + " ";
+            }
+        }
+        return res;
+    }
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.v("scriptmanager","JogFragment:onViewCreated");
+    }
+    public void showScheduleJob(View v) {
+
+        int minute = sched[0];
+        int hour = sched[1];
+        int day = sched[2];
+        int month = sched[3];
+        int year = sched[4];
+
+
+        ViewGroup vpg = (ViewGroup)v.getParent();
+        TextView tv = vpg.findViewById(R.id.editTextTextPersonName2);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                                new DatePickerDialog.OnDateSetListener() {
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year,
+                                                          int monthOfYear, int dayOfMonth) {
+                                        sched[0] = minute;
+                                        sched[1] = hourOfDay;
+                                        sched[2] = dayOfMonth;
+                                        sched[3] = monthOfYear;
+                                        sched[4] = year;
+                                        tv.setText(sched2str(sched));
+                                    }
+                                }, year, month, day);
+                        datePickerDialog.show();
+                    }
+                }, hour, minute, false);
+        timePickerDialog.show();
     }
 
     @Override
@@ -98,7 +168,6 @@ public class JobFragment extends Fragment {
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View arg0) {
-                //callUnselectAll();
                 selectView(arg0);
                 return true;
             }});
@@ -131,6 +200,16 @@ public class JobFragment extends Fragment {
                 }
             }
         });
+
+        // set up event s for the date & time picker
+        View vv = v.findViewById(R.id.job_fragment_time_picker_button);
+        vv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showScheduleJob(v);
+            }
+        });
+        Log.v("scriptmanager","onCreateView");
         return v;
     }
 

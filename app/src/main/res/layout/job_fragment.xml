@@ -9,31 +9,72 @@
     android:background="?colorPrimary"
     android:padding="10dp"
     tools:context="com.example.scriptmanager.JobFragment">
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="336dp"
+        android:layout_marginRight="336dp"
         android:clickable="true"
         android:src="@android:drawable/ic_media_play"
         android:tint="?colorSecondary"
         app:backgroundTint="?colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/job_fragment_textView"
-        app:layout_constraintHorizontal_bias="0.132"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
 
-    <TextView
-        android:id="@+id/job_fragment_textView"
-        android:layout_width="249dp"
-        android:layout_height="51dp"
-        android:text="My job"
-        android:textColor="?colorSecondary"
+    <LinearLayout
+        android:layout_width="309dp"
+        android:layout_height="49dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="131dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/job_fragment_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.example.scriptmanager.JobFragment"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextTextPersonName2"
+                android:layout_width="81dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="* * * * *"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/job_fragment_time_picker_button"
+                android:layout_width="6dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@android:drawable/ic_lock_idle_alarm" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

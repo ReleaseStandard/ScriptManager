@@ -26,6 +26,8 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import java.io.File;
 import java.util.Hashtable;
@@ -42,14 +44,6 @@ public class MainActivity extends AppCompatActivity {
      public OverflowMenu ow_menu = null;
      private Hashtable <Integer, Fragment> views = null;
 
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-    }
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
