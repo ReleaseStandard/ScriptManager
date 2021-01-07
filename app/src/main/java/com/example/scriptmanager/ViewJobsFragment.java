@@ -45,7 +45,14 @@ public class ViewJobsFragment extends Fragment {
         }
         super.onCreate(savedInstanceState);
     }
-
+    public JobFragment getSelected() {
+        for(JobFragment js : fragments) {
+            if(js.isSelected) {
+                return js;
+            }
+        }
+        return null;
+    }
     // here we need registerJobs
     @Override
     public View onCreateView(

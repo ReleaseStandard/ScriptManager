@@ -44,11 +44,12 @@ import java.util.List;
 public class JobFragment extends Fragment {
 
     private static final String sname = "test";
+    private static Integer fragmentCount = 0;
 
     // is this fragment selected user
     public boolean isSelected = false;
-    public String name = "das ist ein test";
-    public String path = "test.sh";
+    public String name;
+    public String path;
     public Date started = null;
     public Date stopped = null;
     public final static Integer EACH_TIME = -1;
@@ -71,6 +72,10 @@ public class JobFragment extends Fragment {
         sched[2] = rn.get(Calendar.DAY_OF_MONTH);
         sched[3] = rn.get(Calendar.MONTH);
         sched[4] = rn.get(Calendar.YEAR);
+
+        Integer i = fragmentCount++;
+        name = "Script n°" + i.toString();
+        path = "script_" + i.toString() + ".sh";
     }
 
     /**
@@ -113,6 +118,8 @@ public class JobFragment extends Fragment {
         }
         return res;
     }
+
+
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

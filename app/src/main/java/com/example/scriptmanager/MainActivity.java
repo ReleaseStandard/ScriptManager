@@ -31,6 +31,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity {
@@ -157,12 +158,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if ( id == R.id.action_oneonly_edit) {
+            JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
 
             Context context = getApplicationContext();
             String pvd = context.getApplicationContext().getPackageName() + ".provider";
             Log.v("scriptmanager",pvd);
-            File f = new File(Shell.externalStorage+"/test.sh");
+            File f = new File(Shell.externalStorage+"/" + jf.path );
+            if ( ! f.exists() ) {
+                try {
+                    f.createNewFile();
+                } catch (IOException e) {
+                    // We a need a proper way to handle this
+                    return true;
+                }
+            }
             Uri uri = FileProvider.getUriForFile(context, pvd, f);
 
             Intent myIntent = new Intent(Intent.ACTION_VIEW);
