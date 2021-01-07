@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,7 +29,7 @@ public class JobFragment extends Fragment {
 
     // is this fragment selected user
     public boolean isSelected = false;
-    public String name = "";
+    public String name = "das ist ein test";
     public Date started = null;
     public Date stopped = null;
     private View view = null;
@@ -37,6 +38,7 @@ public class JobFragment extends Fragment {
     private String msname;
 
     public JobFragment() {
+
     }
 
     /**
@@ -90,6 +92,8 @@ public class JobFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.job_fragment, container, false);
+        TextView tv = v.findViewById(R.id.job_fragment_textView);
+        tv.setText(name);
 
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

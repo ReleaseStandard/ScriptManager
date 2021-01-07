@@ -199,14 +199,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = jobs_view.getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        // ex : setting remove animations
-        // not very visible lol
-        /*ft.setCustomAnimations(FragmentTransaction.TRANSIT_NONE,
-                FragmentTransaction.TRANSIT_NONE,
-                FragmentTransaction.TRANSIT_NONE,
-                FragmentTransaction.TRANSIT_NONE);
-        */
-
         JobFragment f = new JobFragment();
         ft.add(R.id.linear_layout_actions_list, f);
         ft.commit();
