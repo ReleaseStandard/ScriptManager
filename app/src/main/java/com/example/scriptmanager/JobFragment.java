@@ -289,6 +289,9 @@ public class JobFragment extends Fragment {
 
         stopped = null;
         started = new Date();
+        if( isSelected ) {
+            main.ow_menu.callbackSelectAndRunning(main);
+        }
     }
     public void stopJob() {
         setViewStopJob();
@@ -343,5 +346,6 @@ public class JobFragment extends Fragment {
         if ( v != null ) {
             this.view = v;
         }
+        main.ow_menu.callbackSelectAndRunning(main);
     }
 }

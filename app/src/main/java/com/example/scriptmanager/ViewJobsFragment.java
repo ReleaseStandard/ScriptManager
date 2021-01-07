@@ -137,6 +137,16 @@ public class ViewJobsFragment extends Fragment {
         return count;
     }
 
+    public int getNumberStartedAndSelected() {
+        int count = 0;
+        for (JobFragment jf : fragments) {
+            if ( jf.isStarted() && jf.isSelected) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+
     public int getNumberStarted() {
         int count = 0;
         for (JobFragment jf : fragments) {

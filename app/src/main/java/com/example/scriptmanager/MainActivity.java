@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 //import android.app.FragmentTransaction;
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -29,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -181,6 +184,30 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
 
             return true;
+        }
+
+        // Browse scripts
+        // Import
+        // Rename
+        if ( R.id.action_oneonly_rename == id ) {
+            jobs_view.unselectAllFragments();
+            /*
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View customLayout = getLayoutInflater().inflate(R.layout.rename_dialog, null);
+            builder.setView(customLayout);
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.setTitle("Rename");
+            alert.show();*/
         }
 
         return super.onOptionsItemSelected(item);

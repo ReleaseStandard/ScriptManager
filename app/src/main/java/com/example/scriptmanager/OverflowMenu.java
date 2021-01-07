@@ -22,7 +22,8 @@ public class OverflowMenu {
     int any_selection_buttons[] = {R.id.action_stopselected,
             R.id.action_unselectall};
 
-    int one_only_selection_buttons[] = {R.id.action_oneonly_edit};
+    int one_only_selection_buttons[] = {R.id.action_oneonly_edit,
+            R.id.action_oneonly_rename};
 
     int running_mode[] = {R.id.action_stopall};
 
@@ -108,5 +109,15 @@ public class OverflowMenu {
         }
         main.isInSelectMode = false;
         leaveOneOnlySelectMode();
+    }
+
+    public void callbackSelectAndRunning(MainActivity main) {
+        if ( main.jobs_view.getNumberStartedAndSelected() > 0) {
+            optionsMenu.findItem(R.id.action_stopselected)
+                    .setVisible(true);
+        } else {
+            optionsMenu.findItem(R.id.action_stopselected)
+                    .setVisible(false);
+        }
     }
 }
