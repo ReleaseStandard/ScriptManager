@@ -10,6 +10,7 @@
     <string name="action_oneonly_rename_ok">Ok</string>
     <string name="action_oneonly_rename_cancel">Cancel</string>
     <string name="settings_browse_scripts">Browse scripts</string>
+    <string name="settings_import_script">Import script</string>
 
 
     <!-- Strings used for fragments for navigation -->

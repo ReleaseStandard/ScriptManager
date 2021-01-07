@@ -40,8 +40,15 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Hashtable;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -137,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.fab).setVisibility(View.INVISIBLE);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.nav_host_fragment,sf);
+            ft.replace(R.id.nav_host_fragment, sf);
             ft.commit();
 
 
@@ -146,20 +153,19 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        if ( id == android.R.id.home) {
+        if (id == android.R.id.home) {
             ActionBar ab = super.getSupportActionBar();
             ab.setTitle(R.string.app_name);
             ab.setDisplayHomeAsUpEnabled(false);
             ab.setDisplayUseLogoEnabled(true);
 
-            if( isInSelectMode ) {
+            if (isInSelectMode) {
                 jobs_view.unselectAllFragments();
                 ow_menu.leaveSelectMode();
-            }
-            else {
+            } else {
                 findViewById(R.id.fab).setVisibility(View.VISIBLE);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment,jobs_view);
+                ft.replace(R.id.nav_host_fragment, jobs_view);
                 ft.commit();
 
                 ow_menu.setMenuVisibility(true);
@@ -167,15 +173,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        if ( id == R.id.action_oneonly_edit) {
+        if (id == R.id.action_oneonly_edit) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
 
             Context context = getApplicationContext();
             String pvd = context.getApplicationContext().getPackageName() + ".provider";
-            Log.v("scriptmanager",pvd);
-            File f = new File(Shell.externalStorage+"/" + jf.path );
-            if ( ! f.exists() ) {
+            Log.v("scriptmanager", pvd);
+            File f = new File(Shell.externalStorage + "/" + jf.path);
+            if (!f.exists()) {
                 try {
                     f.createNewFile();
                 } catch (IOException e) {
@@ -193,18 +199,18 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        if ( R.id.action_oneonly_rename == id ) {
+        if (R.id.action_oneonly_rename == id) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View customLayout = getLayoutInflater().inflate(R.layout.rename_dialog, null);
             builder.setView(customLayout);
             builder.setPositiveButton(R.string.action_oneonly_rename_ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            EditText et = (EditText)customLayout.findViewById(R.id.editText);
-                            jf.setName(et.getText().toString());
-                        }
-                    });
+                public void onClick(DialogInterface dialog, int id) {
+                    EditText et = (EditText) customLayout.findViewById(R.id.editText);
+                    jf.setName(et.getText().toString());
+                }
+            });
             builder.setNegativeButton(R.string.action_oneonly_rename_cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
@@ -216,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // not ready yet due to limitations to access the storage //
-        if ( R.id.action_browse_scripts == id ) {
+        if (R.id.action_browse_scripts == id) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
 
@@ -236,10 +242,57 @@ public class MainActivity extends AppCompatActivity {
  */
             return true;
         }
+        if (R.id.action_import_script == id) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("text/*");
+            startActivityForResult(intent, 1);
+        }
 
         return super.onOptionsItemSelected(item);
     }
+    /*
+     * Handle result of the import action.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        Uri uri = data.getData();
+        InputStream is = null;
+        try {
+            is = getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
+        handlerFabClick();
+        // create a new fragment
+        JobFragment jf = jobs_view.fragments.get(jobs_view.fragments.size()-1);
+        File f2 = new File(jf.getAbsolutePath());
+        if ( !f2.exists() ) {
+            try {
+                f2.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f2);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            int c;
+            while ((c = is.read()) != -1) {
+                fos.write(c);
+            }
+            is.close();
+            fos.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /*
      * get color associated with the current theme.
      */

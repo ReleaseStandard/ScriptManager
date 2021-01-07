@@ -47,17 +47,21 @@ public class Shell {
         return 0;
     }
 
+    public static String getAbsolutePath(String script) {
+        Pattern p = Pattern.compile("^/");
+        Matcher m = p.matcher(script);
+        if (!m.find()) {
+            script = externalStorage + "/" + script;
+        }
+        return script;
+    }
     /**
      * parameter could be the name of the script or an absolute path.
      * @param script
      * @return
      */
     public int execScript(String script) {
-        Pattern p = Pattern.compile("^/");
-        Matcher m = p.matcher(script);
-        if (!m.find()) {
-            script = externalStorage + "/" + script;
-        }
+        getAbsolutePath(script);
         try {
             Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". "+script});
             processes.add(pr);

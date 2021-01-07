@@ -44,7 +44,7 @@ import java.util.List;
 public class JobFragment extends Fragment {
 
     private static final String sname = "test";
-    private static Integer fragmentCount = 0;
+    public static Integer fragmentCount = 0;
 
     // is this fragment selected user
     public boolean isSelected = false;
@@ -76,6 +76,9 @@ public class JobFragment extends Fragment {
         Integer i = fragmentCount++;
         name = "Script n°" + i.toString();
         path = "script_" + i.toString() + ".sh";
+    }
+    public String getAbsolutePath() {
+        return Shell.getAbsolutePath(path);
     }
 
     /**
