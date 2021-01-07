@@ -39,4 +39,11 @@
            android:orderInCategory="100"
            android:title="@string/settings_oneonly_rename"
            app:showAsAction="never" />
+      <!-- Because of scoped storage features, android 10 and 11 become more and more complicated -->
+      <item
+          android:visible="false"
+          android:id="@+id/action_browse_scripts"
+          android:orderInCategory="100"
+          android:title="@string/settings_browse_scripts"
+          app:showAsAction="never" />
   </menu>

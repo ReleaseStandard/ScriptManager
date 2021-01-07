@@ -2,6 +2,7 @@ package com.example.scriptmanager;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -14,8 +15,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -190,8 +193,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        // Browse scripts
-        // Import
         if ( R.id.action_oneonly_rename == id ) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
@@ -214,9 +215,31 @@ public class MainActivity extends AppCompatActivity {
             alert.show();
         }
 
+        // not ready yet due to limitations to access the storage //
+        if ( R.id.action_browse_scripts == id ) {
+            JobFragment jf = jobs_view.getSelected();
+            jobs_view.unselectAllFragments();
+
+            /*Log.v("scriptmanager",Shell.externalStorage + "/");
+            Uri selectedUri = Uri.parse(Shell.externalStorage + "/");
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE); Intent.ACT
+            intent.setData(selectedUri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            //startActivity(intent);
+            startActivityForResult(intent, 1);
+*/
+/*
+            Intent intent = new Intent((Build.VERSION.SDK_INT >= 19 ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT));
+            intent.setType("text/*");
+            startActivityForResult(intent, 1);
+
+ */
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
-    
+
     /*
      * get color associated with the current theme.
      */
