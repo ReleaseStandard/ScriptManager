@@ -157,12 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == android.R.id.home) {
             if (isInSelectMode) {
-                ActionBar ab = super.getSupportActionBar();
-                ab.setTitle(R.string.app_name);
-                ab.setDisplayHomeAsUpEnabled(false);
-                ab.setDisplayUseLogoEnabled(true);
-                jobs_view.unselectAllFragments();
-                ow_menu.leaveSelectMode();
+               mainLeaveSelectMode();
             } else {
                 settings2main();
             }
@@ -334,6 +329,14 @@ public class MainActivity extends AppCompatActivity {
 
         ow_menu.setMenuVisibility(true);
     }
+    public void mainLeaveSelectMode() {
+        ActionBar ab = super.getSupportActionBar();
+        ab.setTitle(R.string.app_name);
+        ab.setDisplayHomeAsUpEnabled(false);
+        ab.setDisplayUseLogoEnabled(true);
+        jobs_view.unselectAllFragments();
+        ow_menu.leaveSelectMode();
+    }
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
@@ -343,17 +346,22 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_back_title)
-                .setMessage(R.string.dialog_back_content)
+        if ( isInSelectMode ) {
+            mainLeaveSelectMode();
+        }
+        else {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_back_title)
+                    .setMessage(R.string.dialog_back_content)
 
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 }
