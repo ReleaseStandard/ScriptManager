@@ -61,7 +61,7 @@ public class Shell {
      * @return
      */
     public int execScript(String script) {
-        getAbsolutePath(script);
+        script = getAbsolutePath(script);
         try {
             Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". "+script});
             processes.add(pr);

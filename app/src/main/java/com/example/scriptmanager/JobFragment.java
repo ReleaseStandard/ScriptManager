@@ -2,6 +2,7 @@ package com.example.scriptmanager;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
@@ -98,14 +99,16 @@ public class JobFragment extends Fragment {
     public static int[] str2sched(String s) {
         int sched[] = {EACH_TIME,EACH_TIME,EACH_TIME,EACH_TIME,EACH_TIME};
         int i = 0;
-        for(String ss : s.split(" ")) {
-            if ( ! ss.equals(new String("*"))) {
-                sched[i] = EACH_TIME;
+        String [] parts = s.split(" ");
+        if ( parts.length == sched.length ) {
+            for (String ss : parts) {
+                if (ss.equals(new String("*"))) {
+                    sched[i] = EACH_TIME;
+                } else {
+                    sched[i] = (int) Integer.parseInt(ss);
+                }
+                i = i + 1;
             }
-            else {
-                sched[i]=(int)Integer.parseInt(ss);
-            }
-            i = i + 1;
         }
         return sched;
     }
@@ -303,6 +306,8 @@ public class JobFragment extends Fragment {
         // HERE we need to specify at which time we want to execute the script and also start a service at a specified time //
         if ( isDateSet() ) {
             setViewWaitStartJob();
+            //PendingIntent pi = ShellReceiver.scheduleShell(getContext(), getAbsolutePath());
+            // Start the job here
         }
         else {
             setViewStartJob();
