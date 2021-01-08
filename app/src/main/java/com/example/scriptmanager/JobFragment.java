@@ -59,6 +59,7 @@ public class JobFragment extends Fragment {
                     EACH_TIME,        // day of month
                     EACH_TIME,        // month
                     EACH_TIME };      // year
+    // données du modèle
 
     private View view = null;
     Shell shell = new Shell();
