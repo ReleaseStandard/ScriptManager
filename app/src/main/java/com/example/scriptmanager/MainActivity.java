@@ -156,21 +156,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == android.R.id.home) {
-            ActionBar ab = super.getSupportActionBar();
-            ab.setTitle(R.string.app_name);
-            ab.setDisplayHomeAsUpEnabled(false);
-            ab.setDisplayUseLogoEnabled(true);
-
             if (isInSelectMode) {
+                ActionBar ab = super.getSupportActionBar();
+                ab.setTitle(R.string.app_name);
+                ab.setDisplayHomeAsUpEnabled(false);
+                ab.setDisplayUseLogoEnabled(true);
                 jobs_view.unselectAllFragments();
                 ow_menu.leaveSelectMode();
             } else {
-                findViewById(R.id.fab).setVisibility(View.VISIBLE);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, jobs_view);
-                ft.commit();
-
-                ow_menu.setMenuVisibility(true);
+                settings2main();
             }
             return true;
         }
@@ -257,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
             return true;
         }
-        // delete function
         // back button
         // Start jobs with a Service
         // exit codes
@@ -326,5 +319,41 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
         jobs_view.fragments.add(f);
+    }
+
+    public void settings2main() {
+        ActionBar ab = super.getSupportActionBar();
+        ab.setTitle(R.string.app_name);
+        ab.setDisplayHomeAsUpEnabled(false);
+        ab.setDisplayUseLogoEnabled(true);
+
+        findViewById(R.id.fab).setVisibility(View.VISIBLE);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.nav_host_fragment, jobs_view);
+        ft.commit();
+
+        ow_menu.setMenuVisibility(true);
+    }
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        for ( Fragment f : fm.getFragments()) {
+            if ( f == sf) {
+                settings2main();
+                return;
+            }
+        }
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_back_title)
+                .setMessage(R.string.dialog_back_content)
+
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

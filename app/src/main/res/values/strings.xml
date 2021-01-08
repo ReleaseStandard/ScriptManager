@@ -14,6 +14,10 @@
     <string name="settings_anyselection_delete">Delete</string>
 
 
+    <string name="dialog_back_title">Leave</string>
+    <string name="dialog_back_content">Really leave the application ?</string>
+
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
