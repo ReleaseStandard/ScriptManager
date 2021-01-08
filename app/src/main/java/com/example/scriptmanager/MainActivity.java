@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar = null;
 
+    private static int ACTIVITY_REQUEST_CODE_IMPORT = 1;
     public boolean isInSelectMode = false;
 
      // Objects that encapsulate the data //
@@ -199,6 +201,22 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if ( R.id.action_anyselection_delete == id ) {
+            for( JobFragment jf : jobs_view.getSelecteds() ) {
+                FragmentTransaction ft = jobs_view.getChildFragmentManager().beginTransaction();
+                ft.remove(jf);
+                ft.commit();
+                jobs_view.fragments.remove(jf);
+                // also remove the file ?
+                File f = new File(jf.path);
+                if (f.exists()) {
+                    f.delete();
+                }
+            }
+            jobs_view.unselectAllFragments();
+            return true;
+        }
+
         if (R.id.action_oneonly_rename == id) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
@@ -225,29 +243,24 @@ public class MainActivity extends AppCompatActivity {
         if (R.id.action_browse_scripts == id) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
+            Uri selectedUri = Uri.parse(Shell.externalStorage );
 
-            /*Log.v("scriptmanager",Shell.externalStorage + "/");
-            Uri selectedUri = Uri.parse(Shell.externalStorage + "/");
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE); Intent.ACT
-            intent.setData(selectedUri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            //startActivity(intent);
-            startActivityForResult(intent, 1);
-*/
-/*
-            Intent intent = new Intent((Build.VERSION.SDK_INT >= 19 ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT));
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("text/*");
-            startActivityForResult(intent, 1);
-
- */
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, selectedUri);
             return true;
         }
         if (R.id.action_import_script == id) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("text/*");
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
+            return true;
         }
-
+        // delete function
+        // back button
+        // Start jobs with a Service
+        // exit codes
         return super.onOptionsItemSelected(item);
     }
     /*
@@ -256,41 +269,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        Uri uri = data.getData();
-        InputStream is = null;
-        try {
-            is = getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        handlerFabClick();
-        // create a new fragment
-        JobFragment jf = jobs_view.fragments.get(jobs_view.fragments.size()-1);
-        File f2 = new File(jf.getAbsolutePath());
-        if ( !f2.exists() ) {
+        if ( requestCode == ACTIVITY_REQUEST_CODE_IMPORT) {
+            Uri uri = data.getData();
+            InputStream is = null;
             try {
-                f2.createNewFile();
+                is = getContentResolver().openInputStream(uri);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            handlerFabClick();
+            // create a new fragment
+            JobFragment jf = jobs_view.fragments.get(jobs_view.fragments.size() - 1);
+            File f2 = new File(jf.getAbsolutePath());
+            if (!f2.exists()) {
+                try {
+                    f2.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(f2);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                int c;
+                while ((c = is.read()) != -1) {
+                    fos.write(c);
+                }
+                is.close();
+                fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(f2);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            int c;
-            while ((c = is.read()) != -1) {
-                fos.write(c);
-            }
-            is.close();
-            fos.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
         }
     }
     /*

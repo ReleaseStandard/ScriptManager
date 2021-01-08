@@ -20,7 +20,7 @@ public class OverflowMenu {
 
     // Collection off ids for the menu
     int any_selection_buttons[] = {R.id.action_stopselected,
-            R.id.action_unselectall};
+            R.id.action_unselectall,R.id.action_anyselection_delete};
 
     int one_only_selection_buttons[] = {R.id.action_oneonly_edit,
             R.id.action_oneonly_rename};

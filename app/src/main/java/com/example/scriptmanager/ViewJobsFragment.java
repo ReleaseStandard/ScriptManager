@@ -45,6 +45,15 @@ public class ViewJobsFragment extends Fragment {
         }
         super.onCreate(savedInstanceState);
     }
+    public ArrayList<JobFragment>getSelecteds() {
+        ArrayList<JobFragment> list = new ArrayList<>();
+        for(JobFragment js : fragments) {
+            if  (js.isSelected) {
+                list.add(js);
+            }
+        }
+        return list;
+    }
     public JobFragment getSelected() {
         for(JobFragment js : fragments) {
             if(js.isSelected) {
@@ -124,6 +133,10 @@ public class ViewJobsFragment extends Fragment {
     public void unselectAllFragments() {
         for (JobFragment jf : fragments) {
             jf.unselectView();
+        }
+        if ( getNumberSelected() == 0) {
+            MainActivity main = (MainActivity) getActivity();
+            main.ow_menu.leaveSelectMode();
         }
     }
 
