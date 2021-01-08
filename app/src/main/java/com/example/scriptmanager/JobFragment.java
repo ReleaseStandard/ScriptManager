@@ -165,6 +165,14 @@ public class JobFragment extends Fragment {
         timePickerDialog.show();
     }
 
+    /*
+     * Check if the guy has modified the time when to launch the script.
+     */
+    public boolean isDateSet() {
+        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
+        String s = et.getText().toString();
+        return ! s.equals(new String("")) ;
+    }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -271,7 +279,12 @@ public class JobFragment extends Fragment {
                 getResources().getDrawable(android.R.drawable.ic_media_pause)
         );
     }
-
+    public void setViewWaitStartJob() {
+        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+        fab.setImageDrawable(
+                getResources().getDrawable(android.R.drawable.ic_menu_recent_history)
+        );
+    }
     public void setViewStopJob() {
         FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
         fab.setImageDrawable(
@@ -285,10 +298,15 @@ public class JobFragment extends Fragment {
         if ( i == 0) {
             main.ow_menu.enterRunningMode();
         }
-        setViewStartJob();
 
         // HERE we need to specify at which time we want to execute the script and also start a service at a specified time //
-        shell.execScript(path);
+        if ( isDateSet() ) {
+            setViewWaitStartJob();
+        }
+        else {
+            setViewStartJob();
+            shell.execScript(path);
+        }
 
         stopped = null;
         started = new Date();

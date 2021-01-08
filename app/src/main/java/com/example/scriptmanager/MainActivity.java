@@ -251,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
             return true;
         }
-        // back button
         // Start jobs with a Service
+        // Start service at boot
         // exit codes
         return super.onOptionsItemSelected(item);
     }
