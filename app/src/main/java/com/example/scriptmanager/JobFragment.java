@@ -35,6 +35,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -74,6 +75,8 @@ public class JobFragment extends Fragment {
         sched[2] = rn.get(Calendar.DAY_OF_MONTH);
         sched[3] = rn.get(Calendar.MONTH);
         sched[4] = rn.get(Calendar.YEAR);
+        rn.set(Calendar.SECOND,0);
+        rn.set(Calendar.MILLISECOND,0);
 
         Integer i = fragmentCount++;
         name = "Script n°" + i.toString();
@@ -126,6 +129,42 @@ public class JobFragment extends Fragment {
         return res;
     }
 
+    public static boolean isRepeated(int [] sched) {
+        for ( int i = 0 ; i < 5 ; i = i +1 ) {
+            if ( sched[i] == EACH_TIME ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static Calendar nextSched(int [] sched) {
+        Calendar c = new GregorianCalendar();
+        int parts[]={ Calendar.MINUTE,Calendar.HOUR,
+                Calendar.DAY_OF_MONTH,Calendar.MONTH,
+                Calendar.YEAR};
+        c.set(Calendar.MILLISECOND,0);
+        c.set(Calendar.SECOND,0);
+
+        // if we count in
+        boolean areWeInEachThing = false;
+        for ( int i = 0; i < 5 ; i = i + 1 ) {
+            if ( sched[i] == EACH_TIME ) {
+                // we need to apply this only on the first each
+                if ( areWeInEachThing == false ) {
+                    c.set(parts[i], c.get(parts[i]) + 1);
+                    areWeInEachThing = true;
+                }
+                else {
+                    c.set(parts[i], c.get(parts[i]));
+                }
+            }
+            else {
+                c.set(parts[i], sched[i]);
+            }
+        }
+        return c;
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -176,6 +215,10 @@ public class JobFragment extends Fragment {
         EditText et = getView().findViewById(R.id.editTextTextPersonName2);
         String s = et.getText().toString();
         return ! s.equals(new String("")) ;
+    }
+    public int[] getDate() {
+        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
+        return str2sched(et.getText().toString());
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -239,8 +282,7 @@ public class JobFragment extends Fragment {
             @Override
             public void onClick(View view)  {
                 EditText et = v.findViewById(R.id.editTextTextPersonName2);
-                String s = et.getText().toString();
-                sched = str2sched(s);
+                sched = getDate();
                 // update image
                 if ( started == null || (started != null && stopped != null)  ) {
                     startJob();
@@ -309,11 +351,9 @@ public class JobFragment extends Fragment {
             main.ow_menu.enterRunningMode();
         }
 
-        // HERE we need to specify at which time we want to execute the script and also start a service at a specified time //
         if ( isDateSet() ) {
             setViewWaitStartJob();
-            //PendingIntent pi = ShellReceiver.scheduleShell(getContext(), getAbsolutePath());
-            // Start the job here
+            shell.scheduleJob(main,path,getDate());
         }
         else {
             setViewStartJob();

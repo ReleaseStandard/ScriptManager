@@ -239,8 +239,8 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("text/*");
-            startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, selectedUri);
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
             return true;
         }
         if (R.id.action_import_script == id) {

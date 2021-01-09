@@ -4,7 +4,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Environment;
+import android.os.PowerManager;
+import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +26,7 @@ public class Shell {
     static public String externalStorage = null;
     static public String internalStorage = null;
     private List<Process> processes = new ArrayList<Process>();
+    private List<PendingIntent> intents = new ArrayList<PendingIntent>();
 
     /**
      *  Constructor will build the storage required to store scripts.
@@ -77,20 +81,39 @@ public class Shell {
         return 0;
     }
 
-    public void scheduleJob(Context context) {
-        Calendar next = new GregorianCalendar();
+    public void scheduleJob(Context context, String script, int sched[]) {
+
+        // need to get the time here
+        Calendar next = JobFragment.nextSched(sched);
+
+        Log.v("scriptmanager","Job " + script + " scheduled for " + next.getTime().toString());
+        long t = next.getTimeInMillis();
+
         Intent intent = new Intent(context, AlarmReceiver.class);
-        /*intent.putExtra(INTENT_EXTRA_LINE_NAME, line);
-        intent.putExtra(INTENT_EXTRA_LINE_NO_NAME, lineNo);*/
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 12345, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("script",script);
+        intent.putExtra("sched",sched);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, AlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, next.getTimeInMillis() + 1000, alarmIntent);
+        if (Build.VERSION.SDK_INT < 23) {
+            if (Build.VERSION.SDK_INT >= 19) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, t, alarmIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, t, alarmIntent);
+            }
+        } else {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, t, alarmIntent);
+            }
+        intents.add(alarmIntent);
     }
 
     public void terminateAll() {
         for(Process p : processes) {
             p.destroy();
         }
-        processes = new ArrayList<Process>();
+        processes.clear();
+        for(PendingIntent p : intents) {
+            p.cancel();
+        }
+        intents.clear();
     }
 }
