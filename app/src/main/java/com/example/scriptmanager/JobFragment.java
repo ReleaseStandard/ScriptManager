@@ -271,7 +271,13 @@ public class JobFragment extends Fragment {
 
     public void restoreView() {
         if( isStarted() ) {
-            setViewStartJob();
+            // custom date?
+            if ( isDateSet() ) {
+                setViewWaitStartJob();
+            }
+            else {
+                setViewStartJob();
+            }
         }
         else {
             setViewStopJob();
