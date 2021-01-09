@@ -18,9 +18,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Scriptapp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Scriptapp.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight.ActionBar" />
 
-    <style name="Theme.Scriptapp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"></style>
+    <style name="Theme.Scriptapp.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight"></style>
 
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">?colorPrimaryVariant</item>
