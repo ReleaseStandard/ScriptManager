@@ -1,3 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Scriptapp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">#FF000000</item>
+        <item name="android:colorLongPressedHighlight">#333333</item>
+        <item name="android:colorForeground">#FFBABABA</item>
+        <item name="colorPrimary">#FF000000</item>
+        <item name="colorPrimaryVariant">#FF000000</item>
+        <item name="android:textColorHint">#FFBABABA</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+    <style name="Theme.Scriptapp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
+    <style name="Theme.Scriptapp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Scriptapp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"></style>
+
+    <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">?colorPrimaryVariant</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
