@@ -45,6 +45,12 @@
           android:orderInCategory="100"
           android:title="@string/settings_oneonly_show_log"
           app:showAsAction="never" />
+    <item
+        android:visible="false"
+        android:id="@+id/action_oneonly_clear_log"
+        android:orderInCategory="100"
+        android:title="@string/settings_oneonly_clear_log"
+        app:showAsAction="never" />
        <item
            android:visible="false"
            android:id="@+id/action_oneonly_rename"

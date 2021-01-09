@@ -208,7 +208,15 @@ public class MainActivity extends AppCompatActivity {
             jobs_view.unselectAllFragments();
             return true;
         }
-
+        if (R.id.action_oneonly_clear_log == id) {
+            JobFragment jf = jobs_view.getSelected();
+            jobs_view.unselectAllFragments();
+            try {
+                jf.shell.clearLog(jf.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if ( R.id.action_oneonly_show_log == id) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();

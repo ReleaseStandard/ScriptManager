@@ -87,6 +87,10 @@ public class Shell {
         return 0;
     }
 
+    public void clearLog(String script) throws IOException {
+        Runtime.getRuntime().exec(new String[]{"sh","-c","> "+getLogPath(script)});
+    }
+
     public void scheduleJob(Context context, String script, int sched[])  {
         // need to get the time here
         Calendar next = JobFragment.nextSched(sched);
