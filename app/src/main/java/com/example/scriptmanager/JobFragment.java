@@ -1,42 +1,29 @@
 package com.example.scriptmanager;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,71 +90,6 @@ public class JobFragment extends Fragment {
         args.putString(JobFragment.sname, sname);
         return fragment;
     }
-    public static int[] str2sched(String s) {
-        int sched[] = {EACH_TIME,EACH_TIME,EACH_TIME,EACH_TIME,EACH_TIME};
-        int i = 0;
-        String [] parts = s.split(" ");
-        if ( parts.length == sched.length ) {
-            for (String ss : parts) {
-                if (ss.equals(new String("*"))) {
-                    sched[i] = EACH_TIME;
-                } else {
-                    sched[i] = (int) Integer.parseInt(ss);
-                }
-                i = i + 1;
-            }
-        }
-        return sched;
-    }
-    public static String sched2str(int [] s) {
-        String res = "";
-        for (int i : s) {
-            if ( i < 0 ) {
-                res += "* ";
-            }
-            else {
-                Integer ii = new Integer(i);
-                res += ii + " ";
-            }
-        }
-        return res;
-    }
-
-    public static boolean isRepeated(int [] sched) {
-        for ( int i = 0 ; i < 5 ; i = i +1 ) {
-            if ( sched[i] == EACH_TIME ) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public static Calendar nextSched(int [] sched) {
-        Calendar c = new GregorianCalendar();
-        int parts[]={ Calendar.MINUTE,Calendar.HOUR,
-                Calendar.DAY_OF_MONTH,Calendar.MONTH,
-                Calendar.YEAR};
-        c.set(Calendar.MILLISECOND,0);
-        c.set(Calendar.SECOND,0);
-
-        // if we count in
-        boolean areWeInEachThing = false;
-        for ( int i = 0; i < 5 ; i = i + 1 ) {
-            if ( sched[i] == EACH_TIME ) {
-                // we need to apply this only on the first each
-                if ( areWeInEachThing == false ) {
-                    c.set(parts[i], c.get(parts[i]) + 1);
-                    areWeInEachThing = true;
-                }
-                else {
-                    c.set(parts[i], c.get(parts[i]));
-                }
-            }
-            else {
-                c.set(parts[i], sched[i]);
-            }
-        }
-        return c;
-    }
 
 
     @Override
@@ -175,55 +97,7 @@ public class JobFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.v("scriptmanager","JogFragment:onViewCreated");
     }
-    public void showScheduleJob(View v) {
 
-        int minute = sched[0];
-        int hour = sched[1];
-        int day = sched[2];
-        int month = sched[3];
-        int year = sched[4];
-
-
-        ViewGroup vpg = (ViewGroup)v.getParent();
-        TextView tv = vpg.findViewById(R.id.editTextTextPersonName2);
-
-        // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),R.style.TimePickerTheme,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay,
-                                          int minute) {
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),R.style.TimePickerTheme,
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year,
-                                                          int monthOfYear, int dayOfMonth) {
-                                        sched[0] = minute;
-                                        sched[1] = hourOfDay;
-                                        sched[2] = dayOfMonth;
-                                        sched[3] = monthOfYear;
-                                        sched[4] = year;
-                                        tv.setText(sched2str(sched));
-                                    }
-                                }, year, month, day);
-                        datePickerDialog.show();
-                    }
-                }, hour, minute, false);
-        timePickerDialog.show();
-    }
-
-    /*
-     * Check if the guy has modified the time when to launch the script.
-     */
-    public boolean isDateSet() {
-        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
-        String s = et.getText().toString();
-        return ! s.equals(new String("")) ;
-    }
-    public int[] getDate() {
-        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
-        return str2sched(et.getText().toString());
-    }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -247,10 +121,6 @@ public class JobFragment extends Fragment {
         Log.v("scriptmanager","JogFragment:onCreate");
     }
 
-    public void callUnselectAll() {
-        MainActivity main = (MainActivity) getActivity();
-        main.jobs_view.unselectAllFragments();
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -311,43 +181,51 @@ public class JobFragment extends Fragment {
         return v;
     }
 
+
+    // Model //
     public boolean isStarted() {
         return (started != null && stopped == null);
     }
+    //    //
 
-    public void restoreView() {
-        if( isStarted() ) {
-            // custom date?
-            if ( isDateSet() ) {
-                setViewWaitStartJob();
-            }
-            else {
-                setViewStartJob();
-            }
-        }
-        else {
-            setViewStopJob();
-        }
-    }
-    public void setViewStartJob() {
-        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
-        fab.setImageDrawable(
-                getResources().getDrawable(android.R.drawable.ic_media_pause)
-        );
-    }
-    public void setViewWaitStartJob() {
-        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
-        fab.setImageDrawable(
-                getResources().getDrawable(android.R.drawable.ic_menu_recent_history)
-        );
-    }
-    public void setViewStopJob() {
-        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
-        fab.setImageDrawable(
-                getResources().getDrawable(android.R.drawable.ic_media_play)
-        );
-    }
+    // Controller //
+    /*
+     * Check if the guy has modified the time when to launch the script.
+     */
+    public void showScheduleJob(View v) {
 
+        TimeManager tm = new TimeManager(){
+            @Override
+            public void onPicked(int minute,int hourOfDay,int dayOfMonth,int monthOfYear,int year) {
+                sched[0] = minute;
+                sched[1] = hourOfDay;
+                sched[2] = dayOfMonth;
+                sched[3] = monthOfYear;
+                sched[4] = year;
+            }
+        };
+        tm.show(v,sched);
+    }
+    public boolean isDateSet() {
+        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
+        String s = et.getText().toString();
+        return ! s.equals(new String("")) ;
+    }
+    public void setName(String name) {
+        this.name = name;
+        TextView tv = getView().findViewById(R.id.job_fragment_textView);
+        tv.setText(name);
+    }
+    public void stopJob() {
+        setViewStopJob();
+        shell.terminateAll();
+        stopped = new Date();
+        MainActivity main = (MainActivity)getActivity();
+        int i = main.jobs_view.getNumberStarted();
+        if ( i == 0 ) {
+            main.ow_menu.leaveRunningMode();
+        }
+    }
     public void startJob() {
         MainActivity main = (MainActivity)getActivity();
         int i = main.jobs_view.getNumberStarted();
@@ -370,20 +248,30 @@ public class JobFragment extends Fragment {
             main.ow_menu.callbackSelectAndRunning(main);
         }
     }
-    public void setName(String name) {
-        this.name = name;
-        TextView tv = getView().findViewById(R.id.job_fragment_textView);
-        tv.setText(name);
+    public int[] getDate() {
+        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
+        return TimeManager.str2sched(et.getText().toString());
     }
-    public void stopJob() {
-        setViewStopJob();
-        shell.terminateAll();
-        stopped = new Date();
-        MainActivity main = (MainActivity)getActivity();
-        int i = main.jobs_view.getNumberStarted();
-        if ( i == 0 ) {
-            main.ow_menu.leaveRunningMode();
-        }
+    // //
+
+    // View //
+    public void setViewStartJob() {
+        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+        fab.setImageDrawable(
+                getResources().getDrawable(android.R.drawable.ic_media_pause)
+        );
+    }
+    public void setViewWaitStartJob() {
+        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+        fab.setImageDrawable(
+                getResources().getDrawable(android.R.drawable.ic_menu_recent_history)
+        );
+    }
+    public void setViewStopJob() {
+        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+        fab.setImageDrawable(
+                getResources().getDrawable(android.R.drawable.ic_media_play)
+        );
     }
     public void unselectView() {
         this.isSelected = false;
@@ -430,4 +318,19 @@ public class JobFragment extends Fragment {
         }
         main.ow_menu.callbackSelectAndRunning(main);
     }
+    public void restoreView() {
+        if( isStarted() ) {
+            // custom date?
+            if ( isDateSet() ) {
+                setViewWaitStartJob();
+            }
+            else {
+                setViewStartJob();
+            }
+        }
+        else {
+            setViewStopJob();
+        }
+    }
+    //    //
 }

@@ -30,11 +30,13 @@ public class ViewJobsFragment extends Fragment {
     public ViewJobsFragment() {
         // Required empty public constructor
     }
+
     public static SettingsFragment newInstance(String param1, String param2) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if ( savedInstanceState == null ) {
@@ -129,7 +131,17 @@ public class ViewJobsFragment extends Fragment {
             }
         }
     }
+/*
+    public void backup() {
+        for ( JobFragment jf : fragments) {
+            jf.backup();
+        }
+    }
 
+    public void restore() {
+        // jf.restore();
+    }
+*/
     public void unselectAllFragments() {
         for (JobFragment jf : fragments) {
             jf.unselectView();

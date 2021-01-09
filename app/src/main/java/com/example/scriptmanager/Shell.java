@@ -5,15 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Environment;
-import android.os.PowerManager;
 import android.util.Log;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -93,7 +89,7 @@ public class Shell {
 
     public void scheduleJob(Context context, String script, int sched[])  {
         // need to get the time here
-        Calendar next = JobFragment.nextSched(sched);
+        Calendar next = TimeManager.nextSched(sched);
 
         Log.v("scriptmanager","[" + (new Integer(AlarmReceiver.REQUEST_CODE + 1)) + "] Job " + script + " scheduled for " + next.getTime().toString());
         long t = next.getTimeInMillis();
