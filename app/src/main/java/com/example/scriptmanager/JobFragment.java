@@ -52,6 +52,7 @@ public class JobFragment extends Fragment {
     public boolean isSelected = false;
     public String name;
     public String path;
+    public String log_path;
     public Date started = null;
     public Date stopped = null;
     public final static Integer EACH_TIME = -1;
@@ -81,6 +82,9 @@ public class JobFragment extends Fragment {
         Integer i = fragmentCount++;
         name = "Script n°" + i.toString();
         path = "script_" + i.toString() + ".sh";
+        log_path = shell.getLogPath(path);
+
+        shell.execCmd("> " + log_path);
     }
     public String getAbsolutePath() {
         return Shell.getAbsolutePath(path);

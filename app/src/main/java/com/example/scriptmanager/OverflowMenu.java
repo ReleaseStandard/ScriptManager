@@ -23,7 +23,7 @@ public class OverflowMenu {
             R.id.action_unselectall,R.id.action_anyselection_delete};
 
     int one_only_selection_buttons[] = {R.id.action_oneonly_edit,
-            R.id.action_oneonly_rename};
+            R.id.action_oneonly_rename, R.id.action_oneonly_show_log };
 
     int running_mode[] = {R.id.action_stopall};
 

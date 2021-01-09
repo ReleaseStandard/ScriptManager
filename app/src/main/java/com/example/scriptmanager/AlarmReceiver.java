@@ -19,13 +19,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         String script = intent.getStringExtra("script");
         int [] sched = intent.getIntArrayExtra("sched");
 
-        Log.v("scriptmanager","Job execution : " + script);
-
         shell.execScript(script);
 
-        Log.v("scriptmanager","> " + script + " A");
         if ( JobFragment.isRepeated(sched)) {
-            Log.v("scriptmanager","> " + script + " B");
             shell.scheduleJob(context,script,sched);
         }
     }

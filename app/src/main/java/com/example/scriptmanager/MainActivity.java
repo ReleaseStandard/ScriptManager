@@ -119,6 +119,25 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void showFileWithEditor(String path) {
+        Context context = getApplicationContext();
+        String pvd = context.getApplicationContext().getPackageName() + ".provider";
+        Log.v("scriptmanager", pvd);
+        File f = new File(path);
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                return;
+            }
+        }
+        Uri uri = FileProvider.getUriForFile(context, pvd, f);
+
+        Intent myIntent = new Intent(Intent.ACTION_VIEW);
+        myIntent.setData(uri);
+        myIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(myIntent);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -170,26 +189,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_oneonly_edit) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
-
-            Context context = getApplicationContext();
-            String pvd = context.getApplicationContext().getPackageName() + ".provider";
-            Log.v("scriptmanager", pvd);
-            File f = new File(Shell.externalStorage + "/" + jf.path);
-            if (!f.exists()) {
-                try {
-                    f.createNewFile();
-                } catch (IOException e) {
-                    // We a need a proper way to handle this
-                    return true;
-                }
-            }
-            Uri uri = FileProvider.getUriForFile(context, pvd, f);
-
-            Intent myIntent = new Intent(Intent.ACTION_VIEW);
-            myIntent.setData(uri);
-            myIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(myIntent);
-
+            showFileWithEditor(jf.getAbsolutePath());
             return true;
         }
 
@@ -209,6 +209,12 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if ( R.id.action_oneonly_show_log == id) {
+            JobFragment jf = jobs_view.getSelected();
+            jobs_view.unselectAllFragments();
+            showFileWithEditor(jf.shell.getLogPath(jf.getAbsolutePath()));
+            return true;
+        }
         if (R.id.action_oneonly_rename == id) {
             JobFragment jf = jobs_view.getSelected();
             jobs_view.unselectAllFragments();
@@ -249,9 +255,8 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
             return true;
         }
-        // Start jobs with a Service
-        // Start service at boot
         // exit codes
+        // Start service at boot
         return super.onOptionsItemSelected(item);
     }
     /*

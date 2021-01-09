@@ -57,6 +57,11 @@ public class Shell {
         return 0;
     }
 
+    public static String getLogPath(String script) {
+        script = getAbsolutePath(script);
+        return script + ".log.txt";
+    }
+
     public static String getAbsolutePath(String script) {
         Pattern p = Pattern.compile("^/");
         Matcher m = p.matcher(script);
@@ -72,8 +77,9 @@ public class Shell {
      */
     public int execScript(String script) {
         script = getAbsolutePath(script);
+        Log.v("scriptmanager","Job execution : " + script + "\n   log=" + getLogPath(script));
         try {
-            Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". "+script});
+            Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". " + script + " >> " + getLogPath(script)});
             processes.add(pr);
         } catch (IOException e) {
             return 1;
