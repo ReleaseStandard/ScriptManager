@@ -200,9 +200,14 @@ public class MainActivity extends AppCompatActivity {
                 ft.commit();
                 jobs_view.fragments.remove(jf);
                 // also remove the file ?
-                File f = new File(jf.path);
+                File f = new File(jf.getAbsolutePath());
                 if (f.exists()) {
                     f.delete();
+                    try {
+                        jf.shell.clearLog(jf.getAbsolutePath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             jobs_view.unselectAllFragments();
@@ -263,8 +268,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
             return true;
         }
-        // exit codes
-        // Start service at boot
+        // Start service at boot / enregistrement sur disk
         return super.onOptionsItemSelected(item);
     }
     /*

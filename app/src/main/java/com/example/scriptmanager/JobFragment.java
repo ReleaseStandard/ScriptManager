@@ -81,7 +81,7 @@ public class JobFragment extends Fragment {
 
         Integer i = fragmentCount++;
         name = "Script n°" + i.toString();
-        path = "script_" + i.toString() + ".sh";
+        path = "script_" + i.toString() + ".txt";
         log_path = shell.getLogPath(path);
 
         shell.execCmd("> " + log_path);
