@@ -10,29 +10,29 @@
     android:padding="10dp"
     tools:context="com.example.scriptmanager.JobFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="336dp"
-        android:layout_marginRight="336dp"
-        android:clickable="true"
-        android:src="@android:drawable/ic_media_play"
-        android:tint="?colorSecondary"
-        app:backgroundTint="?colorSecondary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498" />
 
     <LinearLayout
-        android:layout_width="309dp"
-        android:layout_height="49dp"
+        android:layout_width="331dp"
+        android:layout_height="54dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_media_play"
+            android:tint="?colorSecondary"
+            app:backgroundTint="?colorSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.498" />
 
         <LinearLayout
             android:layout_width="131dp"
@@ -42,6 +42,7 @@
             <TextView
                 android:id="@+id/job_fragment_textView"
                 android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="?colorSecondary" />
@@ -55,14 +56,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="157dp"
             android:layout_height="match_parent"
-            tools:context="com.example.scriptmanager.JobFragment"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:context="com.example.scriptmanager.JobFragment">
 
             <EditText
                 android:id="@+id/editTextTextPersonName2"
-                android:layout_width="81dp"
+                android:layout_width="31dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"

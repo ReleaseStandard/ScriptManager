@@ -1,10 +1,16 @@
 package com.example.scriptmanager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,6 +75,16 @@ public class Shell {
             return 1;
         }
         return 0;
+    }
+
+    public void scheduleJob(Context context) {
+        Calendar next = new GregorianCalendar();
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        /*intent.putExtra(INTENT_EXTRA_LINE_NAME, line);
+        intent.putExtra(INTENT_EXTRA_LINE_NO_NAME, lineNo);*/
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 12345, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, next.getTimeInMillis() + 1000, alarmIntent);
     }
 
     public void terminateAll() {
