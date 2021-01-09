@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class AlarmReceiver extends BroadcastReceiver {
-    public static int REQUEST_CODE = 12345;
+    public static int REQUEST_CODE = 0; // 2^32 Alarms avant d'avoir des problemes (ex: besoin de redémarrer l'application)
     @Override
     public void onReceive(Context context, Intent intent) {
         Calendar next = new GregorianCalendar();
@@ -23,7 +23,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         shell.execScript(script);
 
+        Log.v("scriptmanager","> " + script + " A");
         if ( JobFragment.isRepeated(sched)) {
+            Log.v("scriptmanager","> " + script + " B");
             shell.scheduleJob(context,script,sched);
         }
     }

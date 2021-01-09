@@ -81,18 +81,17 @@ public class Shell {
         return 0;
     }
 
-    public void scheduleJob(Context context, String script, int sched[]) {
-
+    public void scheduleJob(Context context, String script, int sched[])  {
         // need to get the time here
         Calendar next = JobFragment.nextSched(sched);
 
-        Log.v("scriptmanager","Job " + script + " scheduled for " + next.getTime().toString());
+        Log.v("scriptmanager","[" + (new Integer(AlarmReceiver.REQUEST_CODE + 1)) + "] Job " + script + " scheduled for " + next.getTime().toString());
         long t = next.getTimeInMillis();
 
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("script",script);
         intent.putExtra("sched",sched);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, AlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, AlarmReceiver.REQUEST_CODE++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (Build.VERSION.SDK_INT < 23) {
             if (Build.VERSION.SDK_INT >= 19) {
