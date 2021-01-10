@@ -1,6 +1,7 @@
 package com.example.scriptmanager;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -208,8 +210,10 @@ public class ViewJobsFragment extends Fragment {
     public void readState() {
         File directory = new File(Shell.internalStorage);
         File[] files = directory.listFiles();
+        Arrays.sort(files);
         for (int i = 0; i < files.length; i++) {
             File file = files[i];
+            Logger.debug(file.getAbsolutePath());
             String n = file.getName();
             Pattern p = Pattern.compile("([^/]+)"+Shell.SUFFIX_STATE+"$");
             Matcher m = p.matcher(n);
@@ -219,10 +223,9 @@ public class ViewJobsFragment extends Fragment {
                 JobFragment jf = addNewJob(statefile);
                 jf.readState(getContext(),path_name);
                 if ( Logger.DEBUG ) { jf.dump(); }
-                break;
             }
         }
-        if ( fragments.size() == 0) {
+        if ( fragments.size() > 0) {
             JobFragment.fragmentCount = fragments.get(fragments.size() - 1).id + 1;
         }
     }

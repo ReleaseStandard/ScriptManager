@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar = null;
 
+    private static boolean FIRST_CREATION = true;
     private static int ACTIVITY_REQUEST_CODE_IMPORT = 1;
     public boolean isInSelectMode = false;
 
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.views = new Hashtable<>();
         jobs_view = new ViewJobsFragment();
+
         sf = new SettingsFragment();
         views.put(R.id.nav_host_fragment, jobs_view);
         views.put(R.id.action_settings, sf);
@@ -89,11 +91,16 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.nav_host_fragment, jobs_view);
         ft.commit();
+
         Logger.debug("MainActivity:onCreate");
     }
     @Override
     protected  void onStart() {
         super.onStart();
+        if ( FIRST_CREATION ) {
+            jobs_view.readState(); // get the state from the storage
+            FIRST_CREATION = false;
+        }
         Logger.debug("MainActivity:onStart");
     }
 
