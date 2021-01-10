@@ -5,6 +5,8 @@ import android.content.Context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *  Classe used to parse offline data, extract information and do the thing.
@@ -32,13 +34,25 @@ public class JobData {
             EACH_TIME };      // year
 
     //
-    // Not stocked
+    // Not stored
     public boolean isDateSet = false;
+    public String name_in_path = "";
 
-
+    /**
+     *  Beware this method is used at boot time to set alarms, Object like Matcher, File
+     *  could cause crashes.
+     * @param context
+     * @param state_file
+     */
     public void readFromInternalStorage(Context context, String state_file) {
         InputStreamReader isr;
         try {
+            int index1 = state_file.lastIndexOf('/');
+            if ( index1 == -1) {
+                index1=0;
+            }
+            int index2 = state_file.lastIndexOf(Shell.SUFFIX_STATE);
+            name_in_path = state_file.substring(index1,index2);
             isr = new InputStreamReader(context.openFileInput(state_file));
             // id of the script
             int id = isr.read();
@@ -57,11 +71,6 @@ public class JobData {
             boolean isTimeSet = true;
             for(int ii = 0; ii < 5 ; ii += 1) {
                 int j = isr.read();
-                if ( j == -1 ) {
-                    // the date has not be writted
-                    isTimeSet = false;
-                    break;
-                }
                 sched[ii]=j;
             }
             isDateSet = isTimeSet;

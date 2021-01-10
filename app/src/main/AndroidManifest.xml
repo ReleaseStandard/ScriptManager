@@ -34,10 +34,10 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.example.scriptmanager.AlarmReceiver" />
+        <receiver android:name="com.example.scriptmanager.AlarmReceiver" ></receiver>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission  android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
 </manifest>

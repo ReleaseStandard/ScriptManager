@@ -286,9 +286,7 @@ public class JobFragment extends Fragment {
         if ( i == 0 ) {
             main.ow_menu.leaveRunningMode();
         }
-        if ( jd.isSchedulded ) {
-            writeState();
-        }
+        writeState();
     }
     public void startJob() {
         MainActivity main = (MainActivity)getActivity();
@@ -426,11 +424,8 @@ public class JobFragment extends Fragment {
             // boolean for the (if it is started)
             Logger.debug("isStarted="+jd.isStarted);
             osw.write(((jd.isSchedulded&jd.isStarted)?1:0));
-            // set The date
-            if ( isDateSet() ) {
-                for(int i = 0; i < 5 ; i += 1){
-                    osw.write(sched[i]);
-                }
+            for(int i = 0; i < 5 ; i += 1){
+                osw.write(sched[i]);
             }
             osw.close();
         } catch (FileNotFoundException e) {
