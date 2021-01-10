@@ -50,14 +50,10 @@ public class JobFragment extends Fragment {
 
     // is this fragment selected user
     public boolean isSelected = false;
-    public boolean isSchedulded = false;
-    public boolean isStarted = false;
-    public boolean isDateSet = false;
-    public String name;                   // script name
+    public JobData jd = new JobData();
     public String path;                     // script path
     public String log_path;              // log path
     public String state_file;             // state path
-    public Integer id;                       // script id
     public Date started = null;
     public Date stopped = null;
     public final static Integer EACH_TIME = -1;
@@ -73,8 +69,8 @@ public class JobFragment extends Fragment {
     Shell shell = new Shell();
 
     public void dump() {
-            Logger.log("JobFragment {\n fragmentCount="+fragmentCount+"\n name="+name+"\n path="+path+
-                    "\n log_path="+log_path+"\n state_file="+state_file+"\n id="+id+"\n isSchedulded="+ isSchedulded +"\n isStarted="+ isStarted + "\n}");
+            Logger.log("JobFragment {\n fragmentCount="+fragmentCount+"\n name="+jd.name+"\n path="+path+
+                    "\n log_path="+log_path+"\n state_file="+state_file+"\n id="+jd.id+"\n isSchedulded="+ jd.isSchedulded +"\n isStarted="+ jd.isStarted + "\n}");
     }
 
     public JobFragment(String statefile) {
@@ -94,10 +90,10 @@ public class JobFragment extends Fragment {
         rn.set(Calendar.SECOND,0);
         rn.set(Calendar.MILLISECOND,0);
 
-        id = fragmentCount++;
-        name = "Script n°" + id.toString();
-        path = "script_" + id.toString() + Shell.SUFFIX_SCRIPT;
-        state_file = "script_" + id.toString() + Shell.SUFFIX_STATE;
+        jd.id = fragmentCount++;
+        jd.name = "Script n°" + jd.id.toString();
+        path = "script_" + jd.id.toString() + Shell.SUFFIX_SCRIPT;
+        state_file = "script_" + jd.id.toString() + Shell.SUFFIX_STATE;
         log_path = shell.getLogPath(path);
 
         shell.execCmd("> " + log_path);
@@ -162,13 +158,13 @@ public class JobFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.job_fragment, container, false);
         TextView tv = v.findViewById(R.id.job_fragment_textView);
-        tv.setText(name);
+        tv.setText(jd.name);
         TextView tv2 = v.findViewById(R.id.textView3);
         tv2.setText(path);
 
         // update the date view
         // and schedule icon
-        if ( isDateSet ) {
+        if ( jd.isDateSet ) {
             TextView dateView = v.findViewById(R.id.editTextTextPersonName2);
             dateView.setText(TimeManager.sched2str(sched));
         }
@@ -208,7 +204,7 @@ public class JobFragment extends Fragment {
                 }
             }
         });
-        if ( isSchedulded ) {
+        if ( jd.isSchedulded ) {
             setViewWaitStartJob(playpause_button);
         }
         // set up event s for the date & time picker
@@ -245,7 +241,7 @@ public class JobFragment extends Fragment {
 
     // Model //
     public boolean isStarted() {
-        return isStarted;
+        return jd.isStarted;
     }
     //    //
 
@@ -271,17 +267,17 @@ public class JobFragment extends Fragment {
     public boolean isDateSet() {
         EditText et = getView().findViewById(R.id.editTextTextPersonName2);
         String s = et.getText().toString();
-        this.isDateSet =  ! s.equals(new String("")) && s != null ;
-        return  this.isDateSet;
+        this.jd.isDateSet =  ! s.equals(new String("")) && s != null ;
+        return  this.jd.isDateSet;
     }
     public void setName(String name) {
-        this.name = name;
+        this.jd.name = name;
         TextView tv = getView().findViewById(R.id.job_fragment_textView);
         tv.setText(name);
     }
     public void stopJob() {
-        isSchedulded = false;
-        isStarted = false;
+        jd.isSchedulded = false;
+        jd.isStarted = false;
         setViewStopJob();
         shell.terminateAll();
         stopped = new Date();
@@ -290,7 +286,7 @@ public class JobFragment extends Fragment {
         if ( i == 0 ) {
             main.ow_menu.leaveRunningMode();
         }
-        if ( isSchedulded ) {
+        if ( jd.isSchedulded ) {
             writeState();
         }
     }
@@ -303,10 +299,10 @@ public class JobFragment extends Fragment {
 
         stopped = null;
         started = new Date();
-        isStarted = true;
+        jd.isStarted = true;
 
         if ( isDateSet() ) {
-            isSchedulded = true;
+            jd.isSchedulded = true;
             setViewWaitStartJob();
             shell.scheduleJob(main,path,getDate());
             writeState();
@@ -394,7 +390,7 @@ public class JobFragment extends Fragment {
         main.ow_menu.callbackSelectAndRunning(main);
     }
     public void restoreView() {
-        if (isSchedulded) {
+        if (jd.isSchedulded) {
             setViewWaitStartJob();
         }
         else {
@@ -420,16 +416,16 @@ public class JobFragment extends Fragment {
             // private storage
             osw = new OutputStreamWriter(getContext().openFileOutput(state_file, Context.MODE_PRIVATE));
             // id of the script
-            osw.write(id.intValue());
+            osw.write(jd.id.intValue());
             // size of the string
-            osw.write(name.length());
+            osw.write(jd.name.length());
             // name of the script
-            osw.write(name);
+            osw.write(jd.name);
             // boolean for the (if it is schedulded)
-            osw.write((isSchedulded?1:0));
+            osw.write((jd.isSchedulded?1:0));
             // boolean for the (if it is started)
-            Logger.debug("isStarted="+isStarted);
-            osw.write(((isSchedulded&isStarted)?1:0));
+            Logger.debug("isStarted="+jd.isStarted);
+            osw.write(((jd.isSchedulded&jd.isStarted)?1:0));
             // set The date
             if ( isDateSet() ) {
                 for(int i = 0; i < 5 ; i += 1){
@@ -450,41 +446,8 @@ public class JobFragment extends Fragment {
      */
     public void readState(Context context, String path_name) {
         Logger.debug("readState from JobFragment");
-        InputStreamReader isr;
-        try {
-            isr = new InputStreamReader(context.openFileInput(state_file));
-            // id of the script
-            int id = isr.read();
-            this.id = id;
-            // size of the string
-            int script_name_size = isr.read();
-            // name of the script
-            char [] script_name = new char[script_name_size];
-            isr.read(script_name);
-            name = new String(script_name);
-            // boolean for the (if it is schedulded)
-            isSchedulded = (isr.read() == 0)?false:true;
-            // boolean for the (if it is started)
-            isStarted = (isr.read() == 0)?false:true;
-            // get The date
-            boolean isTimeSet = true;
-            for(int ii = 0; ii < 5 ; ii += 1) {
-                int j = isr.read();
-                if ( j == -1 ) {
-                    // the date has not be writted
-                    isTimeSet = false;
-                    break;
-                }
-                sched[ii]=j;
-            }
-            isDateSet = isTimeSet;
 
-            isr.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        jd.readFromInternalStorage(context,state_file);
         // Adjust pathname & logpath
         //path_name
         String script_name_path = path_name + Shell.SUFFIX_SCRIPT;

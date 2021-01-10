@@ -209,25 +209,14 @@ public class ViewJobsFragment extends Fragment {
     }
 
     public void readState() {
-        File directory = new File(Shell.internalStorage);
-        File[] files = directory.listFiles();
-        Arrays.sort(files);
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
-            Logger.debug(file.getAbsolutePath());
-            String n = file.getName();
-            Pattern p = Pattern.compile("([^/]+)"+Shell.SUFFIX_STATE+"$");
-            Matcher m = p.matcher(n);
-            if (m.matches()) {
-                String path_name = m.group(1);
-                String statefile = path_name+ Shell.SUFFIX_STATE;
-                JobFragment jf = addNewJob(statefile);
-                jf.readState(getActivity(),path_name);
-                if ( Logger.DEBUG ) { jf.dump(); }
-            }
+        for(String internal_relative_name : Shell.getJobsFromFilesystem()) {
+            String statefile = internal_relative_name+ Shell.SUFFIX_STATE;
+            JobFragment jf = addNewJob(statefile);
+            jf.readState(getActivity(),internal_relative_name);
+            if ( Logger.DEBUG ) { jf.dump(); }
         }
         if ( fragments.size() > 0) {
-            JobFragment.fragmentCount = fragments.get(fragments.size() - 1).id + 1;
+            JobFragment.fragmentCount = fragments.get(fragments.size() - 1).jd.id + 1;
         }
     }
 
