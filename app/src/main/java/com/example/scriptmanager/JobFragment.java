@@ -2,6 +2,7 @@ package com.example.scriptmanager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -21,6 +22,12 @@ import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -43,6 +50,7 @@ public class JobFragment extends Fragment {
     public String name;
     public String path;
     public String log_path;
+    public String state_file;
     public Date started = null;
     public Date stopped = null;
     public final static Integer EACH_TIME = -1;
@@ -70,6 +78,7 @@ public class JobFragment extends Fragment {
         Integer i = fragmentCount++;
         name = "Script n°" + i.toString();
         path = "script_" + i.toString() + ".txt";
+        state_file = "script_" + i.toString() + ".xml";
         log_path = shell.getLogPath(path);
 
         shell.execCmd("> " + log_path);
@@ -92,6 +101,45 @@ public class JobFragment extends Fragment {
         return fragment;
     }
 
+    public void writeState() {
+        String fname = Shell.getAbsolutePath(state_file);
+        File f = new File(fname);
+        if ( f.exists() )
+            f.delete();
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        OutputStreamWriter osw = null;
+        try {
+            osw = new OutputStreamWriter(getContext().openFileOutput(fname, Context.MODE_PRIVATE));
+            for(int i = 0; i < 5 ; i += 1) {
+                osw.write(sched[i]);
+            }
+            osw.write(new Boolean(true).toString());
+            osw.write(name);
+            osw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void readState() {
+        String fname = Shell.getAbsolutePath(state_file);
+        InputStreamReader isr;
+        try {
+            isr = new InputStreamReader(getContext().openFileInput(fname));
+            for(int i = 0; i < 5 ; i += 1) {
+                sched[i]=isr.read();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
