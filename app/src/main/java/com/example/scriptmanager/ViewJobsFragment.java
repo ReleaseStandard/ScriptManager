@@ -40,10 +40,10 @@ public class ViewJobsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if ( savedInstanceState == null ) {
-            Log.v("scriptmanager", "savedInstanceState is null");
+           Logger.debug( "savedInstanceState is null");
         }
         else{
-            Log.v("scriptmanager", "savedInstanceState is not null");
+            Logger.debug("savedInstanceState is not null");
         }
         super.onCreate(savedInstanceState);
     }
@@ -71,35 +71,33 @@ public class ViewJobsFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         Integer i = new Integer(fragments.size());
-        Log.v("scriptmanager","size in fragments : "+i);
+        Logger.debug("size in fragments : "+i);
         if ( savedInstanceState == null ) {
-            Log.v("scriptmanager","ViewJobsFragment:saveInstanceNull");
+            Logger.debug("ViewJobsFragment:saveInstanceNull");
         }
         View v =  inflater.inflate(R.layout.view_jobs_fragment, container, false);
-        Log.v("scriptmanager","ViewJobsFragment:onCreateView");
+        Logger.debug("ViewJobsFragment:onCreateView");
         return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.v("scriptmanager","ViewJobsFragment:onViewCreated");
+        Logger.debug("ViewJobsFragment:onViewCreated");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.v("scriptmanager","ViewJobsFragment:onSaveInstanceState");
+        Logger.debug("ViewJobsFragment:onSaveInstanceState");
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         Integer in = new Integer(getFragmentManager().getFragments().size());
-        Log.v("scriptmanager","ViewJobsFragment:nb of frags "+in);
-      //  restoreFragments();
-        Log.v("scriptmanager","ViewJobsFragment:onViewStateRestored");
-
+        Logger.debug("ViewJobsFragment:nb of frags "+in);
+        Logger.debug("ViewJobsFragment:onViewStateRestored");
         restoreFragments();
     }
 

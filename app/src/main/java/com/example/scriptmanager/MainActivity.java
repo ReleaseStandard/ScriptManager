@@ -103,12 +103,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.nav_host_fragment, jobs_view);
         ft.commit();
-        Log.v("scriptmanager","MainActivity:onCreate");
+        Logger.debug("MainActivity:onCreate");
     }
     @Override
     protected  void onStart() {
         super.onStart();
-        Log.v("scriptmanager","MainActivity:onStart");
+        Logger.debug("MainActivity:onStart");
     }
 
 
@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
     public void showFileWithEditor(String path) {
         Context context = getApplicationContext();
         String pvd = context.getApplicationContext().getPackageName() + ".provider";
-        Log.v("scriptmanager", pvd);
         File f = new File(path);
         if (!f.exists()) {
             try {

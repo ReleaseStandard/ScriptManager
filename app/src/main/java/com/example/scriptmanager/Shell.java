@@ -73,7 +73,7 @@ public class Shell {
      */
     public int execScript(String script) {
         script = getAbsolutePath(script);
-        Log.v("scriptmanager","Job execution : " + script + "\n   log=" + getLogPath(script));
+        Logger.log("Job execution : " + script + "\n   log=" + getLogPath(script));
         try {
             Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". " + script + " >> " + getLogPath(script)});
             processes.add(pr);
@@ -91,7 +91,7 @@ public class Shell {
         // need to get the time here
         Calendar next = TimeManager.nextSched(sched);
 
-        Log.v("scriptmanager","[" + (new Integer(AlarmReceiver.REQUEST_CODE + 1)) + "] Job " + script + " scheduled for " + next.getTime().toString());
+        Logger.log("[" + (new Integer(AlarmReceiver.REQUEST_CODE + 1)) + "] Job " + script + " scheduled for " + next.getTime().toString());
         long t = next.getTimeInMillis();
 
         Intent intent = new Intent(context, AlarmReceiver.class);

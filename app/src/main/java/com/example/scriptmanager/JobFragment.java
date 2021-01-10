@@ -32,7 +32,10 @@ import java.util.GregorianCalendar;
  */
 public class JobFragment extends Fragment {
 
+    // ?
     private static final String sname = "test";
+    private String msname;
+
     public static Integer fragmentCount = 0;
 
     // is this fragment selected user
@@ -53,8 +56,6 @@ public class JobFragment extends Fragment {
 
     private View view = null;
     Shell shell = new Shell();
-
-    private String msname;
 
     public JobFragment() {
         Calendar rn = Calendar.getInstance();
@@ -95,20 +96,20 @@ public class JobFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.v("scriptmanager","JogFragment:onViewCreated");
+        Logger.debug("JogFragment:onViewCreated");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.v("scriptmanager","JogFragment:onSaveInstanceState");
+        Logger.debug("JogFragment:onSaveInstanceState");
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        Log.v("scriptmanager","JogFragment:ViewStateRestored");
         restoreView();
+        Logger.debug("JogFragment:ViewStateRestored");
     }
 
     @Override
@@ -118,7 +119,7 @@ public class JobFragment extends Fragment {
         if (getArguments() != null) {
             msname = getArguments().getString(sname);
         }
-        Log.v("scriptmanager","JogFragment:onCreate");
+        Logger.debug("JogFragment:onCreate");
     }
 
     @Override
