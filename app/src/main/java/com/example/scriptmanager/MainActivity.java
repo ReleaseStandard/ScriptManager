@@ -178,20 +178,8 @@ public class MainActivity extends AppCompatActivity {
 
         if ( R.id.action_anyselection_delete == id ) {
             for( JobFragment jf : jobs_view.getSelecteds() ) {
-                FragmentTransaction ft = jobs_view.getChildFragmentManager().beginTransaction();
-                ft.remove(jf);
-                ft.commit();
+                jf.remove();
                 jobs_view.fragments.remove(jf);
-                // also remove the file ?
-                File f = new File(jf.getAbsolutePath());
-                if (f.exists()) {
-                    f.delete();
-                    try {
-                        jf.shell.clearLog(jf.getAbsolutePath());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
         if (R.id.action_oneonly_clear_log == id) {

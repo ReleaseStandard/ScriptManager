@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.CharBuffer;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -100,7 +102,12 @@ public class JobFragment extends Fragment {
     public String getAbsolutePath() {
         return Shell.getAbsolutePath(path);
     }
-
+    public String getLogPath() {
+        return Shell.getLogPath(path);
+    }
+    public String getStatePath() {
+        return Shell.internalStorage + "/" + state_file;
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -204,6 +211,25 @@ public class JobFragment extends Fragment {
         return v;
     }
 
+    public void remove() {
+        Logger.debug("JobFragments : remove");
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.remove(this);
+        ft.commit();
+
+        // remove the script file
+        ArrayList<String> files = new ArrayList<String>();
+        files.add(getAbsolutePath()); //script file remove
+        files.add(getLogPath());           // remove log file
+        files.add(getStatePath());        // remove state file
+        for ( String s : files ) {
+            Logger.log(s);
+            File f = new File(s);
+            if (f.exists()) {
+                f.delete();
+            }
+        }
+    }
 
     // Model //
     public boolean isStarted() {
