@@ -34,7 +34,7 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.example.scriptmanager.AlarmReceiver" ></receiver>
+        <receiver android:name="com.example.scriptmanager.AlarmReceiver" />
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>

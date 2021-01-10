@@ -258,6 +258,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
+        if ( data == null) {
+            // user has cancelled the request
+            return;
+        }
         if ( requestCode == ACTIVITY_REQUEST_CODE_IMPORT) {
             Uri uri = data.getData();
             InputStream is = null;

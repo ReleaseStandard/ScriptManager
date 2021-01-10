@@ -71,8 +71,9 @@
           android:title="@string/settings_import_script"
           app:showAsAction="never" />
 
+      <!-- DEBUG MENU -->
       <item
-          android:visible="true"
+          android:visible="false"
           android:id="@+id/action_test_button"
           android:orderInCategory="100"
           android:title="Save the state"
@@ -83,4 +84,6 @@
           android:orderInCategory="100"
           android:title="Test2"
           app:showAsAction="never" />
+      <!--     -->
+
   </menu>
