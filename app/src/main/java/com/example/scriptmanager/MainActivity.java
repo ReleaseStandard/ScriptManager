@@ -2,9 +2,7 @@ package com.example.scriptmanager;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 //import android.app.FragmentManager;
@@ -15,10 +13,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,29 +22,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.provider.DocumentsContract;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Hashtable;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -250,6 +235,12 @@ public class MainActivity extends AppCompatActivity {
             intent.setType("text/*");
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
         }
+        if ( R.id.action_test_button == id) {
+            jobs_view.writeState();
+        }
+        if ( R.id.action_test_button2 == id) {
+            jobs_view.readState();
+        }
         jobs_view.unselectAllFragments();
 
         // Start service at boot / enregistrement sur disk
@@ -310,14 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Handlers for click on interface
     public void handlerFabClick() {
-        FragmentManager fm = jobs_view.getChildFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-
-        JobFragment f = new JobFragment();
-        ft.add(R.id.linear_layout_actions_list, f);
-        ft.commit();
-
-        jobs_view.fragments.add(f);
+        jobs_view.addNewJob();
     }
 
     public void settings2main() {

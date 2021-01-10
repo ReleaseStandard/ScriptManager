@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +22,10 @@ public class Shell {
     static public String internalStorage = null;
     private List<Process> processes = new ArrayList<Process>();
     private List<PendingIntent> intents = new ArrayList<PendingIntent>();
+
+    public static String SUFFIX_LOG = ".log.txt";
+    public static String SUFFIX_SCRIPT = ".txt";
+    public static String SUFFIX_STATE = ".xml";
 
     /**
      *  Constructor will build the storage required to store scripts.
@@ -55,7 +58,7 @@ public class Shell {
 
     public static String getLogPath(String script) {
         script = getAbsolutePath(script);
-        return script + ".log.txt";
+        return script + SUFFIX_LOG;
     }
 
     public static String getAbsolutePath(String script) {

@@ -1,25 +1,21 @@
 package com.example.scriptmanager;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.scriptmanager.R;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ViewJobsFragment extends Fragment {
 
@@ -179,4 +175,56 @@ public class ViewJobsFragment extends Fragment {
         }
         return count;
     }
+
+
+    public void addNewJob(){
+        addNewJob(null);
+    }
+    public JobFragment addNewJob(String statefile) {
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        JobFragment f = null;
+        if ( statefile == null ) {
+            f = new JobFragment();
+        }
+        else {
+            // don't create the files please
+            f = new JobFragment(statefile);
+        }
+        ft.add(R.id.linear_layout_actions_list, f);
+        ft.commit();
+
+        fragments.add(f);
+        return f;
+    }
+
+    public void writeState() {
+        for ( JobFragment jf : fragments) {
+            jf.writeState();
+        }
+    }
+
+    public void readState() {
+        File directory = new File(Shell.internalStorage);
+        File[] files = directory.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+            String n = file.getName();
+            Pattern p = Pattern.compile("([^/]+)"+Shell.SUFFIX_STATE+"$");
+            Matcher m = p.matcher(n);
+            if (m.matches()) {
+                String path_name = m.group(1);
+                String statefile = path_name+ Shell.SUFFIX_STATE;
+                JobFragment jf = addNewJob(statefile);
+                jf.readState(getContext(),path_name);
+                if ( Logger.DEBUG ) { jf.dump(); }
+                break;
+            }
+        }
+        if ( fragments.size() == 0) {
+            JobFragment.fragmentCount = fragments.get(fragments.size() - 1).id + 1;
+        }
+    }
+
 }

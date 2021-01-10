@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.CharBuffer;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -47,10 +48,11 @@ public class JobFragment extends Fragment {
 
     // is this fragment selected user
     public boolean isSelected = false;
-    public String name;
-    public String path;
-    public String log_path;
-    public String state_file;
+    public String name;                   // script name
+    public String path;                     // script path
+    public String log_path;              // log path
+    public String state_file;             // state path
+    public Integer id;                       // script id
     public Date started = null;
     public Date stopped = null;
     public final static Integer EACH_TIME = -1;
@@ -65,7 +67,19 @@ public class JobFragment extends Fragment {
     private View view = null;
     Shell shell = new Shell();
 
+    public void dump() {
+            Logger.log("JobFragment {\n fragmentCount="+fragmentCount+"\n name="+name+"\n path="+path+
+                    "\n log_path="+log_path+"\n state_file="+state_file+"\n id="+id+"\n}");
+    }
+
+    public JobFragment(String statefile) {
+        newInstanceStuff();
+        this.state_file = statefile;
+    }
     public JobFragment() {
+        newInstanceStuff();
+    }
+    public void newInstanceStuff() {
         Calendar rn = Calendar.getInstance();
         sched[0] = rn.get(Calendar.MINUTE);
         sched[1] = rn.get(Calendar.HOUR);
@@ -75,10 +89,10 @@ public class JobFragment extends Fragment {
         rn.set(Calendar.SECOND,0);
         rn.set(Calendar.MILLISECOND,0);
 
-        Integer i = fragmentCount++;
-        name = "Script n°" + i.toString();
-        path = "script_" + i.toString() + ".txt";
-        state_file = "script_" + i.toString() + ".xml";
+        id = fragmentCount++;
+        name = "Script n°" + id.toString();
+        path = "script_" + id.toString() + Shell.SUFFIX_SCRIPT;
+        state_file = "script_" + id.toString() + Shell.SUFFIX_STATE;
         log_path = shell.getLogPath(path);
 
         shell.execCmd("> " + log_path);
@@ -99,46 +113,6 @@ public class JobFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(JobFragment.sname, sname);
         return fragment;
-    }
-
-    public void writeState() {
-        String fname = Shell.getAbsolutePath(state_file);
-        File f = new File(fname);
-        if ( f.exists() )
-            f.delete();
-        try {
-            f.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        OutputStreamWriter osw = null;
-        try {
-            osw = new OutputStreamWriter(getContext().openFileOutput(fname, Context.MODE_PRIVATE));
-            for(int i = 0; i < 5 ; i += 1) {
-                osw.write(sched[i]);
-            }
-            osw.write(new Boolean(true).toString());
-            osw.write(name);
-            osw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void readState() {
-        String fname = Shell.getAbsolutePath(state_file);
-        InputStreamReader isr;
-        try {
-            isr = new InputStreamReader(getContext().openFileInput(fname));
-            for(int i = 0; i < 5 ; i += 1) {
-                sched[i]=isr.read();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -382,4 +356,80 @@ public class JobFragment extends Fragment {
         }
     }
     //    //
+
+
+    /*******************************************************************************
+     *                                                          Model = filesystem                                                                                        *
+     *******************************************************************************/
+    /**
+     * Write the state of user interface
+     */
+    public void writeState() {
+        OutputStreamWriter osw = null;
+        try {
+            // private storage
+            osw = new OutputStreamWriter(getContext().openFileOutput(state_file, Context.MODE_PRIVATE));
+            // id of the script
+            osw.write(id.intValue());
+            // size of the string
+            osw.write(name.length());
+            // name of the script
+            osw.write(name);
+            // boolean for the (if it is schedulded)
+            osw.write(0); // TODO : change
+            // set The date
+            if ( isDateSet() ) {
+                for(int i = 0; i < 5 ; i += 1){
+                    osw.write(sched[i]);
+                }
+            }
+            osw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * Read the state at start
+     *   => pas d'update dans l'ui, c'est le probleme
+     */
+    public void readState(Context context, String path_name) {
+        InputStreamReader isr;
+        try {
+            isr = new InputStreamReader(context.openFileInput(state_file));
+            // id of the script
+            int id = isr.read();
+            this.id = id;
+            // size of the string
+            int script_name_size = isr.read();
+            // name of the script
+            char [] script_name = new char[script_name_size];
+            isr.read(script_name);
+            name = new String(script_name);
+            // boolean for the (if it is schedulded)
+            int isInSchedulded = isr.read();
+            // get The date
+            for(int ii = 0; ii < 5 ; ii += 1) {
+                int j = isr.read();
+                if ( j == -1 ) {
+                    // date not  set lol
+                    break;
+                }
+                sched[ii]=j;
+            }
+            isr.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Adjust pathname & logpath
+        //path_name
+        String script_name_path = path_name + Shell.SUFFIX_SCRIPT;
+        path = script_name_path;
+        String log_name_path = path_name + Shell.SUFFIX_LOG;
+        log_path = Shell.getAbsolutePath(log_name_path);
+    }
 }
