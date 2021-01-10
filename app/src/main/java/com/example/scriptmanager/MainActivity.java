@@ -132,21 +132,24 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
 
         MainActivity main = this;
         int id = item.getItemId();
 
         if (id == R.id.action_stopselected) {
             jobs_view.stopAllFragments(true);
+            jobs_view.unselectAllFragments();
         }
         if (id == R.id.action_stopall) {
             jobs_view.stopAllFragments();
+            jobs_view.unselectAllFragments();
         }
         if (id == R.id.action_unselectall) {
             jobs_view.unselectAllFragments();
         }
         if (id == R.id.action_settings) {
-
+            jobs_view.unselectAllFragments();
             ow_menu.leaveSelectMode();
 
             ActionBar ab = super.getSupportActionBar();
@@ -161,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             ft.commit();
 
             ow_menu.setMenuVisibility(false);
+            return true;
         }
 
         if (id == android.R.id.home) {
@@ -174,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_oneonly_edit) {
             JobFragment jf = jobs_view.getSelected();
             showFileWithEditor(jf.getAbsolutePath());
+            jobs_view.unselectAllFragments();
         }
 
         if ( R.id.action_anyselection_delete == id ) {
@@ -181,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 jf.remove();
                 jobs_view.fragments.remove(jf);
             }
+            jobs_view.unselectAllFragments();
         }
         if (R.id.action_oneonly_clear_log == id) {
             JobFragment jf = jobs_view.getSelected();
@@ -189,10 +195,12 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            jobs_view.unselectAllFragments();
         }
         if ( R.id.action_oneonly_show_log == id) {
             JobFragment jf = jobs_view.getSelected();
             showFileWithEditor(jf.shell.getLogPath(jf.getAbsolutePath()));
+            jobs_view.unselectAllFragments();
         }
         if (R.id.action_oneonly_rename == id) {
             JobFragment jf = jobs_view.getSelected();
@@ -214,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.setTitle(R.string.action_oneonly_rename);
             alert.show();
+            jobs_view.unselectAllFragments();
         }
 
         // not ready yet due to limitations to access the storage //
@@ -225,11 +234,13 @@ public class MainActivity extends AppCompatActivity {
             intent.setType("text/*");
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, selectedUri);
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
+            jobs_view.unselectAllFragments();
         }
         if (R.id.action_import_script == id) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("text/*");
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
+            jobs_view.unselectAllFragments();
         }
         if ( R.id.action_test_button == id) {
             jobs_view.writeState();
@@ -237,10 +248,9 @@ public class MainActivity extends AppCompatActivity {
         if ( R.id.action_test_button2 == id) {
             jobs_view.readState();
         }
-        jobs_view.unselectAllFragments();
 
         // Start service at boot / enregistrement sur disk
-        return super.onOptionsItemSelected(item);
+        return true;
     }
     /*
      * Handle result of the import action.
