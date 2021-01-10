@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     EditText et = (EditText) customLayout.findViewById(R.id.editText);
                     jf.setName(et.getText().toString());
+                    jf.writeState();
                 }
             });
             builder.setNegativeButton(R.string.action_oneonly_rename_cancel, new DialogInterface.OnClickListener() {

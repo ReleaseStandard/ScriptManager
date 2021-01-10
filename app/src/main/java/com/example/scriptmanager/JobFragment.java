@@ -50,6 +50,9 @@ public class JobFragment extends Fragment {
 
     // is this fragment selected user
     public boolean isSelected = false;
+    public boolean isSchedulded = false;
+    public boolean isStarted = false;
+    public boolean isDateSet = false;
     public String name;                   // script name
     public String path;                     // script path
     public String log_path;              // log path
@@ -71,7 +74,7 @@ public class JobFragment extends Fragment {
 
     public void dump() {
             Logger.log("JobFragment {\n fragmentCount="+fragmentCount+"\n name="+name+"\n path="+path+
-                    "\n log_path="+log_path+"\n state_file="+state_file+"\n id="+id+"\n}");
+                    "\n log_path="+log_path+"\n state_file="+state_file+"\n id="+id+"\n isSchedulded="+ isSchedulded +"\n isStarted="+ isStarted + "\n}");
     }
 
     public JobFragment(String statefile) {
@@ -125,6 +128,7 @@ public class JobFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        writeState();
         Logger.debug("JogFragment:onViewCreated");
     }
 
@@ -154,12 +158,20 @@ public class JobFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Logger.debug("onCreateView from JobFragment");
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.job_fragment, container, false);
         TextView tv = v.findViewById(R.id.job_fragment_textView);
         tv.setText(name);
         TextView tv2 = v.findViewById(R.id.textView3);
         tv2.setText(path);
+
+        // update the date view
+        // and schedule icon
+        if ( isDateSet ) {
+            TextView dateView = v.findViewById(R.id.editTextTextPersonName2);
+            dateView.setText(TimeManager.sched2str(sched));
+        }
 
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -181,24 +193,24 @@ public class JobFragment extends Fragment {
             }
         });
 
-        View button = v.findViewById(R.id.floatingActionButton2);
-        button.setOnClickListener(new View.OnClickListener() {
+        View playpause_button = v.findViewById(R.id.floatingActionButton2);
+        playpause_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
                 EditText et = v.findViewById(R.id.editTextTextPersonName2);
                 sched = getDate();
                 // update image
-                if ( started == null || (started != null && stopped != null)  ) {
+                if ( !isStarted()  ) {
                     startJob();
                 }
                 else {
-                    if ( isStarted() ) {
-                        stopJob();
-                    }
+                    stopJob();
                 }
             }
         });
-
+        if ( isSchedulded ) {
+            setViewWaitStartJob(playpause_button);
+        }
         // set up event s for the date & time picker
         View vv = v.findViewById(R.id.job_fragment_time_picker_button);
         vv.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +245,7 @@ public class JobFragment extends Fragment {
 
     // Model //
     public boolean isStarted() {
-        return (started != null && stopped == null);
+        return isStarted;
     }
     //    //
 
@@ -251,6 +263,7 @@ public class JobFragment extends Fragment {
                 sched[2] = dayOfMonth;
                 sched[3] = monthOfYear;
                 sched[4] = year;
+                writeState();
             }
         };
         tm.show(v,sched);
@@ -258,7 +271,8 @@ public class JobFragment extends Fragment {
     public boolean isDateSet() {
         EditText et = getView().findViewById(R.id.editTextTextPersonName2);
         String s = et.getText().toString();
-        return ! s.equals(new String("")) ;
+        this.isDateSet =  ! s.equals(new String("")) && s != null ;
+        return  this.isDateSet;
     }
     public void setName(String name) {
         this.name = name;
@@ -266,6 +280,8 @@ public class JobFragment extends Fragment {
         tv.setText(name);
     }
     public void stopJob() {
+        isSchedulded = false;
+        isStarted = false;
         setViewStopJob();
         shell.terminateAll();
         stopped = new Date();
@@ -273,6 +289,9 @@ public class JobFragment extends Fragment {
         int i = main.jobs_view.getNumberStarted();
         if ( i == 0 ) {
             main.ow_menu.leaveRunningMode();
+        }
+        if ( isSchedulded ) {
+            writeState();
         }
     }
     public void startJob() {
@@ -282,17 +301,21 @@ public class JobFragment extends Fragment {
             main.ow_menu.enterRunningMode();
         }
 
+        stopped = null;
+        started = new Date();
+        isStarted = true;
+
         if ( isDateSet() ) {
+            isSchedulded = true;
             setViewWaitStartJob();
             shell.scheduleJob(main,path,getDate());
+            writeState();
         }
         else {
             setViewStartJob();
             shell.execScript(path);
         }
 
-        stopped = null;
-        started = new Date();
         if( isSelected ) {
             main.ow_menu.callbackSelectAndRunning(main);
         }
@@ -310,11 +333,14 @@ public class JobFragment extends Fragment {
                 getResources().getDrawable(android.R.drawable.ic_media_pause)
         );
     }
-    public void setViewWaitStartJob() {
-        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+    public void setViewWaitStartJob(View v) {
+        FloatingActionButton fab = (FloatingActionButton)v;
         fab.setImageDrawable(
                 getResources().getDrawable(android.R.drawable.ic_menu_recent_history)
         );
+    }
+    public void setViewWaitStartJob() {
+        setViewWaitStartJob(this.getView().findViewById(R.id.floatingActionButton2));
     }
     public void setViewStopJob() {
         FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
@@ -368,17 +394,15 @@ public class JobFragment extends Fragment {
         main.ow_menu.callbackSelectAndRunning(main);
     }
     public void restoreView() {
-        if( isStarted() ) {
-            // custom date?
-            if ( isDateSet() ) {
-                setViewWaitStartJob();
-            }
-            else {
-                setViewStartJob();
-            }
+        if (isSchedulded) {
+            setViewWaitStartJob();
         }
         else {
-            setViewStopJob();
+            if (isStarted()) {
+                setViewStartJob();
+            } else {
+                setViewStopJob();
+            }
         }
     }
     //    //
@@ -402,7 +426,10 @@ public class JobFragment extends Fragment {
             // name of the script
             osw.write(name);
             // boolean for the (if it is schedulded)
-            osw.write(0); // TODO : change
+            osw.write((isSchedulded?1:0));
+            // boolean for the (if it is started)
+            Logger.debug("isStarted="+isStarted);
+            osw.write(((isSchedulded&isStarted)?1:0));
             // set The date
             if ( isDateSet() ) {
                 for(int i = 0; i < 5 ; i += 1){
@@ -422,6 +449,7 @@ public class JobFragment extends Fragment {
      *   => pas d'update dans l'ui, c'est le probleme
      */
     public void readState(Context context, String path_name) {
+        Logger.debug("readState from JobFragment");
         InputStreamReader isr;
         try {
             isr = new InputStreamReader(context.openFileInput(state_file));
@@ -435,16 +463,22 @@ public class JobFragment extends Fragment {
             isr.read(script_name);
             name = new String(script_name);
             // boolean for the (if it is schedulded)
-            int isInSchedulded = isr.read();
+            isSchedulded = (isr.read() == 0)?false:true;
+            // boolean for the (if it is started)
+            isStarted = (isr.read() == 0)?false:true;
             // get The date
+            boolean isTimeSet = true;
             for(int ii = 0; ii < 5 ; ii += 1) {
                 int j = isr.read();
                 if ( j == -1 ) {
-                    // date not  set lol
+                    // the date has not be writted
+                    isTimeSet = false;
                     break;
                 }
                 sched[ii]=j;
             }
+            isDateSet = isTimeSet;
+
             isr.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

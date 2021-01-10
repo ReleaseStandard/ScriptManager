@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -179,8 +180,8 @@ public class ViewJobsFragment extends Fragment {
     }
 
 
-    public void addNewJob(){
-        addNewJob(null);
+    public JobFragment addNewJob(){
+        return addNewJob(null);
     }
     public JobFragment addNewJob(String statefile) {
         FragmentManager fm = getChildFragmentManager();
@@ -221,7 +222,7 @@ public class ViewJobsFragment extends Fragment {
                 String path_name = m.group(1);
                 String statefile = path_name+ Shell.SUFFIX_STATE;
                 JobFragment jf = addNewJob(statefile);
-                jf.readState(getContext(),path_name);
+                jf.readState(getActivity(),path_name);
                 if ( Logger.DEBUG ) { jf.dump(); }
             }
         }

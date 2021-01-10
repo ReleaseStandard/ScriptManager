@@ -42,9 +42,9 @@ public class TimeManager {
                                     @Override
                                     public void onDateSet(DatePicker view, int year,
                                                           int monthOfYear, int dayOfMonth) {
-                                        onPicked(minute,hourOfDay,dayOfMonth,monthOfYear,year);
                                         int temp_sched[] = {minute,hourOfDay,dayOfMonth,monthOfYear,year};
                                         tv.setText(TimeManager.sched2str(temp_sched));
+                                        onPicked(minute,hourOfDay,dayOfMonth,monthOfYear,year);
                                     }
                                 }, year, monthOfYear, dayOfMonth);
                         datePickerDialog.show();
