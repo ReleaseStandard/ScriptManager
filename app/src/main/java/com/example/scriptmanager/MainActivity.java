@@ -145,10 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_stopselected) {
             jobs_view.stopAllFragments(true);
-            jobs_view.unselectAllFragments();
         }
         if (id == R.id.action_stopall) {
-            jobs_view.unselectAllFragments();
             jobs_view.stopAllFragments();
         }
         if (id == R.id.action_unselectall) {
@@ -156,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_settings) {
 
-            jobs_view.unselectAllFragments();
             ow_menu.leaveSelectMode();
 
             ActionBar ab = super.getSupportActionBar();
@@ -170,10 +167,7 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.nav_host_fragment, sf);
             ft.commit();
 
-
             ow_menu.setMenuVisibility(false);
-
-            return true;
         }
 
         if (id == android.R.id.home) {
@@ -182,14 +176,11 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 settings2main();
             }
-            return true;
         }
 
         if (id == R.id.action_oneonly_edit) {
             JobFragment jf = jobs_view.getSelected();
-            jobs_view.unselectAllFragments();
             showFileWithEditor(jf.getAbsolutePath());
-            return true;
         }
 
         if ( R.id.action_anyselection_delete == id ) {
@@ -209,12 +200,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-            jobs_view.unselectAllFragments();
-            return true;
         }
         if (R.id.action_oneonly_clear_log == id) {
             JobFragment jf = jobs_view.getSelected();
-            jobs_view.unselectAllFragments();
             try {
                 jf.shell.clearLog(jf.getAbsolutePath());
             } catch (IOException e) {
@@ -223,13 +211,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if ( R.id.action_oneonly_show_log == id) {
             JobFragment jf = jobs_view.getSelected();
-            jobs_view.unselectAllFragments();
             showFileWithEditor(jf.shell.getLogPath(jf.getAbsolutePath()));
-            return true;
         }
         if (R.id.action_oneonly_rename == id) {
             JobFragment jf = jobs_view.getSelected();
-            jobs_view.unselectAllFragments();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View customLayout = getLayoutInflater().inflate(R.layout.rename_dialog, null);
             builder.setView(customLayout);
@@ -252,21 +237,20 @@ public class MainActivity extends AppCompatActivity {
         // not ready yet due to limitations to access the storage //
         if (R.id.action_browse_scripts == id) {
             JobFragment jf = jobs_view.getSelected();
-            jobs_view.unselectAllFragments();
             Uri selectedUri = Uri.parse(Shell.externalStorage );
 
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("text/*");
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, selectedUri);
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
-            return true;
         }
         if (R.id.action_import_script == id) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("text/*");
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
-            return true;
         }
+        jobs_view.unselectAllFragments();
+
         // Start service at boot / enregistrement sur disk
         return super.onOptionsItemSelected(item);
     }
