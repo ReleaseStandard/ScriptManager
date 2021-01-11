@@ -29,7 +29,7 @@ public class TimeManager {
     }
     public void show(View v, int minute, int hourOfDay, int dayOfMonth, int monthOfYear, int year) {
         ViewGroup vpg = (ViewGroup)v.getParent();
-        TextView tv = vpg.findViewById(R.id.editTextTextPersonName2);
+        TextView tv = vpg.findViewById(R.id.job_date_input);
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(v.getContext(),R.style.TimePickerTheme,

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 getApplicationContext().getFilesDir().getAbsolutePath(),
                 getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.main_activity_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayUseLogoEnabled(false);
 
-            findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+            findViewById(R.id.main_activity_fab).setVisibility(View.INVISIBLE);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.nav_host_fragment, sf);
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         if ( R.id.action_anyselection_delete == id ) {
             for( JobFragment jf : jobs_view.getSelecteds() ) {
-                jf.remove();
+                jf.removeViewJob();
                 jobs_view.fragments.remove(jf);
             }
             jobs_view.unselectAllFragments();
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setView(customLayout);
             builder.setPositiveButton(R.string.action_oneonly_rename_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    EditText et = (EditText) customLayout.findViewById(R.id.editText);
+                    EditText et = (EditText) customLayout.findViewById(R.id.rename_dialog_input);
                     jf.setName(et.getText().toString());
                     jf.writeState();
                 }
@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(false);
         ab.setDisplayUseLogoEnabled(true);
 
-        findViewById(R.id.fab).setVisibility(View.VISIBLE);
+        findViewById(R.id.main_activity_fab).setVisibility(View.VISIBLE);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.nav_host_fragment, jobs_view);
         ft.commit();

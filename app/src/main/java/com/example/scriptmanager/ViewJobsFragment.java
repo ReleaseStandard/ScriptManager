@@ -1,11 +1,9 @@
 package com.example.scriptmanager;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,12 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ViewJobsFragment extends Fragment {
 
@@ -105,7 +99,7 @@ public class ViewJobsFragment extends Fragment {
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         for(JobFragment jf : fragments) {
-            ft.add(R.id.linear_layout_actions_list, jf);
+            ft.add(R.id.view_jobs_linearlayout, jf);
         }
         ft.commit();
     }
@@ -195,7 +189,7 @@ public class ViewJobsFragment extends Fragment {
             // don't create the files please
             f = new JobFragment(statefile);
         }
-        ft.add(R.id.linear_layout_actions_list, f);
+        ft.add(R.id.view_jobs_linearlayout, f);
         ft.commit();
 
         fragments.add(f);

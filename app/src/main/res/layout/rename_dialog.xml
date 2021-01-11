@@ -7,7 +7,7 @@ android:paddingRight="20dp"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
     <EditText
-    android:id="@+id/editText"
+    android:id="@+id/rename_dialog_input"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 </LinearLayout>

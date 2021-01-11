@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout2"
+    android:id="@+id/job_top_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton2"
+            android:id="@+id/job_trigger_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -40,7 +40,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/job_fragment_textView"
+                android:id="@+id/job_title"
                 android:layout_width="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:textColor="?colorSecondary" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/job_filename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -62,7 +62,7 @@
             tools:context="com.example.scriptmanager.JobFragment">
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/job_date_input"
                 android:layout_width="31dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -72,7 +72,7 @@
                 android:textColor="?colorSecondary" />
 
             <Button
-                android:id="@+id/job_fragment_time_picker_button"
+                android:id="@+id/job_date_picker_button"
                 android:layout_width="6dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

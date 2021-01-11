@@ -1,7 +1,5 @@
 package com.example.scriptmanager;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,28 +10,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,6 +95,7 @@ public class JobFragment extends Fragment {
     public String getStatePath() {
         return Shell.internalStorage + "/" + state_file;
     }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -157,15 +146,15 @@ public class JobFragment extends Fragment {
         Logger.debug("onCreateView from JobFragment");
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.job_fragment, container, false);
-        TextView tv = v.findViewById(R.id.job_fragment_textView);
+        TextView tv = v.findViewById(R.id.job_title);
         tv.setText(jd.name);
-        TextView tv2 = v.findViewById(R.id.textView3);
+        TextView tv2 = v.findViewById(R.id.job_filename);
         tv2.setText(path);
 
         // update the date view
         // and schedule icon
         if ( jd.isDateSet ) {
-            TextView dateView = v.findViewById(R.id.editTextTextPersonName2);
+            TextView dateView = v.findViewById(R.id.job_date_input);
             dateView.setText(TimeManager.sched2str(sched));
         }
 
@@ -189,11 +178,11 @@ public class JobFragment extends Fragment {
             }
         });
 
-        View playpause_button = v.findViewById(R.id.floatingActionButton2);
+        View playpause_button = v.findViewById(R.id.job_trigger_button);
         playpause_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
-                EditText et = v.findViewById(R.id.editTextTextPersonName2);
+                EditText et = v.findViewById(R.id.job_date_input);
                 sched = getDate();
                 // update image
                 if ( !isStarted()  ) {
@@ -208,7 +197,7 @@ public class JobFragment extends Fragment {
             setViewWaitStartJob(playpause_button);
         }
         // set up event s for the date & time picker
-        View vv = v.findViewById(R.id.job_fragment_time_picker_button);
+        View vv = v.findViewById(R.id.job_date_picker_button);
         vv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,26 +206,6 @@ public class JobFragment extends Fragment {
         });
 
         return v;
-    }
-
-    public void remove() {
-        Logger.debug("JobFragments : remove");
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.remove(this);
-        ft.commit();
-
-        // remove the script file
-        ArrayList<String> files = new ArrayList<String>();
-        files.add(getAbsolutePath()); //script file remove
-        files.add(getLogPath());           // remove log file
-        files.add(getStatePath());        // remove state file
-        for ( String s : files ) {
-            Logger.log(s);
-            File f = new File(s);
-            if (f.exists()) {
-                f.delete();
-            }
-        }
     }
 
     // Model //
@@ -265,14 +234,14 @@ public class JobFragment extends Fragment {
         tm.show(v,sched);
     }
     public boolean isDateSet() {
-        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
+        EditText et = getView().findViewById(R.id.job_date_input);
         String s = et.getText().toString();
         this.jd.isDateSet =  ! s.equals(new String("")) && s != null ;
         return  this.jd.isDateSet;
     }
     public void setName(String name) {
         this.jd.name = name;
-        TextView tv = getView().findViewById(R.id.job_fragment_textView);
+        TextView tv = getView().findViewById(R.id.job_title);
         tv.setText(name);
     }
     public void stopJob() {
@@ -315,14 +284,33 @@ public class JobFragment extends Fragment {
         }
     }
     public int[] getDate() {
-        EditText et = getView().findViewById(R.id.editTextTextPersonName2);
+        EditText et = getView().findViewById(R.id.job_date_input);
         return TimeManager.str2sched(et.getText().toString());
     }
     // //
 
     // View //
+    public void removeViewJob() {
+        Logger.debug("JobFragments : remove");
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.remove(this);
+        ft.commit();
+
+        // remove the script file
+        ArrayList<String> files = new ArrayList<String>();
+        files.add(getAbsolutePath()); //script file remove
+        files.add(getLogPath());           // remove log file
+        files.add(getStatePath());        // remove state file
+        for ( String s : files ) {
+            Logger.log(s);
+            File f = new File(s);
+            if (f.exists()) {
+                f.delete();
+            }
+        }
+    }
     public void setViewStartJob() {
-        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+        FloatingActionButton fab = this.getView().findViewById(R.id.job_trigger_button);
         fab.setImageDrawable(
                 getResources().getDrawable(android.R.drawable.ic_media_pause)
         );
@@ -334,10 +322,10 @@ public class JobFragment extends Fragment {
         );
     }
     public void setViewWaitStartJob() {
-        setViewWaitStartJob(this.getView().findViewById(R.id.floatingActionButton2));
+        setViewWaitStartJob(this.getView().findViewById(R.id.job_trigger_button));
     }
     public void setViewStopJob() {
-        FloatingActionButton fab = this.getView().findViewById(R.id.floatingActionButton2);
+        FloatingActionButton fab = this.getView().findViewById(R.id.job_trigger_button);
         fab.setImageDrawable(
                 getResources().getDrawable(android.R.drawable.ic_media_play)
         );
@@ -409,30 +397,7 @@ public class JobFragment extends Fragment {
      * Write the state of user interface
      */
     public void writeState() {
-        OutputStreamWriter osw = null;
-        try {
-            // private storage
-            osw = new OutputStreamWriter(getContext().openFileOutput(state_file, Context.MODE_PRIVATE));
-            // id of the script
-            osw.write(jd.id.intValue());
-            // size of the string
-            osw.write(jd.name.length());
-            // name of the script
-            osw.write(jd.name);
-            // boolean for the (if it is schedulded)
-            osw.write((jd.isSchedulded?1:0));
-            // boolean for the (if it is started)
-            Logger.debug("isStarted="+jd.isStarted);
-            osw.write(((jd.isSchedulded&jd.isStarted)?1:0));
-            for(int i = 0; i < 5 ; i += 1){
-                osw.write(sched[i]);
-            }
-            osw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        jd.writeState(getContext(),state_file);
     }
 
     /*

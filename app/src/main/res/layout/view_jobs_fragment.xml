@@ -8,12 +8,12 @@
     tools:context="com.example.scriptmanager.ViewJobsFragment">
 
     <ScrollView
-        android:id="@+id/vjf_scroll_view"
+        android:id="@+id/view_jobs_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linear_layout_actions_list"
+            android:id="@+id/view_jobs_linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?colorPrimary"

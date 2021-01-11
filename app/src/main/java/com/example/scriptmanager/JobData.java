@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,6 +77,35 @@ public class JobData {
             isDateSet = isTimeSet;
 
             isr.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Write the state of user interface
+     */
+    public void writeState(Context context, String state_file) {
+        OutputStreamWriter osw = null;
+        try {
+            // private storage
+            osw = new OutputStreamWriter(context.openFileOutput(state_file, Context.MODE_PRIVATE));
+            // id of the script
+            osw.write(id.intValue());
+            // size of the string
+            osw.write(name.length());
+            // name of the script
+            osw.write(name);
+            // boolean for the (if it is schedulded)
+            osw.write((isSchedulded?1:0));
+            // boolean for the (if it is started)
+            Logger.debug("isStarted="+isStarted);
+            osw.write(((isSchedulded&isStarted)?1:0));
+            for(int i = 0; i < 5 ; i += 1){
+                osw.write(sched[i]);
+            }
+            osw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
