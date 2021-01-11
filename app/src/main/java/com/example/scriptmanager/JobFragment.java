@@ -219,7 +219,7 @@ public class JobFragment extends Fragment {
                 if ( !isDateSet() || (s != null  && isDateSet())) {
                     if ( isDateSet() ) {
                         jd.sched = s;
-                    } 
+                    }
                     // update image
                     if (!isStarted()) {
                         startJob();

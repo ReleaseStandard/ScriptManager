@@ -15,6 +15,9 @@
     <string name="settings_import_script">Import script</string>
     <string name="settings_anyselection_delete">Delete</string>
 
+    <!-- Settings page modification -->
+    <string name="settings_fragment_debug_mode">Debug mode</string>
+
 
     <string name="dialog_back_title">Leave</string>
     <string name="dialog_back_content">Really leave the application ?</string>

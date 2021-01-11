@@ -8,9 +8,10 @@
     tools:context="com.example.scriptmanager.SettingsFragment">
 
     <ScrollView
-        android:paddingLeft="2dp"
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingLeft="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,99 +20,11 @@
             android:orientation="vertical">
 
             <Switch
-                android:id="@+id/switch2"
+                android:id="@+id/settings_fragment_debug_mode"
                 android:layout_width="match_parent"
                 android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="I'm the first"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch1"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch9"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch10"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch11"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch12"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch13"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch14"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch15"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch16"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch17"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
-                android:textColor="?colorSecondary" />
-
-            <Switch
-                android:id="@+id/switch18"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:shadowColor="#C30000"
-                android:text="Random color for play button"
+                android:text="@string/settings_fragment_debug_mode"
+                android:hint="ok"
                 android:textColor="?colorSecondary" />
 
         </LinearLayout>

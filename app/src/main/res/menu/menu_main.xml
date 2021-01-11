@@ -73,7 +73,7 @@
 
       <!-- DEBUG MENU -->
       <item
-          android:visible="true"
+          android:visible="false"
           android:id="@+id/action_test_button"
           android:orderInCategory="100"
           android:title="Save the state"
