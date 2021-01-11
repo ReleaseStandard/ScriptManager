@@ -2,6 +2,7 @@ package com.example.scriptmanager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.service.autofill.FieldClassification;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -10,6 +11,8 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TimeManager {
 
@@ -119,5 +122,16 @@ public class TimeManager {
             }
         }
         return c;
+    }
+
+
+    public static boolean validDate(String s) {
+        String family = "0-9\\*";
+        Pattern p = Pattern.compile(
+                "^[ ]*["+family+
+                "]+[ ]+["+family+"]+[ ]+["+family+
+                "]+[ ]+["+family+"]+[ ]+["+family+"]+[ ]*$");
+        Matcher m = p.matcher(s);
+        return m.matches();
     }
 }

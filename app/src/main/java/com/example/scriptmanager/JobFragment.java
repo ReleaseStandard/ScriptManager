@@ -10,15 +10,20 @@ import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +34,7 @@ import java.util.Date;
  */
 public class JobFragment extends Fragment {
 
+    public static String WRONG_DATE_FORMAT = "Wrong date format";
     public static Integer fragmentCount = 0;
 
     // is this fragment selected user
@@ -105,10 +111,51 @@ public class JobFragment extends Fragment {
         writeState();
         // update the date view
         // and schedule icon
+        TextView dateView = view.findViewById(R.id.job_date_input);
         if ( jd.isDateSet ) {
-            TextView dateView = view.findViewById(R.id.job_date_input);
             dateView.setText(TimeManager.sched2str(jd.sched));
         }
+        long delay = 500; // 1 seconds after user stops typing
+        long last_text_edit = 0;
+        Handler handler = new Handler();
+        Runnable input_finish_checker = new Runnable() {
+            public void run() {
+                if (System.currentTimeMillis() > (last_text_edit + delay - delay/2)) {
+                    int [] s = getDateFromView();
+                    if ( s != null ) {
+                        jd.sched = s;
+                        setDate();
+                        writeState();
+                    }
+                }
+            }
+        };
+
+        dateView.addTextChangedListener(new TextWatcher() {
+            private Editable s;
+
+            @Override
+            public void beforeTextChanged (CharSequence s,int start, int count,
+                                           int after){
+            }
+            @Override
+            public void onTextChanged ( final CharSequence s, int start, int before,
+                                        int count){
+                //You need to remove this to run only once
+                handler.removeCallbacks(input_finish_checker);
+
+            }
+            @Override
+            public void afterTextChanged ( final Editable s){
+                //avoid triggering event when text is empty
+                if (s.length() > 0) {
+                    handler.postDelayed(input_finish_checker, delay);
+                } else {
+
+                }
+            }
+        });
+
         Logger.debug("JogFragment:onViewCreated");
     }
 
@@ -168,13 +215,18 @@ public class JobFragment extends Fragment {
             @Override
             public void onClick(View view)  {
                 EditText et = v.findViewById(R.id.job_date_input);
-                jd.sched = getDate();
-                // update image
-                if ( !isStarted()  ) {
-                    startJob();
+                int [] s = getDateFromView();
+                if ( s != null ) {
+                    jd.sched = s;
+                    // update image
+                    if (!isStarted()) {
+                        startJob();
+                    } else {
+                        stopJob();
+                    }
                 }
                 else {
-                    stopJob();
+                    showErrorView(WRONG_DATE_FORMAT);
                 }
             }
         });
@@ -259,10 +311,13 @@ public class JobFragment extends Fragment {
         jd.isStarted = true;
 
         if ( isDateSet() ) {
-            jd.isSchedulded = true;
-            setViewWaitStartJob();
-            shell.scheduleJob(main,path,getDate());
-            writeState();
+            int [] s = getDateFromView();
+            if ( s!=null) {
+                jd.isSchedulded = true;
+                setViewWaitStartJob();
+                shell.scheduleJob(main, path,s );
+                writeState();
+            }
         }
         else {
             setViewStartJob();
@@ -273,9 +328,13 @@ public class JobFragment extends Fragment {
             main.ow_menu.callbackSelectAndRunning(main);
         }
     }
-    public int[] getDate() {
+    public int[] getDateFromView() {
         EditText et = getView().findViewById(R.id.job_date_input);
-        return TimeManager.str2sched(et.getText().toString());
+        String date_input = et.getText().toString();
+        if (TimeManager.validDate(date_input)) {
+            return TimeManager.str2sched(date_input);
+        }
+        return null;
     }
     // //
 
@@ -376,6 +435,14 @@ public class JobFragment extends Fragment {
                 setViewStopJob();
             }
         }
+    }
+    public void showErrorView(String text) {
+        Context context = getContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
     }
     //    //
 
