@@ -1,4 +1,4 @@
-package com.example.scriptmanager;
+package com.releasestandard.scriptmanager;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.scriptmanager", appContext.getPackageName());
+        assertEquals("com.releasestandard.scriptmanager", appContext.getPackageName());
     }
 }

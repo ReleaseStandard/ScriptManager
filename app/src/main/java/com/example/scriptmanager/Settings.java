@@ -1,4 +1,4 @@
-package com.example.scriptmanager;
+package com.releasestandard.scriptmanager;
 
 /**
  * This object is used to store settings on the application.

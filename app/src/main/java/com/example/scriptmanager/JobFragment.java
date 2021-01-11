@@ -1,4 +1,4 @@
-package com.example.scriptmanager;
+package com.releasestandard.scriptmanager;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;

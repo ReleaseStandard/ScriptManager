@@ -1,4 +1,4 @@
-package com.example.scriptmanager;
+package com.releasestandard.scriptmanager;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;

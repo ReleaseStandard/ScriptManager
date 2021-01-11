@@ -1,4 +1,4 @@
-package com.example.scriptmanager;
+package com.releasestandard.scriptmanager;
 
 import android.os.Bundle;
 
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.example.scriptmanager.R;
+import com.releasestandard.scriptmanager.R;
 
 /**
  * A simple {@link Fragment} subclass.

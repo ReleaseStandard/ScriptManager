@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="?colorPrimary"
     android:padding="10dp"
-    tools:context="com.example.scriptmanager.JobFragment">
+    tools:context="com.releasestandard.scriptmanager.JobFragment">
 
 
     <LinearLayout
@@ -59,7 +59,7 @@
             android:layout_width="157dp"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            tools:context="com.example.scriptmanager.JobFragment">
+            tools:context="com.releasestandard.scriptmanager.JobFragment">
 
             <EditText
                 android:id="@+id/job_date_input"

@@ -1,4 +1,4 @@
-package com.example.scriptmanager;
+package com.releasestandard.scriptmanager;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
