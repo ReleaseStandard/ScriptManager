@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.invoke.MethodHandles;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +40,27 @@ public class JobData {
     public boolean isDateSet = false;
     public String name_in_path = "";
 
+    public void dump() {
+        Logger.debug(dump(""));
+    }
+    public String dump(String init) {
+        String sched_as_ints = "";
+        for ( int i : sched) {
+            sched_as_ints = sched_as_ints + (new Integer(i)) + " ";
+        }
+        return
+                init + "JobData {\n" +
+                init + " id=" + id + "\n" +
+                init + " name=" + name + "\n" +
+                init + " isSchedulded=" + isSchedulded + "\n" +
+                init + " isStarted=" + isStarted + "\n" +
+                init + " sched=" + TimeManager.sched2str(sched) + "\n" +
+                init + "  (" + sched_as_ints + ")\n" +
+                init + " isDateSet=" + isDateSet + "\n" +
+                init + " name_in_path=" + name_in_path + "\n" +
+                init + "}\n"
+        ;
+    }
     /**
      *  Beware this method is used at boot time to set alarms, Object like Matcher, File
      *  could cause crashes.
@@ -68,14 +90,15 @@ public class JobData {
             isSchedulded = (isr.read() == 0)?false:true;
             // boolean for the (if it is started)
             isStarted = (isr.read() == 0)?false:true;
+            // boolean for the (if it is date set or not)
+            isDateSet = (isr.read() == 0)?false:true;
             // get The date
-            boolean isTimeSet = true;
             for(int ii = 0; ii < 5 ; ii += 1) {
                 int j = isr.read();
-                sched[ii]=j;
+                // since any of secondes, minutes, hours, day, month year will go to much high we stop here
+                short jj = (short)j;
+                sched[ii]=jj;
             }
-            isDateSet = isTimeSet;
-
             isr.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -100,8 +123,9 @@ public class JobData {
             // boolean for the (if it is schedulded)
             osw.write((isSchedulded?1:0));
             // boolean for the (if it is started)
-            Logger.debug("isStarted="+isStarted);
             osw.write(((isSchedulded&isStarted)?1:0));
+            // boolean for the (if it is date set or not)
+            osw.write((isDateSet?1:0));
             for(int i = 0; i < 5 ; i += 1){
                 osw.write(sched[i]);
             }

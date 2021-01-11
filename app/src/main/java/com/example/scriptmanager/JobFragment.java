@@ -25,14 +25,9 @@ import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link JobFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class JobFragment extends Fragment {
-
-    // ?
-    private static final String sname = "test";
-    private String msname;
 
     public static Integer fragmentCount = 0;
 
@@ -45,36 +40,43 @@ public class JobFragment extends Fragment {
     public Date started = null;
     public Date stopped = null;
     public final static Integer EACH_TIME = -1;
-    int sched[] = {
-                    EACH_TIME,        // minutes
-                    EACH_TIME,        // hours
-                    EACH_TIME,        // day of month
-                    EACH_TIME,        // month
-                    EACH_TIME };      // year
     // données du modèle
 
     private View view = null;
     Shell shell = new Shell();
 
     public void dump() {
-            Logger.log("JobFragment {\n fragmentCount="+fragmentCount+"\n name="+jd.name+"\n path="+path+
-                    "\n log_path="+log_path+"\n state_file="+state_file+"\n id="+jd.id+"\n isSchedulded="+ jd.isSchedulded +"\n isStarted="+ jd.isStarted + "\n}");
+        Logger.debug(dump(""));
+    }
+    public String dump(String init) {
+            return
+                    init + "JobFragment {\n"+
+                    init + " fragmentCount="+fragmentCount+"\n"+
+                    init + " path="+path+ "\n"+
+                    init + " log_path="+log_path+"\n"+
+                    init + " state_file="+state_file + "\n" +
+                    jd.dump(init+" ") +
+                    "}\n";
     }
 
     public JobFragment(String statefile) {
-        newInstanceStuff();
+        initializeInstance();
         this.state_file = statefile;
     }
     public JobFragment() {
-        newInstanceStuff();
+        initializeInstance();
     }
-    public void newInstanceStuff() {
+
+    /**
+     * Used to initialize the JobFragment
+     */
+    public void initializeInstance() {
         Calendar rn = Calendar.getInstance();
-        sched[0] = rn.get(Calendar.MINUTE);
-        sched[1] = rn.get(Calendar.HOUR);
-        sched[2] = rn.get(Calendar.DAY_OF_MONTH);
-        sched[3] = rn.get(Calendar.MONTH);
-        sched[4] = rn.get(Calendar.YEAR);
+        jd.sched[0] = rn.get(Calendar.MINUTE);
+        jd.sched[1] = rn.get(Calendar.HOUR);
+        jd.sched[2] = rn.get(Calendar.DAY_OF_MONTH);
+        jd.sched[3] = rn.get(Calendar.MONTH);
+        jd.sched[4] = rn.get(Calendar.YEAR);
         rn.set(Calendar.SECOND,0);
         rn.set(Calendar.MILLISECOND,0);
 
@@ -96,24 +98,17 @@ public class JobFragment extends Fragment {
         return Shell.internalStorage + "/" + state_file;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param sname SName.
-     * @return A new instance of fragment fragment_first_part.
-     */
-    public static JobFragment newInstance(String sname) {
-        JobFragment fragment = new JobFragment();
-        Bundle args = new Bundle();
-        args.putString(JobFragment.sname, sname);
-        return fragment;
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         writeState();
+        // update the date view
+        // and schedule icon
+        if ( jd.isDateSet ) {
+            TextView dateView = view.findViewById(R.id.job_date_input);
+            dateView.setText(TimeManager.sched2str(jd.sched));
+        }
         Logger.debug("JogFragment:onViewCreated");
     }
 
@@ -134,9 +129,6 @@ public class JobFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            msname = getArguments().getString(sname);
-        }
         Logger.debug("JogFragment:onCreate");
     }
 
@@ -150,13 +142,6 @@ public class JobFragment extends Fragment {
         tv.setText(jd.name);
         TextView tv2 = v.findViewById(R.id.job_filename);
         tv2.setText(path);
-
-        // update the date view
-        // and schedule icon
-        if ( jd.isDateSet ) {
-            TextView dateView = v.findViewById(R.id.job_date_input);
-            dateView.setText(TimeManager.sched2str(sched));
-        }
 
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -183,7 +168,7 @@ public class JobFragment extends Fragment {
             @Override
             public void onClick(View view)  {
                 EditText et = v.findViewById(R.id.job_date_input);
-                sched = getDate();
+                jd.sched = getDate();
                 // update image
                 if ( !isStarted()  ) {
                     startJob();
@@ -223,15 +208,20 @@ public class JobFragment extends Fragment {
         TimeManager tm = new TimeManager(){
             @Override
             public void onPicked(int minute,int hourOfDay,int dayOfMonth,int monthOfYear,int year) {
-                sched[0] = minute;
-                sched[1] = hourOfDay;
-                sched[2] = dayOfMonth;
-                sched[3] = monthOfYear;
-                sched[4] = year;
+                jd.sched[0] = minute;
+                jd.sched[1] = hourOfDay;
+                jd.sched[2] = dayOfMonth;
+                jd.sched[3] = monthOfYear;
+                jd.sched[4] = year;
+                setDate();
                 writeState();
             }
         };
-        tm.show(v,sched);
+        tm.show(v,jd.sched);
+    }
+    public boolean setDate() {
+        jd.isDateSet = true;
+        return jd.isDateSet;
     }
     public boolean isDateSet() {
         EditText et = getView().findViewById(R.id.job_date_input);
@@ -397,6 +387,7 @@ public class JobFragment extends Fragment {
      * Write the state of user interface
      */
     public void writeState() {
+        jd.dump();
         jd.writeState(getContext(),state_file);
     }
 

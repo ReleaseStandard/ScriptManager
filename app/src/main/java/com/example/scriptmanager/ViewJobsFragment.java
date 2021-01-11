@@ -207,7 +207,7 @@ public class ViewJobsFragment extends Fragment {
             String statefile = internal_relative_name+ Shell.SUFFIX_STATE;
             JobFragment jf = addNewJob(statefile);
             jf.readState(getActivity(),internal_relative_name);
-            if ( Logger.DEBUG ) { jf.dump(); }
+            jf.dump();
         }
         if ( fragments.size() > 0) {
             JobFragment.fragmentCount = fragments.get(fragments.size() - 1).jd.id + 1;
