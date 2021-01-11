@@ -216,8 +216,10 @@ public class JobFragment extends Fragment {
             public void onClick(View view)  {
                 EditText et = v.findViewById(R.id.job_date_input);
                 int [] s = getDateFromView();
-                if ( s != null ) {
-                    jd.sched = s;
+                if ( !isDateSet() || (s != null  && isDateSet())) {
+                    if ( isDateSet() ) {
+                        jd.sched = s;
+                    } 
                     // update image
                     if (!isStarted()) {
                         startJob();
