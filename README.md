@@ -5,6 +5,7 @@
 </p>
 Open source application to manage, launch and schedule your sh scripts.<br />
 You can view it has cron schedulder of sh scripts.<br />
+
 ## Basic usage
 Press "+" to create a new job.<br />
 Longpress the new job and overflow menu > Edit (script your script).<br />

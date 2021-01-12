@@ -1,0 +1,11 @@
+Manage, launch and schedule your sh scripts.
+FEATURES
+* Scripts schedulding and repetition (persistent accross reboot).
+* Launch your scripts via button.
+* No root required.
+* Scripts edition with your favourite text editor.
+HOW TO USE
+Press "+" to create a new job.
+Longpress the new job and overflow menu > Edit (script your script).
+Then click play to launch the script.
+Check the result by long press then View log.
