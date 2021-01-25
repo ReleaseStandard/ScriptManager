@@ -20,6 +20,7 @@
         <item name="colorAccent">@color/black</item>
 
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="preferenceTheme">@style/AppTheme.Preference</item>
     </style>
     <style name="Theme.Scriptapp.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -30,6 +31,8 @@
 
     <style name="Theme.Scriptapp.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight"></style>
 
+    <style name="Theme.Scriptapp." parent="Theme.AppCompat.DayNight.Dialog">
+    </style>
     <style name="TimePickerTheme" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="colorAccent">?colorPrimaryVariant</item>
         <item name="android:layout_width">wrap_content</item>
@@ -40,5 +43,10 @@
                 colorPrimary,colorPrimaryDark,android:textColor ,
                 android:textColorAlertDialogListItem,colorSecondary
          -->
+    </style>
+    <style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">#ff00ff</item>
+        <item name="android:textColorSecondary">#00ffff</item>
     </style>
 </resources>

@@ -7,7 +7,7 @@ import android.util.Log;
  */
 public class Logger {
 
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
     private static final String appname = "scriptmanager";
 
     public static void debug(String msg) {

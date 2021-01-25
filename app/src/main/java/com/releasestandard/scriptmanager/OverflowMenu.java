@@ -27,7 +27,7 @@ public class OverflowMenu {
             R.id.action_oneonly_clear_log
     };
 
-    int debug_mode[] = {R.id.settings_fragment_debug_mode};
+    int debug_mode[] = {/*R.id.settings_fragment_debug_mode*/};
 
     int running_mode[] = {R.id.action_stopall};
 

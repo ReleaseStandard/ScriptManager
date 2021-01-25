@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <PreferenceCategory
+        android:key="preferences_display"
+        android:title="@string/settings_fragment_display_group">
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="preferences_developper"
+        android:title="@string/settings_fragment_developper_group">
+
+        <SwitchPreferenceCompat
+            android:key="preferences_developper_debug_mode"
+            android:title="@string/settings_fragment_debug_mode"
+            android:summary="@string/settings_fragment_debug_mode_summary"
+            />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

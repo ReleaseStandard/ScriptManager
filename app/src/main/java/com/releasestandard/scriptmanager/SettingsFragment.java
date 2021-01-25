@@ -1,9 +1,13 @@
 package com.releasestandard.scriptmanager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,43 +18,30 @@ import android.widget.Switch;
 
 import com.releasestandard.scriptmanager.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends PreferenceFragmentCompat  {
 
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
+    private SharedPreferences.OnSharedPreferenceChangeListener listener = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.settings_fragment, rootKey);
+        SharedPreferences sp =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.settings_fragment, container, false);
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Switch s = view.findViewById(R.id.settings_fragment_debug_mode);
-        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Logger.DEBUG = isChecked;
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                applySettings();
             }
-        });
+        };
+
+        sp.registerOnSharedPreferenceChangeListener(listener);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+    public void applySettings() {
+        SharedPreferences sp =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        Logger.DEBUG = sp.getBoolean("preferences_developper_debug_mode",false);
+        Logger.debug("debug_mode = "+(Logger.DEBUG?"true":"false"));
+    }
 }

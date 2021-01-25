@@ -17,6 +17,9 @@
 
     <!-- Settings page modification -->
     <string name="settings_fragment_debug_mode">Debug mode</string>
+    <string name="settings_fragment_debug_mode_summary">Send messages to logcat</string>
+    <string name="settings_fragment_developper_group">Developper</string>
+    <string name="settings_fragment_display_group">Display</string>
 
 
     <string name="dialog_back_title">Leave</string>
