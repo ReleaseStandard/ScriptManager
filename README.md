@@ -5,6 +5,7 @@
 </p>
 Open source application to manage, launch and schedule your sh scripts.<br />
 You can view it has cron schedulder of sh scripts.<br />
+<br />
 <div style="display: flex;flex-direction: column;">
  <img src="https://raw.githubusercontent.com/ReleaseStandard/ScriptManager/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="30%" />
  <img src="https://raw.githubusercontent.com/ReleaseStandard/ScriptManager/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="30%" />
