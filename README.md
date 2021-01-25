@@ -11,7 +11,7 @@ You can view it has cron schedulder of sh scripts.<br />
  <img src="https://raw.githubusercontent.com/ReleaseStandard/ScriptManager/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="30%" />
 </div>
 <br />
-<center><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75" /></center>
+<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75" />
 
 ## Basic usage
 Press "+" to create a new job.<br />
