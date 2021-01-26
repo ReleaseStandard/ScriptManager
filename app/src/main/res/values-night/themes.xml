@@ -1,31 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!--
-          primary color     : black
-          primary variant  : grey (#C0C0C0)
-          secondary           : white
-    -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlHighlight">#FF000000</item>
-        <item name="android:colorLongPressedHighlight">#333333</item>
-        <item name="android:colorForeground">#FFBABABA</item>
-        <item name="colorPrimary">#FF000000</item>
-        <item name="colorPrimaryVariant">#FF000000</item>
-        <item name="android:textColorHint">#FFBABABA</item>
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">@color/white</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <item name="colorAccent">@color/white</item>
-
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="preferenceTheme">@style/AppTheme.Preference</item>
-        <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
-        <item name="actionOverflowButtonStyle">@style/AppTheme.actionOverflowButtonStyle</item>
-        <item name="colorSurface">@color/black</item>
-        <item name="android:textColorPrimary">@color/white</item>
-
-    </style>
+    <color name="pcolorAccent">@color/black</color>
+    <color name="pcolorPrimary">@color/black</color>
+    <color name="pcolorVariant">#C0C0C0</color>
+    <color name="pcolorSecondary">@color/white</color>
 
     <style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay">
         <item name="android:textColor">@color/white</item>

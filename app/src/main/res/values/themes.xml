@@ -1,10 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!--
-        primary color     : white
-        primary variant  : grey (#C0C0C0)
-        secondary          : black
-    -->
+    <color name="pcolorAccent">#FF00C0C0</color>
+    <color name="pcolorPrimary">@color/white</color>
+    <color name="pcolorVariant">#C0C0C0</color>
+    <color name="pcolorSelection">#66C0C0C0</color>
+    <color name="pcolorSecondary">@color/black</color>
     <!-- Base application theme : by using MaterialComponents we lose compatibility for API < 21. -->
     <!--
             android:textColorPrimary       color for text in overflow menu
@@ -12,44 +12,44 @@
     -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- color used for overflow and UP button -->
-        <item name="colorControlNormal">@color/black</item>
-        <item name="colorControlHighlight">#C0C0C0</item>
-        <item name="android:textColorHint">#FFBABABA</item>
+        <item name="colorControlNormal">@color/pcolorSecondary</item>
+        <item name="colorControlHighlight">@color/pcolorVariant</item>
+        <item name="android:textColorHint">@color/pcolorVariant</item>
 
         <!-- this is for switchies (default color) -->
-        <item name="android:colorForeground">#FFBABABA</item>
+        <item name="android:colorForeground">@color/pcolorVariant</item>
 
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">#FF00C0C0</item>
-        <item name="android:colorLongPressedHighlight">#005F5F</item>
+        <item name="colorPrimary">@color/pcolorPrimary</item>
+        <item name="colorPrimaryVariant">@color/pcolorAccent</item>
+        <item name="android:colorLongPressedHighlight">@color/pcolorSelection</item>
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorSecondary">@color/pcolorSecondary</item>
+        <item name="colorSecondaryVariant">@color/pcolorSecondary</item>
         <!-- color used on '+' signs on buttons for example -->
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="colorAccent">@color/black</item>
+        <item name="colorOnSecondary">@color/pcolorPrimary</item>
+        <item name="colorAccent">@color/pcolorSecondary</item>
 
         <!-- Tweak of colors used for widgets -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="preferenceTheme">@style/AppTheme.Preference</item>
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
         <item name="actionOverflowButtonStyle">@style/AppTheme.actionOverflowButtonStyle</item>
-        <item name="colorSurface">#FF00C0C0</item>
-        <item name="android:textColorPrimary">@color/black</item>
+        <item name="colorSurface">@color/pcolorAccent</item>
+        <item name="android:textColorPrimary">@color/pcolorSecondary</item>
 <!--        <item name="actionOverflowMenuStyle">@style/AppTheme.actionO</item>-->
 
     </style>
 
     <style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/pcolorSecondary</item>
     </style>
 
     <style name="AppTheme.AlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:background">@color/white</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="android:textColorPrimary">@color/pcolorSecondary</item>
+        <item name="android:background">@color/pcolorPrimary</item>
+        <item name="colorOnPrimary">@color/pcolorSecondary</item>
     </style>
     <style name="AppTheme.actionOverflowButtonStyle" parent="android:Widget.Material.ActionButton.Overflow">
         <!-- Tweak of the button that trigger ow menu -->
@@ -107,12 +107,12 @@
             color of the background behind title
     -->
     <style name="AppTheme.DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="colorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">#C0C0C0</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="colorAccent">@color/black</item>
-        <item name="android:textColorPrimaryInverse">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimary">@color/pcolorSecondary</item>
+        <item name="android:textColorSecondary">@color/pcolorVariant</item>
+        <item name="android:textColorPrimary">@color/pcolorSecondary</item>
+        <item name="colorAccent">@color/pcolorSecondary</item>
+        <item name="android:textColorPrimaryInverse">@color/pcolorPrimary</item>
+        <item name="android:windowBackground">@color/pcolorPrimary</item>
     </style>
 
     <!--
@@ -132,12 +132,12 @@
             color for the alternative input
      -->
     <style name="AppTheme.TimePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="colorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">#C0C0C0</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="android:textColorPrimaryInverse">@color/black</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimary">@color/pcolorSecondary</item>
+        <item name="android:textColorSecondary">@color/pcolorVariant</item>
+        <item name="android:textColorPrimary">@color/pcolorSecondary</item>
+        <item name="colorAccent">@color/pcolorPrimary</item>
+        <item name="android:textColorPrimaryInverse">@color/pcolorSecondary</item>
+        <item name="android:windowBackground">@color/pcolorPrimary</item>
     </style>
 
     <!--
@@ -150,11 +150,11 @@
         bar color when there is no text
     -->
     <style name="AppTheme.RenameDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="colorAccent">#C0C0C0</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="colorPrimary">@color/black</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="colorAccent">@color/pcolorVariant</item>
+        <item name="android:textColorPrimary">@color/pcolorSecondary</item>
+        <item name="android:textColor">@color/pcolorSecondary</item>
+        <item name="colorPrimary">@color/pcolorSecondary</item>
+        <item name="android:windowBackground">@color/pcolorPrimary</item>
     </style>
 
 
