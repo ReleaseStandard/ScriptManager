@@ -22,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?colorPrimaryVariant"
-            app:popupTheme="@style/Theme.Scriptapp.PopupOverlay"
             app:titleTextColor="?colorSecondary"
             tools:layout_conversion_absoluteHeight="56dp"
             tools:layout_conversion_absoluteWidth="411dp"

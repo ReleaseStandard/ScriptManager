@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
       android:id="@+id/action_menu"
       tools:context="com.releasestandard.scriptmanager.MainActivity">
-    <item
+
+      <item
         android:tooltipText="open settings"
         android:id="@+id/action_settings"
         android:orderInCategory="100"

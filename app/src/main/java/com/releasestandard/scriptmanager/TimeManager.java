@@ -35,12 +35,12 @@ public class TimeManager {
         TextView tv = vpg.findViewById(R.id.job_date_input);
 
         // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(v.getContext(),R.style.TimePickerTheme,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(v.getContext(),R.style.AppTheme_TimePicker,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(),R.style.TimePickerTheme,
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(),R.style.AppTheme_DatePicker,
                                 new DatePickerDialog.OnDateSetListener() {
                                     @Override
                                     public void onDateSet(DatePicker view, int year,

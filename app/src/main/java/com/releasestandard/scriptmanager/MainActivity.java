@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
             mainLeaveSelectMode();
         }
         else {
-            new AlertDialog.Builder(this)
+            AlertDialog ad = new AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                     .setTitle(R.string.dialog_back_title)
                     .setMessage(R.string.dialog_back_content)
 
