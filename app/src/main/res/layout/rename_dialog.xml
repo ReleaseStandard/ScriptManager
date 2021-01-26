@@ -3,6 +3,7 @@
 android:orientation="vertical"
     android:id="@+id/rename_dialog_layout"
 android:paddingLeft="20dp"
+    android:theme="@style/AppTheme.RenameDialog"
 android:paddingRight="20dp"
 android:layout_width="match_parent"
 android:layout_height="match_parent">

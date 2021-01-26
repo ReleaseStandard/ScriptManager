@@ -55,6 +55,14 @@
         <item name="android:windowBackground">@color/black</item>
     </style>
 
+    <style name="AppTheme.RenameDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorAccent">#C0C0C0</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/black</item>
+    </style>
+
     <style name="AppTheme.actionOverflowButtonStyle" parent="android:Widget.Material.ActionButton.Overflow">
         <!-- Tweak of the button that trigger ow menu -->
     </style>

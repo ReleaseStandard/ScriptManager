@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (R.id.action_oneonly_rename == id) {
             JobFragment jf = jobs_view.getSelected();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AppTheme_RenameDialog);
             View customLayout = getLayoutInflater().inflate(R.layout.rename_dialog, null);
             builder.setView(customLayout);
             builder.setPositiveButton(R.string.action_oneonly_rename_ok, new DialogInterface.OnClickListener() {
