@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,16 +73,24 @@ public class Shell {
         }
         return script;
     }
+
+
+
     /**
      * parameter could be the name of the script or an absolute path.
      * @param script
      * @return
      */
     public int execScript(String script) {
+        EventsReceiver.listeners.add(this);
         script = getAbsolutePath(script);
-        Logger.log("Job execution : " + script + "\n   log=" + getLogPath(script));
+        String output = script + ".out";
+
+        output = wrappScript(script,output);
+
+        Logger.log("Job execution : " + output + "\n   log=" + getLogPath(script));
         try {
-            Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". " + script + " >> " + getLogPath(script)});
+            Process pr = Runtime.getRuntime().exec(new String[]{"sh","-c",". " + output + " >> " + getLogPath(script) + " 2>&1"});
             processes.add(pr);
         } catch (IOException e) {
             return 1;
@@ -146,5 +156,59 @@ public class Shell {
             }
         }
         return l;
+    }
+
+
+    /**************************************************
+     *            Bash interface part
+     ***************************************************/
+    private String pidFile = null;
+    private HashMap<String,String> events =  new HashMap<String, String>() {{
+        put("msg_recv", "USR1");
+        put("msg_send", "USR2");
+    }};
+    /**
+         *  This is a wrapper allow a script to handle events from android.
+         * @return
+         */
+     public String wrappScript(String in,String out)  {
+            Logger.debug("Transform "+in+" > "+out);
+            pidFile = out + ".pid";
+            String salt = "scriptmanager_internal_dfjskhqipfhauzihuifeazipuihefuihiaez_";
+            String header = "" +
+                    salt + "pidf=\"" + pidFile + "\";\n" +
+                    salt + "is_trap_set=false;\n" +
+                    salt + "SIG_msg_recv="+events.get("msg_recv")+";\n" +
+                    "\n" +
+                    "handle_msg_recv() \n" +
+                    "{\n" +
+                        "\t" + salt + "is_trap_set=true;\n" +
+                        "\tmsg=\"read from disk\";\n" +
+                        "\ttel=\"also read from disk\";\n" +
+                        "\ttrap \"$1 \\\"$msg\\\" \\\"$tel\\\"\" $" + salt + "SIG_msg_recv;\n" +
+                    "}\n" +
+                    "\n" +
+                    "echo \"$$\" > " + pidFile + ";\n";
+
+            String footer = "" +
+                    "while $" + salt + "is_trap_set ; do\n" +
+                        "\tsleep 100 &\n" +
+                        "\techo \"$!\"\n" +
+                        "\twait $!\n" +
+                    "done\n";
+
+
+             execCmd(
+                     "printf '" + header + "' > "   + out +
+                     " ; cat '"      + in   + "' >> " + out +
+                     " ; printf '" + footer   + "' >> " + out + ";"
+                     );
+            return out;
+    }
+    public void triggerRecvMsg(String from, String body) {
+         Logger.debug("triggerRecvMsg,from="+from+",body="+body);
+         String cmd = "kill -s " + events.get("msg_recv") + " $(cat " + pidFile + ")";
+         Logger.debug(cmd);
+        execCmd(cmd);
     }
 }

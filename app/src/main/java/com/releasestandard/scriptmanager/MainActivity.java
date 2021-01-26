@@ -81,12 +81,9 @@ public class MainActivity extends AppCompatActivity {
         views.put(R.id.action_settings, sf);
 
         ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                1);
-
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.RECEIVE_BOOT_COMPLETED},
-                1);
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECEIVE_BOOT_COMPLETED,
+                        Manifest.permission.RECEIVE_SMS}, 1);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.nav_host_fragment, jobs_view);
