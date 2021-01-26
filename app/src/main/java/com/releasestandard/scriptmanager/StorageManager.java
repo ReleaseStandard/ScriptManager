@@ -24,6 +24,22 @@ public class StorageManager {
      */
     public String script_name = "";
 
+    public void dump() { Logger.debug(dump("")); }
+    public String dump(String off) {
+        String noff = off + "\t";
+        return "" +
+                    off + "StorageManager {\n" +
+                    noff + "externalStorage="+externalStorage+"\n" +
+                    noff + "internalStorage="+internalStorage+"\n"+
+                    noff + "SUFFIX_LOG=" + SUFFIX_LOG + "\n" +
+                    noff + "SUFFIX_SCRIPT=" + SUFFIX_SCRIPT + "\n" +
+                    noff + "SUFFIX_STATE=" + SUFFIX_STATE + "\n" +
+                    noff + "SUFFIX_OUTPUT=" + SUFFIX_OUTPUT + "\n" +
+                    noff + "script_name=" + script_name + "\n" +
+                    off + "}\n"
+                ;
+    }
+
     public StorageManager(StorageManager sm) {
         this.externalStorage = sm.externalStorage;
         this.internalStorage = sm.internalStorage;
@@ -41,6 +57,9 @@ public class StorageManager {
     }
     public StorageManager() {
 
+    }
+    public String getScriptName() {
+        return this.script_name;
     }
     public void setScriptName(String script) {
         this.script_name = script;

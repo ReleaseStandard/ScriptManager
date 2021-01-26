@@ -54,13 +54,14 @@ public class JobFragment extends Fragment {
         Logger.debug(dump(""));
     }
     public String dump(String init) {
+            String ninit = init + "\t";
             return
                     init + "JobFragment {\n"+
-                    init + " fragmentCount="+fragmentCount+"\n"+
-                    init + " path="+path+ "\n"+
-                    init + " log_path="+log_path+"\n"+
-                    init + " state_file="+state_file + "\n" +
-                    jd.dump(init+" ") +
+                    ninit + " fragmentCount="+fragmentCount+"\n"+
+                    ninit + " path="+path+ "\n"+
+                    ninit + " log_path="+shell.sm.getLogAbsolutePath()+"\n"+
+                    ninit + " state_file="+shell.sm.getStateFileAbsolutePath() + "\n" +
+                    jd.dump(ninit) +
                     "}\n";
     }
 
@@ -88,12 +89,16 @@ public class JobFragment extends Fragment {
         rn.set(Calendar.MILLISECOND,0);
 
         jd.id = fragmentCount++;
+        String scriptname = "script_" + jd.id.toString();
         jd.name = "Script n°" + jd.id.toString();
-        shell.sm.setScriptName("script_" + jd.id.toString() + StorageManager.SUFFIX_SCRIPT);
+        shell.sm.setScriptName(scriptname);
+        jd.name_in_path = scriptname;
         state_file = shell.sm.getStateFileAbsolutePath();
         log_path = shell.sm.getLogAbsolutePath();
-
+        path = shell.sm.getScriptName();
+        // create/empty logfile
         shell.execCmd("> " + log_path);
+        jd.dump();
     }
 
     @Override
@@ -173,11 +178,13 @@ public class JobFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Logger.debug("onCreateView from JobFragment");
+        Logger.debug("JobFragment:onCreateView");
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.job_fragment, container, false);
         TextView tv = v.findViewById(R.id.job_title);
         tv.setText(jd.name);
+        shell.dump();
+        jd.dump();
         TextView tv2 = v.findViewById(R.id.job_filename);
         tv2.setText(path);
 

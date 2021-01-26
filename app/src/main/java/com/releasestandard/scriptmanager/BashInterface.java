@@ -5,11 +5,21 @@ import java.util.HashMap;
 public class BashInterface {
 
     private String pidFile = null;
-    private String salt = salt = "scriptmanager_internal_dfjskhqipfhauzihuifeazipuihefuihiaez_";
+    private String salt = "scriptmanager_internal_dfjskhqipfhauzihuifeazipuihefuihiaez_";
     private HashMap<String,String> events =  new HashMap<String, String>() {{
         put("msg_recv", "USR1");
         put("msg_send", "USR2");
     }};
+
+    public void dump() { Logger.debug(dump("")); }
+    public String dump(String off) {
+            String noff = off + "\t";
+            return off + "BashInterface {\n"+
+                    noff + "salt=" + salt + "\n" +
+                    noff + "events=" + events.size() + "\n" +
+                    off + "}\n"
+                    ;
+    }
 
     public BashInterface(StorageManager sm) {
         pidFile = sm.getInternalAbsolutePath("dummy.pid");

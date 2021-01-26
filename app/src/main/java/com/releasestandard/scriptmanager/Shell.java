@@ -24,6 +24,17 @@ public class Shell {
     public StorageManager sm = null;
     public BashInterface bi = null;
 
+    public void dump() { Logger.debug(dump("")); }
+    public String dump(String offset) {
+        return "" +
+                offset + "Shell { \n" +
+                offset + "\tprocesses=" + processes.size() + "\n" +
+                offset + "\tintents=" + intents.size() + "\n" +
+                bi.dump(offset + "\t" ) +
+                sm.dump(offset + "\t") +
+                offset + "}\n";
+    }
+
     /**
      *  Constructor will build the storage required to store scripts.
      */
