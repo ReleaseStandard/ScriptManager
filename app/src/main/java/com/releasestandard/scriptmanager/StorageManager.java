@@ -84,7 +84,7 @@ public class StorageManager {
     public String getScriptAbsolutePath(String scriptname) { return this.getExternalAbsolutePath(getScriptPath(scriptname)); }
     private String getOutputPath() { return getOutputPath(this.script_name);  }
     private String getOutputPath(String scriptname) { return addSuffixeIfNeeded(scriptname,SUFFIX_OUTPUT); }
-    public String getOutputAbsolutePath() { return this.getScriptAbsolutePath(this.script_name); }
+    public String getOutputAbsolutePath() { return this.getOutputAbsolutePath(this.script_name); }
     public String getOutputAbsolutePath(String scriptname) { return this.getExternalAbsolutePath(getOutputPath(scriptname)); }
     /**
      * Input  : script name or abs path

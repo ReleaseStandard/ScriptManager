@@ -57,11 +57,13 @@ public class JobFragment extends Fragment {
             String ninit = init + "\t";
             return
                     init + "JobFragment {\n"+
-                    ninit + " fragmentCount="+fragmentCount+"\n"+
-                    ninit + " path="+path+ "\n"+
-                    ninit + " log_path="+shell.sm.getLogAbsolutePath()+"\n"+
-                    ninit + " state_file="+shell.sm.getStateFileAbsolutePath() + "\n" +
+                    ninit + "fragmentCount="+fragmentCount+"\n"+
+                    ninit + "WRONG_DATE_FORMAT="+WRONG_DATE_FORMAT+"\n"+
+                    ninit + "path="+path+ "\n"+
+                    ninit + "log_path="+shell.sm.getLogAbsolutePath()+"\n"+
+                    ninit + "state_file="+shell.sm.getStateFileAbsolutePath() + "\n" +
                     jd.dump(ninit) +
+                    shell.dump(ninit) +
                     "}\n";
     }
 

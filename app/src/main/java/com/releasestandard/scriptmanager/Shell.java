@@ -74,23 +74,35 @@ public class Shell {
         Logger.log("Job execution : " + output + "\n   log=" + sm.getLogAbsolutePath());
         Process p = _execScript(output,sm.getLogAbsolutePath());
         if ( p != null ) {
+            Logger.debug("Shell: Process has started");
             processes.add(p);
             return 0;
         }
+        Logger.debug("Shell: Process failed to start");
         return 1;
     }
-    public static Process _execScript(String cmd) {
-        return _execScript(cmd,"/dev/null");
+    public static Process _execScript(String script) {
+        return _execScript(script,"/dev/null");
     }
-    public static Process _execScript(String cmd, String log) {
+    public static Process _execScript(String script, String log) {
         try {
-            return Runtime.getRuntime().exec(new String[]{"sh","-c",". " + cmd + " >> " + log+ " 2>&1"});
+            return Runtime.getRuntime().exec(new String[]{"sh","-c",". " + script,"> " + log + "2>&1"});
 
         } catch (IOException e) {
             return null;
         }
     }
+    public static Process _execCmd(String cmd) {
+        return _execCmd(cmd,"/dev/null");
+    }
+    public static Process _execCmd(String cmd, String log) {
+        try {
+            return Runtime.getRuntime().exec(new String[]{"sh","-c",cmd,">",log,"2>&1"});
 
+        } catch (IOException e) {
+            return null;
+        }
+    }
     public void clearLog() throws IOException { clearLog(this.sm.script_name); }
     public void clearLog(String script) throws IOException {
         Runtime.getRuntime().exec(new String[]{"sh","-c","> "+ sm.getLogAbsolutePath(script)});

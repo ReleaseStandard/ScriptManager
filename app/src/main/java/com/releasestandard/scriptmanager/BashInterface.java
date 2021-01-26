@@ -2,10 +2,14 @@ package com.releasestandard.scriptmanager;
 
 import java.util.HashMap;
 
+/**
+ * By convention, we use prefix _scriptmanager_ for our internal bash variables.
+ */
 public class BashInterface {
 
+    // these files are used only for this classe so we don't use the StorageManager //
+    private static String SUFFIX_PID = ".pid";
     private String pidFile = null;
-    private String salt = "scriptmanager_internal_dfjskhqipfhauzihuifeazipuihefuihiaez_";
     private HashMap<String,String> events =  new HashMap<String, String>() {{
         put("msg_recv", "USR1");
         put("msg_send", "USR2");
@@ -15,7 +19,6 @@ public class BashInterface {
     public String dump(String off) {
             String noff = off + "\t";
             return off + "BashInterface {\n"+
-                    noff + "salt=" + salt + "\n" +
                     noff + "events=" + events.size() + "\n" +
                     off + "}\n"
                     ;
@@ -31,35 +34,38 @@ public class BashInterface {
      */
     public  String wrappScript(String in,String out)  {
         Logger.debug("Transform "+in+" > "+out);
-        pidFile = out + ".pid";
+        pidFile = out + SUFFIX_PID;
+
+
         String header = "" +
-                salt + "pidf=\"" + pidFile + "\";\n" +
-                salt + "is_trap_set=false;\n" +
-                salt + "SIG_msg_recv="+events.get("msg_recv")+";\n" +
+                 "       _scriptmanager_pidf=\"" + pidFile + "\" ;     \n" +
+                "        _scriptmanager_is_trap_set=false ;              \n" +
+                "        _scriptmanager_SIG_msg_recv=\""+events.get("msg_recv")+"\" ;         \n" +
                 "\n" +
-                "handle_msg_recv() \n" +
-                "{\n" +
-                "\t" + salt + "is_trap_set=true;\n" +
-                "\tmsg=\"read from disk\";\n" +
-                "\ttel=\"also read from disk\";\n" +
-                "\ttrap \"$1 \\\"$msg\\\" \\\"$tel\\\"\" $" + salt + "SIG_msg_recv;\n" +
+                "handle_msg_recv () { \n" +
+                "         _scriptmanager_is_trap_set=true ; \n" +
+                "         msg=\"read from disk\"      ;             \n" +
+                "         tel=\"also read from disk\" ;            \n" +
+                "         trap \"$1 \\\"$msg\\\" \\\"$tel\\\"\" $_scriptmanager_SIG_msg_recv ;  \n" +
                 "}\n" +
                 "\n" +
-                "echo \"$$\" > " + pidFile + ";\n";
+                "echo \"$$\" > " + pidFile + " ; \n";
 
         String footer = "" +
-                "while $" + salt + "is_trap_set ; do\n" +
+                "while $_scriptmanager_is_trap_set ; do\n" +
                 "\tsleep 100 &\n" +
                 "\techo \"$!\"\n" +
                 "\twait $!\n" +
                 "done\n";
 
 
-        Shell._execScript(
-                "printf '" + header + "' > "   + out +
-                        " ; cat '"      + in   + "' >> " + out +
-                        " ; printf '" + footer   + "' >> " + out + ";"
-        );
+        String cmd = "" +
+                "{ printf '" + header + "' > "   + out + ";" +
+                "cat '"      + in   + "' >> " + out + ";" +
+                "printf '" + footer   + "' >> " + out + "; }";
+
+
+      Shell._execCmd(cmd);
 
         return out;
     }
