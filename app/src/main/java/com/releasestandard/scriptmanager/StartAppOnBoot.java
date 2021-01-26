@@ -31,11 +31,13 @@ public class StartAppOnBoot extends BroadcastReceiver {
                 jd.readFromInternalStorage(context, f);
                 if (jd.isSchedulded && jd.isStarted) {
                     Shell shell = new Shell(
-                            context.getApplicationContext().getFilesDir().getAbsolutePath(),
-                            context.getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
+                            new StorageManager(
+                                context.getApplicationContext().getFilesDir().getAbsolutePath(),
+                                context.getApplicationContext().getExternalFilesDir(null).getAbsolutePath(),
+                                jd.name_in_path));
 
 
-                    String path = Shell.getAbsolutePath(jd.name_in_path + Shell.SUFFIX_SCRIPT);
+                    String path = shell.sm.getScriptAbsolutePath();
                     PendingIntent pi = Shell._scheduleJob(context, path, jd.sched);
 
                     // write the pending intent

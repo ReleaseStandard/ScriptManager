@@ -33,7 +33,7 @@ public class EventsReceiver extends BroadcastReceiver {
                         msg_from = msgs[i].getOriginatingAddress();
                         String msgBody = msgs[i].getMessageBody();
                         for (Shell s : listeners) {
-                            s.triggerRecvMsg(msg_from,msgBody);
+                            s.bi.triggerRecvMsg(msg_from,msgBody);
                         }
                     }
                 }catch(Exception e){

@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,7 +48,7 @@ public class JobFragment extends Fragment {
     // données du modèle
 
     private View view = null;
-    Shell shell = new Shell();
+    Shell shell = null;
 
     public void dump() {
         Logger.debug(dump(""));
@@ -65,11 +64,13 @@ public class JobFragment extends Fragment {
                     "}\n";
     }
 
-    public JobFragment(String statefile) {
+    public JobFragment(StorageManager ptr_sm, String statefile) {
+        this.shell = new Shell(ptr_sm);
         initializeInstance();
         this.state_file = statefile;
     }
-    public JobFragment() {
+    public JobFragment(StorageManager ptr_sm) {
+        this.shell = new Shell(ptr_sm);
         initializeInstance();
     }
 
@@ -88,22 +89,12 @@ public class JobFragment extends Fragment {
 
         jd.id = fragmentCount++;
         jd.name = "Script n°" + jd.id.toString();
-        path = "script_" + jd.id.toString() + Shell.SUFFIX_SCRIPT;
-        state_file = "script_" + jd.id.toString() + Shell.SUFFIX_STATE;
-        log_path = shell.getLogPath(path);
+        shell.sm.setScriptName("script_" + jd.id.toString() + StorageManager.SUFFIX_SCRIPT);
+        state_file = shell.sm.getStateFileAbsolutePath();
+        log_path = shell.sm.getLogAbsolutePath();
 
         shell.execCmd("> " + log_path);
     }
-    public String getAbsolutePath() {
-        return Shell.getAbsolutePath(path);
-    }
-    public String getLogPath() {
-        return Shell.getLogPath(path);
-    }
-    public String getStatePath() {
-        return Shell.internalStorage + "/" + state_file;
-    }
-
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -349,9 +340,9 @@ public class JobFragment extends Fragment {
 
         // remove the script file
         ArrayList<String> files = new ArrayList<String>();
-        files.add(getAbsolutePath()); //script file remove
-        files.add(getLogPath());           // remove log file
-        files.add(getStatePath());        // remove state file
+        files.add(shell.sm.getScriptAbsolutePath()); //script file remove
+        files.add(shell.sm.getLogAbsolutePath());           // remove log file
+        files.add(shell.sm.getStateFileAbsolutePath());        // remove state file
         for ( String s : files ) {
             Logger.log(s);
             File f = new File(s);
@@ -457,7 +448,7 @@ public class JobFragment extends Fragment {
      */
     public void writeState() {
         jd.dump();
-        jd.writeState(getContext(),state_file);
+        jd.writeState(getContext(),StorageManager.getTerminalPart(state_file));
     }
 
     /*
@@ -467,12 +458,8 @@ public class JobFragment extends Fragment {
     public void readState(Context context, String path_name) {
         Logger.debug("readState from JobFragment");
 
-        jd.readFromInternalStorage(context,state_file);
-        // Adjust pathname & logpath
-        //path_name
-        String script_name_path = path_name + Shell.SUFFIX_SCRIPT;
-        path = script_name_path;
-        String log_name_path = path_name + Shell.SUFFIX_LOG;
-        log_path = Shell.getAbsolutePath(log_name_path);
+        jd.readFromInternalStorage(context,StorageManager.getTerminalPart(state_file));
+        String script_name_path = path_name;
+        this.shell.sm.setScriptName(script_name_path);
     }
 }

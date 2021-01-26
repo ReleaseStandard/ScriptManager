@@ -20,8 +20,13 @@ public class ViewJobsFragment extends Fragment {
     public List<JobFragment> fragments = new ArrayList<JobFragment>();
     public List<SavedState> fragments_ss = new ArrayList<SavedState>();
 
+    public StorageManager ptr_sm = null;
+
     public ViewJobsFragment() {
         // Required empty public constructor
+    }
+    public ViewJobsFragment(StorageManager ptr_sm) {
+        this.ptr_sm = ptr_sm;
     }
 
     public static SettingsFragment newInstance(String param1, String param2) {
@@ -183,11 +188,11 @@ public class ViewJobsFragment extends Fragment {
 
         JobFragment f = null;
         if ( statefile == null ) {
-            f = new JobFragment();
+            f = new JobFragment(ptr_sm);
         }
         else {
             // don't create the files please
-            f = new JobFragment(statefile);
+            f = new JobFragment(ptr_sm, statefile);
         }
         ft.add(R.id.view_jobs_linearlayout, f);
         ft.commit();
@@ -203,8 +208,10 @@ public class ViewJobsFragment extends Fragment {
     }
 
     public void readState() {
-        for(String internal_relative_name : Shell.getJobsFromFilesystem()) {
-            String statefile = internal_relative_name+ Shell.SUFFIX_STATE;
+        for(String internal_relative_name : this.ptr_sm.getScriptsFromFilesystem()) {
+
+            // bouge
+            String statefile = this.ptr_sm.getStateFileAbsolutePath(internal_relative_name);
             JobFragment jf = addNewJob(statefile);
             jf.readState(getActivity(),internal_relative_name);
             jf.dump();

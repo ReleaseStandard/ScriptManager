@@ -74,7 +74,7 @@ public class JobData {
             if ( index1 == -1) {
                 index1=0;
             }
-            int index2 = state_file.lastIndexOf(Shell.SUFFIX_STATE);
+            int index2 = state_file.lastIndexOf(StorageManager.SUFFIX_STATE);
             name_in_path = state_file.substring(index1,index2);
             isr = new InputStreamReader(context.openFileInput(state_file));
             // id of the script
@@ -108,6 +108,7 @@ public class JobData {
     }
     /**
      * Write the state of user interface
+     *  WARNING state_file is just the terminal part of the path
      */
     public void writeState(Context context, String state_file) {
         OutputStreamWriter osw = null;

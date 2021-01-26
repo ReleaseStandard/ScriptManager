@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
      public OverflowMenu ow_menu = null;
      private Hashtable <Integer, Fragment> views = null;
 
+     StorageManager sm = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get Shell locations path
-        Shell s = new Shell(
-                getApplicationContext().getFilesDir().getAbsolutePath(),
+        this.sm = new StorageManager(getApplicationContext().getFilesDir().getAbsolutePath(),
                 getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
 
         FloatingActionButton fab = findViewById(R.id.main_activity_fab);
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.views = new Hashtable<>();
-        jobs_view = new ViewJobsFragment();
+        jobs_view = new ViewJobsFragment(this.sm);
 
         sf = new SettingsFragment();
         views.put(R.id.nav_host_fragment, jobs_view);
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_oneonly_edit) {
             JobFragment jf = jobs_view.getSelected();
-            showFileWithEditor(jf.getAbsolutePath());
+            showFileWithEditor(jf.shell.sm.getScriptAbsolutePath());
             jobs_view.unselectAllFragments();
         }
 
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         if (R.id.action_oneonly_clear_log == id) {
             JobFragment jf = jobs_view.getSelected();
             try {
-                jf.shell.clearLog(jf.getAbsolutePath());
+                jf.shell.clearLog(jf.shell.sm.getLogAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if ( R.id.action_oneonly_show_log == id) {
             JobFragment jf = jobs_view.getSelected();
-            showFileWithEditor(jf.shell.getLogPath(jf.getAbsolutePath()));
+            showFileWithEditor(jf.shell.sm.getLogAbsolutePath());
             jobs_view.unselectAllFragments();
         }
         if (R.id.action_oneonly_rename == id) {
@@ -225,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         // not ready yet due to limitations to access the storage //
         if (R.id.action_browse_scripts == id) {
             JobFragment jf = jobs_view.getSelected();
-            Uri selectedUri = Uri.parse(Shell.externalStorage );
+            Uri selectedUri = Uri.parse(sm.externalStorage );
 
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("text/*");
@@ -271,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
             handlerFabClick();
             // create a new fragment
             JobFragment jf = jobs_view.fragments.get(jobs_view.fragments.size() - 1);
-            File f2 = new File(jf.getAbsolutePath());
+            File f2 = new File(jf.shell.sm.getScriptAbsolutePath());
             if (!f2.exists()) {
                 try {
                     f2.createNewFile();

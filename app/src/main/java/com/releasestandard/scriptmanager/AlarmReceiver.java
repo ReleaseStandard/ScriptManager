@@ -15,14 +15,13 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Calendar next = new GregorianCalendar();
-        Shell shell = new Shell();
         String script = intent.getStringExtra("script");
         int [] sched = intent.getIntArrayExtra("sched");
 
-        shell.execScript(script);
+        Shell._execScript(script);
 
         if ( TimeManager.isRepeated(sched)) {
-            shell.scheduleJob(context,script,sched);
+            Shell._scheduleJob(context,script,sched);
         }
     }
 }
