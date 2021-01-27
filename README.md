@@ -36,26 +36,8 @@ throught an sh API.<br />
 - [ ] SH API<br />
 
 
-## Details
-input date format is :<br />
-```bash
-.---------------- minute (0 - 59)
-|  .------------- hour (0 - 23)
-|  |  .---------- day of month (1 - 31)
-|  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
-|  |  |  |  .---- year
-|  |  |  |  |
-*  *  *  *  * 
-```
-e.g.<br />
-```bash
-1 2 3 4 2021
-```
-for 02:01 on 03/04 of 2021.<br />
-```bash
-* * * * *
-```
-run job each minute.<br />
+## Documentation
+Everthing is on the [wiki](https://github.com/ReleaseStandard/ScriptManager/wiki).
 
 ## Donation
 ```bash
