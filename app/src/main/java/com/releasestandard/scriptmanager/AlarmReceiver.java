@@ -18,13 +18,15 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Calendar next = new GregorianCalendar();
-        String script = intent.getStringExtra("script");
+        String scriptname = intent.getStringExtra("script");
         int [] sched = intent.getIntArrayExtra("sched");
 
-        Shell._execScript(script);
+        StorageManager sm = new StorageManager(context.getFilesDir().getAbsolutePath(), context.getExternalFilesDir(null).getAbsolutePath());
+        Shell s = new Shell(sm);
+        s.execScript(scriptname);
 
         if ( TimeManager.isRepeated(sched)) {
-            Shell._scheduleJob(context,script,sched);
+            s.scheduleJob(context,scriptname,sched);
         }
     }
 }

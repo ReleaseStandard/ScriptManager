@@ -317,7 +317,7 @@ public class JobFragment extends Fragment {
             if ( s!=null) {
                 jd.isSchedulded = true;
                 setViewWaitStartJob();
-                shell.scheduleJob(main, path,s );
+                shell.scheduleJob(main, jd.name_in_path,s );
                 writeState();
             }
         }

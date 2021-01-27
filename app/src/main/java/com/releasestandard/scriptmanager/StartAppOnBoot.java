@@ -24,7 +24,7 @@ public class StartAppOnBoot extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
 
-            Logger.debug("boot signal received, starting the service");
+            Logger.debug("[StartAppOnBoot] : onReceive boot signal received, starting the service");
 
             for ( String f : context.fileList())  {
                 JobData jd = new JobData();
@@ -37,10 +37,7 @@ public class StartAppOnBoot extends BroadcastReceiver {
                                 jd.name_in_path));
 
 
-                    String path = shell.sm.getScriptAbsolutePath();
-                    PendingIntent pi = Shell._scheduleJob(context, path, jd.sched);
-
-                    // write the pending intent
+                    shell.scheduleJob(context, jd.name_in_path, jd.sched);
                 }
             }
 
