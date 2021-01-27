@@ -34,28 +34,15 @@ throught an sh API.<br />
 - [X] Clear & Show jobs log.<br />
 - [X] Import sh scripts.<br />
 - [ ] SH API<br />
+<table>
+  <th><td>property</td><td>avaliable</td></th>
+  <tr><td></td><td>smsReceived</td><td>yes</td></tr>
+  <tr><td></td><td>smsSendTextMessage</td><td></td></tr>
+</table>
 
 
-## Details
-input date format is :<br />
-```bash
-.---------------- minute (0 - 59)
-|  .------------- hour (0 - 23)
-|  |  .---------- day of month (1 - 31)
-|  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
-|  |  |  |  .---- year
-|  |  |  |  |
-*  *  *  *  * 
-```
-e.g.<br />
-```bash
-1 2 3 4 2021
-```
-for 02:01 on 03/04 of 2021.<br />
-```bash
-* * * * *
-```
-run job each minute.<br />
+## Documentation
+Everything is on the [wiki](https://github.com/ReleaseStandard/ScriptManager/wiki).
 
 ## Donation
 ```bash
