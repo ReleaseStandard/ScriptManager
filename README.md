@@ -34,6 +34,11 @@ throught an sh API.<br />
 - [X] Clear & Show jobs log.<br />
 - [X] Import sh scripts.<br />
 - [ ] SH API<br />
+<table>
+  <th><td>property</td><td>avaliable</td></th>
+  <tr><td></td><td>smsReceived</td><td>yes</td></tr>
+  <tr><td></td><td>smsSendTextMessage</td><td></td></tr>
+</table>
 
 
 ## Documentation
