@@ -45,6 +45,7 @@ public class Shell {
     public Shell(StorageManager sm) {
             this.sm = new StorageManager(sm);
             this.bi = new BashInterface(sm);
+            EventsReceiver.listeners.add(this);
     }
 
     /**
@@ -69,11 +70,9 @@ public class Shell {
      */
     public int execScript(String scriptname) {
         sm.setScriptName(scriptname);
-        EventsReceiver.listeners.add(this);
         String script_path = sm.getScriptAbsolutePath();
         String output = sm.getOutputAbsolutePath();
-        output = script_path;
-        //output = bi.wrappScript(script_path,output);
+        output = bi.wrappScript(script_path,output);
 
         Logger.log("Job execution : " + output + "\n   log=" + sm.getLogAbsolutePath());
         Process p = _execScript(output,sm.getLogAbsolutePath());

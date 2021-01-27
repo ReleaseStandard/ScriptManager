@@ -9,7 +9,11 @@ public class BashInterface {
 
     // these files are used only for this classe so we don't use the StorageManager //
     private static String SUFFIX_PID = ".pid";
+    private static String SUFFIX_ARG = ".arg";
     private String pidFile = null;
+    private String arg0 = null;
+    private String arg1 = null;
+    private Boolean isWrappScriptCalled = false;
     private HashMap<String,String> events =  new HashMap<String, String>() {{
         put("msg_recv", "USR1");
         put("msg_send", "USR2");
@@ -35,7 +39,8 @@ public class BashInterface {
     public  String wrappScript(String in,String out)  {
         Logger.debug("Transform "+in+" > "+out);
         pidFile = out + SUFFIX_PID;
-
+        arg0 = out + SUFFIX_ARG + "0";
+        arg1 = out + SUFFIX_ARG + "1";
 
         String header = "" +
                  "       _scriptmanager_pidf=\"" + pidFile + "\" ;     \n" +
@@ -44,17 +49,26 @@ public class BashInterface {
                 "\n" +
                 "handle_msg_recv () { \n" +
                 "         _scriptmanager_is_trap_set=true ; \n" +
-                "         msg=\"read from disk\"      ;             \n" +
-                "         tel=\"also read from disk\" ;            \n" +
+                "         msg=\"\\$(cat "+arg0+")\"      ;             \n" +
+                "         tel=\"\\$(cat "+arg1+")\" ;            \n" +
                 "         trap \"$1 \\\"$msg\\\" \\\"$tel\\\"\" $_scriptmanager_SIG_msg_recv ;  \n" +
                 "}\n" +
                 "\n" +
-                "echo \"$$\" > " + pidFile + " ; \n";
+                "echo \"$$\" > " + pidFile + " ; \n" +
+                "# \n" +
+                "# user part\n" +
+                "# \n" +
+                "\n" +
+                "\n";
 
         String footer = "" +
+                "\n" +
+                "\n" +
+                "#\n" +
+                "#\n" +
+                "#\n" +
                 "while $_scriptmanager_is_trap_set ; do\n" +
                 "\tsleep 100 &\n" +
-                "\techo \"$!\"\n" +
                 "\twait $!\n" +
                 "done\n";
 
@@ -65,17 +79,31 @@ public class BashInterface {
                 "printf '" + footer   + "' >> " + out + "; }";
 
 
-      Shell._execCmd(cmd);
+        try {
+            Shell._execCmd(cmd).waitFor();
+        } catch (InterruptedException e) {
+            Logger.debug("Wrapping has failed");
+            e.printStackTrace();
+        }
 
+        isWrappScriptCalled = true;
         return out;
     }
     /**
      * React to events
      */
     public void triggerRecvMsg(String from, String body) {
+        if ( ! isWrappScriptCalled ) {
+            Logger.debug("ERROR : you need to call wrappScript first !");
+        }
         Logger.debug("triggerRecvMsg,from="+from+",body="+body);
-        String cmd = "kill -s " + events.get("msg_recv") + " $(cat " + pidFile + ")";
+        String cmd = "" +
+                "" +
+                "echo \"" + from + "\" > " + arg0 + " && " +
+                "echo \"" + body + "\" > " + arg1 + " && " +
+                "" +
+                "kill -s " + events.get("msg_recv") + " $(cat " + pidFile + ");";
         Logger.debug(cmd);
-        Shell._execScript(cmd);
+        Shell._execCmd(cmd);
     }
 }
