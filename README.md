@@ -37,7 +37,7 @@ throught an sh API.<br />
 
 
 ## Documentation
-Everthing is on the [wiki](https://github.com/ReleaseStandard/ScriptManager/wiki).
+Everything is on the [wiki](https://github.com/ReleaseStandard/ScriptManager/wiki).
 
 ## Donation
 ```bash
