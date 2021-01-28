@@ -27,6 +27,8 @@ public class JobData {
     public Boolean isSchedulded = false;
     // boolean for the (if it is started)
     public Boolean isStarted = false;
+    // is the date graphically set
+    public boolean isDateSet = false;
     // set The date
     int sched[] = {
             EACH_TIME,        // minutes
@@ -34,11 +36,12 @@ public class JobData {
             EACH_TIME,        // day of month
             EACH_TIME,        // month
             EACH_TIME };      // year
-
+    // index in array (intents for schedulded and processes for started)
+    public Integer index_in_array = -1;
     //
     // Not stored
-    public boolean isDateSet = false;
     public String name_in_path = "";
+
 
     public void dump() {
         Logger.debug(dump(""));
@@ -54,9 +57,10 @@ public class JobData {
                 init + " name=" + name + "\n" +
                 init + " isSchedulded=" + isSchedulded + "\n" +
                 init + " isStarted=" + isStarted + "\n" +
+                init + " isDateSet=" + isDateSet + "\n" +
                 init + " sched=" + TimeManager.sched2str(sched) + "\n" +
                 init + "  (" + sched_as_ints + ")\n" +
-                init + " isDateSet=" + isDateSet + "\n" +
+                init + " index_in_array=" + index_in_array + "\n" +
                 init + " name_in_path=" + name_in_path + "\n" +
                 init + "}\n"
         ;
@@ -99,6 +103,7 @@ public class JobData {
                 short jj = (short)j;
                 sched[ii]=jj;
             }
+            index_in_array = isr.read();
             isr.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -130,6 +135,8 @@ public class JobData {
             for(int i = 0; i < 5 ; i += 1){
                 osw.write(sched[i]);
             }
+            // index of (intent, process) in array (intents, processes)
+            osw.write(index_in_array);
             osw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

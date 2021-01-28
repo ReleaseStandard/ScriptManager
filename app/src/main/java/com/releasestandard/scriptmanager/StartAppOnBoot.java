@@ -31,15 +31,18 @@ public class StartAppOnBoot extends BroadcastReceiver {
             for ( String f : context.fileList())  {
                 JobData jd = new JobData();
                 jd.readFromInternalStorage(context, f);
-                if (jd.isSchedulded && jd.isStarted) {
+                if (jd.isStarted) {
                     Shell shell = new Shell(
                             new StorageManager(
                                 context.getApplicationContext().getFilesDir().getAbsolutePath(),
                                 context.getApplicationContext().getExternalFilesDir(null).getAbsolutePath(),
                                 jd.name_in_path));
 
-
-                    shell.scheduleJob(context, jd.name_in_path, jd.sched);
+                    if ( jd.isSchedulded ) {
+                        jd.index_in_array = shell.scheduleJob(context, jd.name_in_path, jd.sched);
+                    } else {
+                        jd.index_in_array = shell.execScript(jd.name_in_path);
+                    }
                 }
             }
 

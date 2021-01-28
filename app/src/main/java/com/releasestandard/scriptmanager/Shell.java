@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -68,7 +69,7 @@ public class Shell {
      * @param scriptname
      * @return
      */
-    public int execScript(String scriptname) {
+    public Integer execScript(String scriptname) {
         sm.setScriptName(scriptname);
         String script_path = sm.getScriptAbsolutePath();
         String output = sm.getOutputAbsolutePath();
@@ -78,11 +79,13 @@ public class Shell {
         Process p = _execScript(output,sm.getLogAbsolutePath());
         if ( p != null ) {
             Logger.debug("Shell: Process has started");
-            processes.add(p);
-            return 0;
+            if ( ! processes.add(p) ) {
+                return -1;
+            }
+            return processes.size()-1;
         }
         Logger.debug("Shell: Process failed to start");
-        return 1;
+        return -1;
     }
     public static Process _execScript(String script) {
         return _execScript(script,null);
@@ -110,8 +113,11 @@ public class Shell {
         Shell._execCmd("> "+logpath);
     }
 
-    public void scheduleJob(Context context, String scriptname, int sched[]) {
-        intents.add(_scheduleJob(context,scriptname, sched));
+    public Integer scheduleJob(Context context, String scriptname, int sched[]) {
+        if ( ! intents.add(_scheduleJob(context,scriptname, sched)) ) {
+            return -1;
+        }
+        return intents.size()-1;
     }
 
     public static PendingIntent _scheduleJob(Context context, String scriptname, int sched[])  {
@@ -138,6 +144,22 @@ public class Shell {
         return alarmIntent;
     }
 
+    public boolean terminateProcess(Integer i) {
+        if ( i < 0 || i >= processes.size()) {
+            Logger.debug("terminateProcess : invalid index");
+            return false;
+        }
+        processes.get(i).destroy();
+        return true;
+    }
+    public boolean terminateIntent(Integer i) {
+        if ( i < 0 || i >= intents.size()) {
+            Logger.debug("terminateProcess : invalid index");
+            return false;
+        }
+        intents.get(i).cancel();
+        return true;
+    }
     public void terminateAll() {
         for(Process p : processes) {
             p.destroy();

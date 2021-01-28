@@ -209,8 +209,6 @@ public class ViewJobsFragment extends Fragment {
 
     public void readState() {
         for(String internal_relative_name : this.ptr_sm.getScriptsFromFilesystem()) {
-
-            // bouge
             String statefile = this.ptr_sm.getStateFileAbsolutePath(internal_relative_name);
             JobFragment jf = addNewJob(statefile);
             jf.readState(getActivity(),internal_relative_name);

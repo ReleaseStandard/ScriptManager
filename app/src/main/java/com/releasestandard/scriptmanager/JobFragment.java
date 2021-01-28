@@ -289,10 +289,17 @@ public class JobFragment extends Fragment {
         tv.setText(name);
     }
     public void stopJob() {
+        if ( jd.isStarted) {
+            if ( jd.isSchedulded) {
+                shell.terminateIntent(jd.index_in_array);
+            }
+            else {
+                shell.terminateProcess(jd.index_in_array);
+            }
+        }
         jd.isSchedulded = false;
         jd.isStarted = false;
         setViewStopJob();
-        shell.terminateAll();
         stopped = new Date();
         MainActivity main = (MainActivity)getActivity();
         int i = main.jobs_view.getNumberStarted();
@@ -312,18 +319,22 @@ public class JobFragment extends Fragment {
         started = new Date();
         jd.isStarted = true;
 
+        Integer index_in_array = -1;
         if ( isDateSet() ) {
             int [] s = getDateFromView();
             if ( s!=null) {
                 jd.isSchedulded = true;
                 setViewWaitStartJob();
-                shell.scheduleJob(main, jd.name_in_path,s );
+                index_in_array = shell.scheduleJob(main, jd.name_in_path,s );
                 writeState();
             }
         }
         else {
             setViewStartJob();
-            shell.execScript(path);
+            index_in_array = shell.execScript(path);
+        }
+        if ( index_in_array != -1 ) {
+            jd.index_in_array = index_in_array;
         }
 
         if( isSelected ) {
