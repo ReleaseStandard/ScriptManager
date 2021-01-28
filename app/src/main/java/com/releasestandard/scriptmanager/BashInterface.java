@@ -1,6 +1,10 @@
 package com.releasestandard.scriptmanager;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * By convention, we use prefix _scriptmanager_ for our internal bash variables.
@@ -11,7 +15,9 @@ public class BashInterface {
     private static String SUFFIX_PID = ".pid";
     private static String SUFFIX_ARG = ".arg";
     private static String SUFFIX_CALLED = ".status";
+    private static String SUFFIX_LOCK = ".lock";
     private String pidFile = null;
+    private String lockFile = null;
     private String functNameFile = null;
     private String arg0 = null;
     private String arg1 = null;
@@ -46,6 +52,7 @@ public class BashInterface {
     public  String wrappScript(String in,String out)  {
         Logger.debug("Transform "+in+" > "+out);
         pidFile = out + SUFFIX_PID;
+        lockFile = out + SUFFIX_LOCK;
         arg0 = out + SUFFIX_ARG + "0";
         arg1 = out + SUFFIX_ARG + "1";
         functNameFile = out + SUFFIX_CALLED;
@@ -60,6 +67,7 @@ public class BashInterface {
                 "         functname=\"$(cat "+ functNameFile +")\" ;     \n" +
                 "         type $functname &> /dev/null && " + // if user has defined a callback
                 "          $functname \"$arg0\" \"$arg1\" ;                  \n" +
+                "          rm -f \"" + lockFile + "\"; \n" +                                      // action is done, we can remove the lock
                 "}\n" +
                 "trap \"events_interface\" $_scriptmanager_SIG; \n" +
                 "\n" +
@@ -98,22 +106,49 @@ public class BashInterface {
         isWrappScriptCalled = true;
         return out;
     }
-    /**
-     * React to events
-     */
-    public void triggerRecvMsg(String from, String body) {
-        if ( ! isWrappScriptCalled ) {
+    public void triggerCallback(String methodToCall,String... args) {
+        if (!isWrappScriptCalled) {
             Logger.debug("ERROR : you need to call wrappScript first !");
         }
+        String cmd ="";
+        Method method = null;
+        try {
+            method = BashInterface.class.getDeclaredMethod(methodToCall,String.class,String.class);
+            cmd += method.invoke(this, args[0], args[1]);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        cmd  += "kill -s " + signal + " $(cat " + pidFile + ");";
+
+        // we have to wait for the lock file before run command
+        File file = new File(lockFile);
+        while(file.exists()) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        Shell._execCmd("touch \""+lockFile+"\"");
+        Logger.debug(cmd);
+        Shell._execCmd(cmd);
+
+    }
+        /**
+     * React to events
+         * @return
+         */
+    public String triggerRecvMsg(String from, String body) {
         Logger.debug("triggerRecvMsg,from="+from+",body="+body);
-        String cmd = "" +
-                "" +
+
+                return "" +
                 "echo \"" + API.get("smsReceived") + "\" > " + functNameFile + " && " +
                 "echo \"" + from + "\" > " + arg0 + " && " +
                 "echo \"" + body + "\" > " + arg1 + " && " +
-                "" +
-                "kill -s " + signal + " $(cat " + pidFile + ");";
-        Logger.debug(cmd);
-        Shell._execCmd(cmd);
+                "";
     }
 }

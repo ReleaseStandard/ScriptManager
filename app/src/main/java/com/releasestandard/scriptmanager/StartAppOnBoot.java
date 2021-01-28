@@ -22,6 +22,8 @@ public class StartAppOnBoot extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        // This is a privileged intent, we don't have to secure it.
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
 
             Logger.debug("[StartAppOnBoot] : onReceive boot signal received, starting the service");
