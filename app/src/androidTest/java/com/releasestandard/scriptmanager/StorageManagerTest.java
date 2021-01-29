@@ -1,5 +1,7 @@
 package com.releasestandard.scriptmanager;
 
+import com.releasestandard.scriptmanager.model.StorageManager;
+
 import junit.framework.TestCase;
 
 import java.lang.reflect.Field;

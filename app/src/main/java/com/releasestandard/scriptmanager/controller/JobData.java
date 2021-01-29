@@ -1,6 +1,10 @@
-package com.releasestandard.scriptmanager;
+package com.releasestandard.scriptmanager.controller;
 
 import android.content.Context;
+
+import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.model.TimeManager;
+import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +33,7 @@ public class JobData {
     // is the date graphically set
     public boolean isDateSet = false;
     // set The date
-    int sched[] = {
+    public int sched[] = {
             EACH_TIME,        // minutes
             EACH_TIME,        // hours
             EACH_TIME,        // day of month
@@ -85,7 +89,6 @@ public class JobData {
             int j = isr.read();
             // since any of secondes, minutes, hours, day, month year will go to much high we stop here
             short jj = (short)j;
-            Logger.debug("readIntegerArray,j="+j+",jj="+jj);
             tab.add((int) jj);
         }
         return tab;
@@ -111,9 +114,8 @@ public class JobData {
             // id of the script
             int id = isr.read();
             this.id = id;
-            // size of the string
-            int script_name_size = isr.read();
             // name of the script
+            int script_name_size = isr.read();
             char [] script_name = new char[script_name_size];
             isr.read(script_name);
             name = new String(script_name);
@@ -129,6 +131,8 @@ public class JobData {
                 processes = readIntegerArray(isr);
                 intents = readIntegerArray(isr);
             }
+            Logger.debug("after read from internal storage");
+            dump();
             isr.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -145,7 +149,6 @@ public class JobData {
         osw.write(tab.size());
         for(int i = 0; i < tab.size() ; i += 1){
             Integer ii = tab.get(i);
-            Logger.debug("writeIntegerArray,ii="+ii);
             osw.write(ii);
         }
     }

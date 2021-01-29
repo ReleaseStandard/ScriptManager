@@ -1,4 +1,4 @@
-package com.releasestandard.scriptmanager;
+package com.releasestandard.scriptmanager.tools;
 
 import android.util.Log;
 

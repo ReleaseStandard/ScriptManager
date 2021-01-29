@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
+import com.releasestandard.scriptmanager.model.Shell;
+
 import java.util.ArrayList;
 
 public class EventsReceiver extends BroadcastReceiver {

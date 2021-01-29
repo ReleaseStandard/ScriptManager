@@ -3,22 +3,12 @@ package com.releasestandard.scriptmanager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+import com.releasestandard.scriptmanager.tools.Logger;
 
-import com.releasestandard.scriptmanager.R;
-
-public class SettingsFragment extends PreferenceFragmentCompat  {
+public class SettingsView extends PreferenceFragmentCompat {
 
     private SharedPreferences.OnSharedPreferenceChangeListener listener = null;
 

@@ -17,6 +17,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.releasestandard.scriptmanager.controller.OverflowMenu;
+import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.tools.Logger;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -45,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean isInSelectMode = false;
 
      // Objects that encapsulate the data //
-     public ViewJobsFragment jobs_view = null;
-     public SettingsFragment sf = null;
+     public JobsView jobs_view = null;
+     public SettingsView sf = null;
      public OverflowMenu ow_menu = null;
      private Hashtable <Integer, Fragment> views = null;
 
@@ -75,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.views = new Hashtable<>();
-        jobs_view = new ViewJobsFragment(this.sm);
+        jobs_view = new JobsView(this.sm);
 
-        sf = new SettingsFragment();
+        sf = new SettingsView();
         views.put(R.id.nav_host_fragment, jobs_view);
         views.put(R.id.action_settings, sf);
 
@@ -174,20 +177,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_oneonly_edit) {
-            JobFragment jf = jobs_view.getSelected();
+            JobView jf = jobs_view.getSelected();
             showFileWithEditor(jf.shell.sm.getScriptAbsolutePath());
             jobs_view.unselectAllFragments();
         }
 
         if ( R.id.action_anyselection_delete == id ) {
-            for( JobFragment jf : jobs_view.getSelecteds() ) {
+            for( JobView jf : jobs_view.getSelecteds() ) {
                 jf.removeViewJob();
                 jobs_view.fragments.remove(jf);
             }
             jobs_view.unselectAllFragments();
         }
         if (R.id.action_oneonly_clear_log == id) {
-            JobFragment jf = jobs_view.getSelected();
+            JobView jf = jobs_view.getSelected();
             try {
                 jf.shell.clearLog(jf.shell.sm.getLogAbsolutePath());
             } catch (IOException e) {
@@ -196,12 +199,12 @@ public class MainActivity extends AppCompatActivity {
             jobs_view.unselectAllFragments();
         }
         if ( R.id.action_oneonly_show_log == id) {
-            JobFragment jf = jobs_view.getSelected();
+            JobView jf = jobs_view.getSelected();
             showFileWithEditor(jf.shell.sm.getLogAbsolutePath());
             jobs_view.unselectAllFragments();
         }
         if (R.id.action_oneonly_rename == id) {
-            JobFragment jf = jobs_view.getSelected();
+            JobView jf = jobs_view.getSelected();
             AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AppTheme_RenameDialog);
             View customLayout = getLayoutInflater().inflate(R.layout.rename_dialog, null);
             builder.setView(customLayout);
@@ -225,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
         // not ready yet due to limitations to access the storage //
         if (R.id.action_browse_scripts == id) {
-            JobFragment jf = jobs_view.getSelected();
+            JobView jf = jobs_view.getSelected();
             Uri selectedUri = Uri.parse(sm.externalStorage );
 
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -271,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 
             handlerFabClick();
             // create a new fragment
-            JobFragment jf = jobs_view.fragments.get(jobs_view.fragments.size() - 1);
+            JobView jf = jobs_view.fragments.get(jobs_view.fragments.size() - 1);
             File f2 = new File(jf.shell.sm.getScriptAbsolutePath());
             if (!f2.exists()) {
                 try {

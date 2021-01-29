@@ -1,19 +1,18 @@
-package com.releasestandard.scriptmanager;
+package com.releasestandard.scriptmanager.model;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
-import androidx.annotation.RequiresApi;
+import com.releasestandard.scriptmanager.AlarmReceiver;
+import com.releasestandard.scriptmanager.EventsReceiver;
+import com.releasestandard.scriptmanager.tools.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 /*
@@ -110,18 +109,18 @@ public class Shell {
         Shell._execCmd("> "+logpath);
     }
 
-    public Integer scheduleJob(Context context, String scriptname, int sched[]) {
-        if ( ! intents.add(_scheduleJob(context,scriptname, sched)) ) {
+    public Integer scheduleScript(Context context, String scriptname, int sched[]) {
+        if ( ! intents.add(_scheduleScript(context,scriptname, sched)) ) {
             return -1;
         }
         return intents.size()-1;
     }
 
-    public static PendingIntent _scheduleJob(Context context, String scriptname, int sched[])  {
+    public static PendingIntent _scheduleScript(Context context, String scriptname, int sched[])  {
         // need to get the time here
         Calendar next = TimeManager.nextSched(sched);
 
-        Logger.log("[" + (new Integer(AlarmReceiver.REQUEST_CODE + 1)) + "] Job " + scriptname + " scheduled for " + next.getTime().toString());
+        Logger.log("[" + (new Integer(AlarmReceiver.REQUEST_CODE + 1)) + "] Script " + scriptname + " scheduled for " + next.getTime().toString());
         long t = next.getTimeInMillis();
 
         Intent intent = new Intent(context, AlarmReceiver.class);

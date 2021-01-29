@@ -4,7 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import java.sql.Time;
+import com.releasestandard.scriptmanager.controller.JobData;
+import com.releasestandard.scriptmanager.model.Shell;
+import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.model.TimeManager;
+import com.releasestandard.scriptmanager.tools.Logger;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
@@ -35,11 +40,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         if ( TimeManager.isRepeated(sched)) {
-            Integer i =s.scheduleJob(context,scriptname,sched);
+            Integer i =s.scheduleScript(context,scriptname,sched);
             if ( i != -1) {
                 jd.intents.add(i);
             }
         }
         jd.writeState(context,sm.getStateFileNameInPath());
     }
+
 }

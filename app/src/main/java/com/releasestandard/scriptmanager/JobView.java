@@ -21,18 +21,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.releasestandard.scriptmanager.controller.JobData;
+import com.releasestandard.scriptmanager.model.Shell;
+import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.tools.Logger;
+import com.releasestandard.scriptmanager.controller.TimeManagerView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.function.LongFunction;
 
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class JobFragment extends Fragment {
+public class JobView extends Fragment {
 
     public static String WRONG_DATE_FORMAT = "Wrong date format";
     public static Integer fragmentCount = 0;
@@ -68,12 +72,12 @@ public class JobFragment extends Fragment {
                     "}\n";
     }
 
-    public JobFragment(StorageManager ptr_sm, String statefile) {
+    public JobView(StorageManager ptr_sm, String statefile) {
         this.shell = new Shell(ptr_sm);
         initializeInstance();
         this.state_file = statefile;
     }
-    public JobFragment(StorageManager ptr_sm) {
+    public JobView(StorageManager ptr_sm) {
         this.shell = new Shell(ptr_sm);
         initializeInstance();
     }
@@ -112,7 +116,7 @@ public class JobFragment extends Fragment {
         // and schedule icon
         TextView dateView = view.findViewById(R.id.job_date_input);
         if ( jd.isDateSet ) {
-            dateView.setText(TimeManager.sched2str(jd.sched));
+            dateView.setText(com.releasestandard.scriptmanager.model.TimeManager.sched2str(jd.sched));
         }
         long delay = 500; // 1 seconds after user stops typing
         long last_text_edit = 0;
@@ -260,7 +264,7 @@ public class JobFragment extends Fragment {
      */
     public void showScheduleJob(View v) {
 
-        TimeManager tm = new TimeManager(){
+        TimeManagerView tm = new TimeManagerView(){
             @Override
             public void onPicked(int minute,int hourOfDay,int dayOfMonth,int monthOfYear,int year) {
                 jd.sched[0] = minute;
@@ -290,13 +294,13 @@ public class JobFragment extends Fragment {
         tv.setText(name);
     }
     public void stopJob() {
-        Logger.debug("stopJob");
+        Logger.debug("JobFragment::stopJob");
         readState(getContext(),jd.name_in_path);
-        Logger.debug("kill " + jd.intents.size() + "intents");
+        Logger.debug("kill " + jd.intents.size() + " intents");
         for (Integer i : jd.intents) {
             shell.terminateIntent(i);
         }
-        Logger.debug("kill " + jd.processes.size() + "processes");
+        Logger.debug("kill " + jd.processes.size() + " processes");
         for (Integer i : jd.processes) {
             shell.terminateProcess(i);
         }
@@ -312,6 +316,7 @@ public class JobFragment extends Fragment {
         writeState();
     }
     public void startJob() {
+        Logger.debug("JobFragment::stopJob");
         MainActivity main = (MainActivity)getActivity();
         int i = main.jobs_view.getNumberStarted();
         if ( i == 0) {
@@ -327,7 +332,7 @@ public class JobFragment extends Fragment {
             if ( s!=null) {
                 jd.isSchedulded = true;
                 setViewWaitStartJob();
-                Integer intent_index = shell.scheduleJob(main, jd.name_in_path,s );
+                Integer intent_index = shell.scheduleScript(main, jd.name_in_path,s );
                 if ( intent_index != -1) {
                     jd.intents.add(intent_index);
                 }
@@ -350,8 +355,8 @@ public class JobFragment extends Fragment {
     public int[] getDateFromView() {
         EditText et = getView().findViewById(R.id.job_date_input);
         String date_input = et.getText().toString();
-        if (TimeManager.validDate(date_input)) {
-            return TimeManager.str2sched(date_input);
+        if (com.releasestandard.scriptmanager.model.TimeManager.validDate(date_input)) {
+            return com.releasestandard.scriptmanager.model.TimeManager.str2sched(date_input);
         }
         return null;
     }
@@ -474,7 +479,7 @@ public class JobFragment extends Fragment {
      */
     public void writeState() {
         jd.dump();
-        jd.writeState(getContext(),StorageManager.getTerminalPart(state_file));
+        jd.writeState(getContext(), StorageManager.getTerminalPart(state_file));
     }
 
     /*

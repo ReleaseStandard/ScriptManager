@@ -1,4 +1,4 @@
-package com.releasestandard.scriptmanager;
+package com.releasestandard.scriptmanager.controller;
 
 import android.graphics.drawable.ColorDrawable;
 import android.view.Menu;
@@ -7,10 +7,13 @@ import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import com.releasestandard.scriptmanager.MainActivity;
+import com.releasestandard.scriptmanager.R;
+
 import java.util.ArrayList;
 
 /**
- * Configure action on the overflow menu.
+ *  Implement logic on the settings overflow menu.
  */
 public class OverflowMenu {
 

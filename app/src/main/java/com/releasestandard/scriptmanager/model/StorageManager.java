@@ -1,4 +1,7 @@
-package com.releasestandard.scriptmanager;
+package com.releasestandard.scriptmanager.model;
+
+import com.releasestandard.scriptmanager.tools.Logger;
+import com.releasestandard.scriptmanager.R;
 
 import java.io.File;
 import java.util.ArrayList;

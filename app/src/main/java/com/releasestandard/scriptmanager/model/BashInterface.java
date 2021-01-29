@@ -1,4 +1,6 @@
-package com.releasestandard.scriptmanager;
+package com.releasestandard.scriptmanager.model;
+
+import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +23,6 @@ public class BashInterface {
     private String functNameFile = null;
     private String arg0 = null;
     private String arg1 = null;
-    private Boolean isWrappScriptCalled = false;
     private String signal = "USR1";
 
     // API definition
@@ -103,13 +104,9 @@ public class BashInterface {
             e.printStackTrace();
         }
 
-        isWrappScriptCalled = true;
         return out;
     }
     public void triggerCallback(String methodToCall,String... args) {
-        if (!isWrappScriptCalled) {
-            Logger.debug("ERROR : you need to call wrappScript first !");
-        }
         String cmd ="";
         Method method = null;
         try {

@@ -1,24 +1,18 @@
 package com.releasestandard.scriptmanager;
 
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
-import java.util.ArrayList;
+import com.releasestandard.scriptmanager.controller.JobData;
+import com.releasestandard.scriptmanager.model.Shell;
+import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.tools.Logger;
 
-public class StartAppOnBoot extends BroadcastReceiver {
+public class BootReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,7 +37,7 @@ public class StartAppOnBoot extends BroadcastReceiver {
                                 jd.name_in_path));
 
                     if ( jd.isSchedulded ) {
-                        Integer i = shell.scheduleJob(context, jd.name_in_path, jd.sched);
+                        Integer i = shell.scheduleScript(context, jd.name_in_path, jd.sched);
                         if ( i != -1 ) {
                             jd.intents.add(i);
                         }
@@ -54,6 +48,7 @@ public class StartAppOnBoot extends BroadcastReceiver {
                         }
                     }
                 }
+                jd.writeState(context,f);
             }
 
         }

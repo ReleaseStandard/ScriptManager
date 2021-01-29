@@ -11,26 +11,29 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.tools.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewJobsFragment extends Fragment {
+public class JobsView extends Fragment {
 
     // list of Jobs
-    public List<JobFragment> fragments = new ArrayList<JobFragment>();
+    public List<JobView> fragments = new ArrayList<JobView>();
     public List<SavedState> fragments_ss = new ArrayList<SavedState>();
 
     public StorageManager ptr_sm = null;
 
-    public ViewJobsFragment() {
+    public JobsView() {
         // Required empty public constructor
     }
-    public ViewJobsFragment(StorageManager ptr_sm) {
+    public JobsView(StorageManager ptr_sm) {
         this.ptr_sm = ptr_sm;
     }
 
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
+    public static SettingsView newInstance(String param1, String param2) {
+        SettingsView fragment = new SettingsView();
         Bundle args = new Bundle();
         return fragment;
     }
@@ -45,17 +48,17 @@ public class ViewJobsFragment extends Fragment {
         }
         super.onCreate(savedInstanceState);
     }
-    public ArrayList<JobFragment>getSelecteds() {
-        ArrayList<JobFragment> list = new ArrayList<>();
-        for(JobFragment js : fragments) {
+    public ArrayList<JobView>getSelecteds() {
+        ArrayList<JobView> list = new ArrayList<>();
+        for(JobView js : fragments) {
             if  (js.isSelected) {
                 list.add(js);
             }
         }
         return list;
     }
-    public JobFragment getSelected() {
-        for(JobFragment js : fragments) {
+    public JobView getSelected() {
+        for(JobView js : fragments) {
             if(js.isSelected) {
                 return js;
             }
@@ -103,7 +106,7 @@ public class ViewJobsFragment extends Fragment {
         // we need to restore the view for all childs
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        for(JobFragment jf : fragments) {
+        for(JobView jf : fragments) {
             ft.add(R.id.view_jobs_linearlayout, jf);
         }
         ft.commit();
@@ -115,7 +118,7 @@ public class ViewJobsFragment extends Fragment {
     }
 
     public void stopAllFragments(boolean onlySelected) {
-        for (JobFragment jf : fragments) {
+        for (JobView jf : fragments) {
             if( onlySelected)  {
                 if(jf.isSelected) {
                     jf.stopJob();
@@ -139,7 +142,7 @@ public class ViewJobsFragment extends Fragment {
     }
 */
     public void unselectAllFragments() {
-        for (JobFragment jf : fragments) {
+        for (JobView jf : fragments) {
             jf.unselectView();
         }
         if ( getNumberSelected() == 0) {
@@ -150,7 +153,7 @@ public class ViewJobsFragment extends Fragment {
 
     public int getNumberSelected() {
         int count = 0;
-        for (JobFragment jf : fragments) {
+        for (JobView jf : fragments) {
             if ( jf.isSelected ) {
                 count += 1;
             }
@@ -160,7 +163,7 @@ public class ViewJobsFragment extends Fragment {
 
     public int getNumberStartedAndSelected() {
         int count = 0;
-        for (JobFragment jf : fragments) {
+        for (JobView jf : fragments) {
             if ( jf.isStarted() && jf.isSelected) {
                 count += 1;
             }
@@ -170,7 +173,7 @@ public class ViewJobsFragment extends Fragment {
 
     public int getNumberStarted() {
         int count = 0;
-        for (JobFragment jf : fragments) {
+        for (JobView jf : fragments) {
             if ( jf.isStarted()) {
                 count += 1;
             }
@@ -179,20 +182,20 @@ public class ViewJobsFragment extends Fragment {
     }
 
 
-    public JobFragment addNewJob(){
+    public JobView addNewJob(){
         return addNewJob(null);
     }
-    public JobFragment addNewJob(String statefile) {
+    public JobView addNewJob(String statefile) {
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        JobFragment f = null;
+        JobView f = null;
         if ( statefile == null ) {
-            f = new JobFragment(ptr_sm);
+            f = new JobView(ptr_sm);
         }
         else {
             // don't create the files please
-            f = new JobFragment(ptr_sm, statefile);
+            f = new JobView(ptr_sm, statefile);
         }
         ft.add(R.id.view_jobs_linearlayout, f);
         ft.commit();
@@ -202,7 +205,7 @@ public class ViewJobsFragment extends Fragment {
     }
 
     public void writeState() {
-        for ( JobFragment jf : fragments) {
+        for ( JobView jf : fragments) {
             jf.writeState();
         }
     }
@@ -210,12 +213,12 @@ public class ViewJobsFragment extends Fragment {
     public void readState() {
         for(String internal_relative_name : this.ptr_sm.getScriptsFromFilesystem()) {
             String statefile = this.ptr_sm.getStateFileAbsolutePath(internal_relative_name);
-            JobFragment jf = addNewJob(statefile);
+            JobView jf = addNewJob(statefile);
             jf.readState(getActivity(),internal_relative_name);
             jf.dump();
         }
         if ( fragments.size() > 0) {
-            JobFragment.fragmentCount = fragments.get(fragments.size() - 1).jd.id + 1;
+            JobView.fragmentCount = fragments.get(fragments.size() - 1).jd.id + 1;
         }
     }
 
