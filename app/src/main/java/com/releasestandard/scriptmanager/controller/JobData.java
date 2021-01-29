@@ -22,8 +22,6 @@ public class JobData {
 
     // id of the script
      public Integer id = 0;
-    // size of the string
-    public Integer name_length = 0;
     // name of the script
     public String name = "";
     // boolean for the (if it is schedulded)
@@ -40,7 +38,6 @@ public class JobData {
             EACH_TIME,        // month
             EACH_TIME };      // year
     // index in array (intents for schedulded and processes for started)
-    public Integer processes_sz = 0;
     public List<Integer> processes = new ArrayList<Integer>();
     public List<Integer> intents = new ArrayList<>();
     //
@@ -48,51 +45,7 @@ public class JobData {
     public String name_in_path = "";
 
 
-    public void dump() {
-        Logger.debug(dump(""));
-    }
-    public String dump(String init) {
-        String sched_as_ints = "";
-        for ( int i : sched) {
-            sched_as_ints = sched_as_ints + (new Integer(i)) + " ";
-        }
-        return
-                init + "JobData {\n" +
-                init + " id=" + id + "\n" +
-                init + " name=" + name + "\n" +
-                init + " isSchedulded=" + isSchedulded + "\n" +
-                init + " isStarted=" + isStarted + "\n" +
-                init + " isDateSet=" + isDateSet + "\n" +
-                init + " sched=" + TimeManager.sched2str(sched) + "\n" +
-                init + "  (" + sched_as_ints + ")\n" +
-                init + " processes_sz=" + processes.size()+ "\n" +
-                init + " intent_sz=" + intents.size() + "\n" +
-                init + " name_in_path=" + name_in_path + "\n" +
-                init + "}\n"
-        ;
-    }
-    public int[] readIntArray(InputStreamReader isr) throws IOException { return readIntArray(isr,isr.read()); }
-    public int[] readIntArray(InputStreamReader isr, Integer i) throws IOException {
-        int[] tab = new int[i];
-        for(int ii = 0; ii < i ; ii += 1) {
-            int j = isr.read();
-            // since any of secondes, minutes, hours, day, month year will go to much high we stop here
-            short jj = (short)j;
-            tab[ii]=jj;
-        }
-        return tab;
-    }
-    public List<Integer> readIntegerArray(InputStreamReader isr) throws IOException { return readIntegerArray(isr,isr.read()); }
-    public List<Integer> readIntegerArray(InputStreamReader isr, Integer i) throws IOException {
-        List<Integer> tab = new ArrayList<Integer>();
-        for(int ii = 0; ii < i ; ii += 1) {
-            int j = isr.read();
-            // since any of secondes, minutes, hours, day, month year will go to much high we stop here
-            short jj = (short)j;
-            tab.add((int) jj);
-        }
-        return tab;
-    }
+
     /**
      *  Beware this method is used at boot time to set alarms, Object like Matcher, File
      *  could cause crashes.
@@ -126,10 +79,10 @@ public class JobData {
             // boolean for the (if it is date set or not)
             isDateSet = (isr.read() == 0)?false:true;
             // get The date
-            sched = readIntArray(isr,5);
+            sched = StorageManager.readIntArray(isr,5);
             if ( ! ignore_intents_processes ) {
-                processes = readIntegerArray(isr);
-                intents = readIntegerArray(isr);
+                processes = StorageManager.readIntegerArray(this, isr);
+                intents = StorageManager.readIntegerArray(this, isr);
             }
             Logger.debug("after read from internal storage");
             dump();
@@ -185,5 +138,29 @@ public class JobData {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void dump() {
+        Logger.debug(dump(""));
+    }
+    public String dump(String init) {
+        String sched_as_ints = "";
+        for ( int i : sched) {
+            sched_as_ints = sched_as_ints + (new Integer(i)) + " ";
+        }
+        return
+                init + "JobData {\n" +
+                        init + " id=" + id + "\n" +
+                        init + " name=" + name + "\n" +
+                        init + " isSchedulded=" + isSchedulded + "\n" +
+                        init + " isStarted=" + isStarted + "\n" +
+                        init + " isDateSet=" + isDateSet + "\n" +
+                        init + " sched=" + TimeManager.sched2str(sched) + "\n" +
+                        init + "  (" + sched_as_ints + ")\n" +
+                        init + " processes_sz=" + processes.size()+ "\n" +
+                        init + " intent_sz=" + intents.size() + "\n" +
+                        init + " name_in_path=" + name_in_path + "\n" +
+                        init + "}\n"
+                ;
     }
 }

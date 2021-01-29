@@ -76,7 +76,7 @@ public class JobsView extends Fragment {
         if ( savedInstanceState == null ) {
             Logger.debug("ViewJobsFragment:saveInstanceNull");
         }
-        View v =  inflater.inflate(R.layout.view_jobs_fragment, container, false);
+        View v =  inflater.inflate(R.layout.jobs_view, container, false);
         Logger.debug("ViewJobsFragment:onCreateView");
         return v;
     }

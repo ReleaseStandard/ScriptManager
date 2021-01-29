@@ -1,11 +1,15 @@
 package com.releasestandard.scriptmanager.model;
 
+import com.releasestandard.scriptmanager.controller.JobData;
 import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.R;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,20 +31,30 @@ public class StorageManager {
      */
     public String script_name = "";
 
-    public void dump() { Logger.debug(dump("")); }
-    public String dump(String off) {
-        String noff = off + "\t";
-        return "" +
-                    off + "StorageManager {\n" +
-                    noff + "externalStorage="+externalStorage+"\n" +
-                    noff + "internalStorage="+internalStorage+"\n"+
-                    noff + "SUFFIX_LOG=" + SUFFIX_LOG + "\n" +
-                    noff + "SUFFIX_SCRIPT=" + SUFFIX_SCRIPT + "\n" +
-                    noff + "SUFFIX_STATE=" + SUFFIX_STATE + "\n" +
-                    noff + "SUFFIX_OUTPUT=" + SUFFIX_OUTPUT + "\n" +
-                    noff + "script_name=" + script_name + "\n" +
-                    off + "}\n"
-                ;
+    public static List<Integer> readIntegerArray(JobData jobData, InputStreamReader isr) throws IOException { return readIntegerArray(isr,isr.read()); }
+
+    public static List<Integer> readIntegerArray(InputStreamReader isr, Integer i) throws IOException {
+        List<Integer> tab = new ArrayList<Integer>();
+        for(int ii = 0; ii < i ; ii += 1) {
+            int j = isr.read();
+            // since any of secondes, minutes, hours, day, month year will go to much high we stop here
+            short jj = (short)j;
+            tab.add((int) jj);
+        }
+        return tab;
+    }
+
+    public static int[] readIntArray(InputStreamReader isr) throws IOException { return readIntArray(isr,isr.read()); }
+
+    public static int[] readIntArray(InputStreamReader isr, Integer i) throws IOException {
+        int[] tab = new int[i];
+        for(int ii = 0; ii < i ; ii += 1) {
+            int j = isr.read();
+            // since any of secondes, minutes, hours, day, month year will go to much high we stop here
+            short jj = (short)j;
+            tab[ii]=jj;
+        }
+        return tab;
     }
 
     public StorageManager(StorageManager sm) {
@@ -61,6 +75,8 @@ public class StorageManager {
     public StorageManager() {
 
     }
+
+
     public String getScriptName() {
         return this.script_name;
     }
@@ -150,5 +166,21 @@ public class StorageManager {
             return false;
         }
         return (SUFFIX_STATE.length() + i ) == fname.length();
+    }
+
+    public void dump() { Logger.debug(dump("")); }
+    public String dump(String off) {
+        String noff = off + "\t";
+        return "" +
+                off + "StorageManager {\n" +
+                noff + "externalStorage="+externalStorage+"\n" +
+                noff + "internalStorage="+internalStorage+"\n"+
+                noff + "SUFFIX_LOG=" + SUFFIX_LOG + "\n" +
+                noff + "SUFFIX_SCRIPT=" + SUFFIX_SCRIPT + "\n" +
+                noff + "SUFFIX_STATE=" + SUFFIX_STATE + "\n" +
+                noff + "SUFFIX_OUTPUT=" + SUFFIX_OUTPUT + "\n" +
+                noff + "script_name=" + script_name + "\n" +
+                off + "}\n"
+                ;
     }
 }

@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.releasestandard.scriptmanager.AlarmReceiver;
-import com.releasestandard.scriptmanager.EventsReceiver;
+import com.releasestandard.scriptmanager.SmsReceiver;
 import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.io.IOException;
@@ -28,24 +28,23 @@ public class Shell {
     public BashInterface bi = null;
 
     /**
-     *  Constructor will build the storage required to store scripts.
+     *  This is the shell for a given JobView (one line on screen).
      */
     public Shell(StorageManager sm) {
             this.sm = new StorageManager(sm);
             this.bi = new BashInterface(sm);
-            EventsReceiver.listeners.add(this);
+            SmsReceiver.listeners.add(this);
     }
 
     /**
      * parameter could be the name of the script or an absolute path.
-     * @param scriptname
-     * @return
+     * @param scriptname scriptname (last part of pathname)
+     * @return index in the array of processes
      */
     public Integer execScript(String scriptname) {
         sm.setScriptName(scriptname);
-        String script_path = sm.getScriptAbsolutePath();
         String output = sm.getOutputAbsolutePath();
-        output = bi.wrappScript(script_path,output);
+        bi.wrappScript( sm.getScriptAbsolutePath(),output);
 
         Logger.log("Job execution : " + output + "\n   log=" + sm.getLogAbsolutePath());
         Process p = _execScript(output,sm.getLogAbsolutePath());

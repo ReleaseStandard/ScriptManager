@@ -12,7 +12,7 @@ import com.releasestandard.scriptmanager.model.Shell;
 
 import java.util.ArrayList;
 
-public class EventsReceiver extends BroadcastReceiver {
+public class SmsReceiver extends BroadcastReceiver {
 
     private SharedPreferences preferences;
     public static ArrayList<Shell> listeners = new ArrayList<>();

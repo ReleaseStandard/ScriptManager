@@ -9,7 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.releasestandard.scriptmanager.JobsView"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/view_jobs_fragment">
+        tools:layout="@layout/jobs_view">
 
     </fragment>
 </navigation>

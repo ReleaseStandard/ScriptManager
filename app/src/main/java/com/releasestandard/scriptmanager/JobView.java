@@ -31,7 +31,6 @@ import com.releasestandard.scriptmanager.controller.TimeManagerView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -176,7 +175,7 @@ public class JobView extends Fragment {
                              Bundle savedInstanceState) {
         Logger.debug("JobFragment:onCreateView");
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.job_fragment, container, false);
+        View v =  inflater.inflate(R.layout.job_view, container, false);
         TextView tv = v.findViewById(R.id.job_title);
         tv.setText(jd.name);
         shell.dump();
