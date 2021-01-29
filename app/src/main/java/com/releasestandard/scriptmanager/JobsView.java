@@ -130,17 +130,7 @@ public class JobsView extends Fragment {
             }
         }
     }
-/*
-    public void backup() {
-        for ( JobFragment jf : fragments) {
-            jf.backup();
-        }
-    }
 
-    public void restore() {
-        // jf.restore();
-    }
-*/
     public void unselectAllFragments() {
         for (JobView jf : fragments) {
             jf.unselectView();
@@ -185,17 +175,17 @@ public class JobsView extends Fragment {
     public JobView addNewJob(){
         return addNewJob(null);
     }
-    public JobView addNewJob(String statefile) {
+    public JobView addNewJob(String scriptname) {
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
         JobView f = null;
-        if ( statefile == null ) {
+        if ( scriptname == null ) {
             f = new JobView(ptr_sm);
         }
         else {
             // don't create the files please
-            f = new JobView(ptr_sm, statefile);
+            f = new JobView(ptr_sm, scriptname);
         }
         ft.add(R.id.view_jobs_linearlayout, f);
         ft.commit();
@@ -211,10 +201,9 @@ public class JobsView extends Fragment {
     }
 
     public void readState() {
-        for(String internal_relative_name : this.ptr_sm.getScriptsFromFilesystem()) {
-            String statefile = this.ptr_sm.getStateFileAbsolutePath(internal_relative_name);
-            JobView jf = addNewJob(statefile);
-            jf.readState(getActivity(),internal_relative_name);
+        for(String scriptname : this.ptr_sm.getScriptsFromFilesystem()) {
+            JobView jf = addNewJob(scriptname);
+            jf.readState(getActivity(),scriptname);
             jf.dump();
         }
         if ( fragments.size() > 0) {

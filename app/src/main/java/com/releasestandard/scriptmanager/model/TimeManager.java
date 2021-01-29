@@ -1,21 +1,23 @@
 package com.releasestandard.scriptmanager.model;
 
-import com.releasestandard.scriptmanager.JobView;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TimeManager {
+
+    public final static Integer EACH_TIME = -1;
+
+    public static int[] packIn(int minute, int hourOfDay, int dayOfMonth, int monthOfYear, int year) { int sched[]={minute,hourOfDay,dayOfMonth,monthOfYear,year} ; return sched ; }
     public static int[] str2sched(String s) {
-        int sched[] = {JobView.EACH_TIME, JobView.EACH_TIME, JobView.EACH_TIME, JobView.EACH_TIME, JobView.EACH_TIME};
+        int sched[] = {EACH_TIME, EACH_TIME, EACH_TIME, EACH_TIME, EACH_TIME};
         int i = 0;
         String [] parts = s.split(" ");
         if ( parts.length == sched.length ) {
             for (String ss : parts) {
                 if (ss.equals(new String("*"))) {
-                    sched[i] = JobView.EACH_TIME;
+                    sched[i] = EACH_TIME;
                 } else {
                     sched[i] = (int) Integer.parseInt(ss);
                 }
@@ -41,7 +43,7 @@ public class TimeManager {
 
     public static boolean isRepeated(int [] sched) {
         for ( int i = 0 ; i < 5 ; i = i +1 ) {
-            if ( sched[i] == JobView.EACH_TIME ) {
+            if ( sched[i] == EACH_TIME ) {
                 return true;
             }
         }
@@ -59,7 +61,7 @@ public class TimeManager {
         // if we count in
         boolean areWeInEachThing = false;
         for ( int i = 0; i < 5 ; i = i + 1 ) {
-            if ( sched[i] == JobView.EACH_TIME ) {
+            if ( sched[i] == EACH_TIME ) {
                 // we need to apply this only on the first each
                 if ( areWeInEachThing == false ) {
                     c.set(parts[i], c.get(parts[i]) + 1);

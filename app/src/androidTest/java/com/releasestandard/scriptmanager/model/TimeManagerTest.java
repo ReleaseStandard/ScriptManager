@@ -1,6 +1,5 @@
 package com.releasestandard.scriptmanager.model;
 
-import com.releasestandard.scriptmanager.JobView;
 import com.releasestandard.scriptmanager.tools.Logger;
 
 import junit.framework.TestCase;
@@ -27,7 +26,7 @@ public class TimeManagerTest extends TestCase {
         }
         {
             String s = "* 2 3 4 5";
-            int[] expected = new int[]{JobView.EACH_TIME, 2, 3, 4, 5};
+            int[] expected = new int[]{TimeManager.EACH_TIME, 2, 3, 4, 5};
             int[] sched = str2sched(s);
             assertEquals(sched, expected);
         }
@@ -42,7 +41,7 @@ public class TimeManagerTest extends TestCase {
         }
         {
             String s1 = "* 2 3 4 5";
-            int[] sched = new int[]{JobView.EACH_TIME, 2, 3, 4, 5};
+            int[] sched = new int[]{TimeManager.EACH_TIME, 2, 3, 4, 5};
             String expected = sched2str(sched);
             assertEquals(expected,s1);
         }

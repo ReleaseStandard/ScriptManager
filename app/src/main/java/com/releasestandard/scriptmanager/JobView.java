@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.releasestandard.scriptmanager.controller.JobData;
 import com.releasestandard.scriptmanager.model.Shell;
 import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.model.TimeManager;
 import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.controller.TimeManagerView;
 
@@ -43,17 +44,12 @@ public class JobView extends Fragment {
 
     // is this fragment selected user
     public boolean isSelected = false;
-    public JobData jd = new JobData();
-    public String path;                     // script path
-    public String log_path;              // log path
-    public String state_file;             // state path
-    public Date started = null;
-    public Date stopped = null;
-    public final static Integer EACH_TIME = -1;
     // données du modèle
 
     private View view = null;
+
     Shell shell = null;
+    public JobData jd = new JobData();
 
     public void dump() {
         Logger.debug(dump(""));
@@ -64,18 +60,15 @@ public class JobView extends Fragment {
                     init + "JobFragment {\n"+
                     ninit + "fragmentCount="+fragmentCount+"\n"+
                     ninit + "WRONG_DATE_FORMAT="+WRONG_DATE_FORMAT+"\n"+
-                    ninit + "path="+path+ "\n"+
-                    ninit + "log_path="+shell.sm.getLogAbsolutePath()+"\n"+
-                    ninit + "state_file="+shell.sm.getStateFileAbsolutePath() + "\n" +
                     jd.dump(ninit) +
                     shell.dump(ninit) +
                     "}\n";
     }
 
-    public JobView(StorageManager ptr_sm, String statefile) {
+    public JobView(StorageManager ptr_sm, String scriptname) {
         this.shell = new Shell(ptr_sm);
         initializeInstance();
-        this.state_file = statefile;
+        this.shell.sm.setScriptName(scriptname);
     }
     public JobView(StorageManager ptr_sm) {
         this.shell = new Shell(ptr_sm);
@@ -86,12 +79,13 @@ public class JobView extends Fragment {
      * Used to initialize the JobFragment
      */
     public void initializeInstance() {
+        Logger.debug("JobView :: initializeInstance");
         Calendar rn = Calendar.getInstance();
-        jd.sched[0] = rn.get(Calendar.MINUTE);
-        jd.sched[1] = rn.get(Calendar.HOUR);
-        jd.sched[2] = rn.get(Calendar.DAY_OF_MONTH);
-        jd.sched[3] = rn.get(Calendar.MONTH);
-        jd.sched[4] = rn.get(Calendar.YEAR);
+        jd.sched = TimeManager.packIn(rn.get(Calendar.MINUTE),
+                rn.get(Calendar.HOUR),
+                rn.get(Calendar.DAY_OF_MONTH),
+                rn.get(Calendar.MONTH),
+                rn.get(Calendar.YEAR));
         rn.set(Calendar.SECOND,0);
         rn.set(Calendar.MILLISECOND,0);
 
@@ -100,11 +94,6 @@ public class JobView extends Fragment {
         jd.name = "Script n°" + jd.id.toString();
         shell.sm.setScriptName(scriptname);
         jd.name_in_path = scriptname;
-        state_file = shell.sm.getStateFileAbsolutePath();
-        log_path = shell.sm.getLogAbsolutePath();
-        path = shell.sm.getScriptName();
-        // create/empty logfile
-        shell.execCmd("> " + log_path);
         jd.dump();
     }
 
@@ -193,7 +182,7 @@ public class JobView extends Fragment {
         shell.dump();
         jd.dump();
         TextView tv2 = v.findViewById(R.id.job_filename);
-        tv2.setText(path);
+        tv2.setText(jd.name_in_path);
 
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -267,11 +256,7 @@ public class JobView extends Fragment {
         TimeManagerView tm = new TimeManagerView(){
             @Override
             public void onPicked(int minute,int hourOfDay,int dayOfMonth,int monthOfYear,int year) {
-                jd.sched[0] = minute;
-                jd.sched[1] = hourOfDay;
-                jd.sched[2] = dayOfMonth;
-                jd.sched[3] = monthOfYear;
-                jd.sched[4] = year;
+                jd.sched = TimeManager.packIn(minute,hourOfDay,dayOfMonth,monthOfYear,year);
                 setDate();
                 writeState();
             }
@@ -307,7 +292,6 @@ public class JobView extends Fragment {
         jd.isSchedulded = false;
         jd.isStarted = false;
         setViewStopJob();
-        stopped = new Date();
         MainActivity main = (MainActivity)getActivity();
         int i = main.jobs_view.getNumberStarted();
         if ( i == 0 ) {
@@ -323,8 +307,6 @@ public class JobView extends Fragment {
             main.ow_menu.enterRunningMode();
         }
 
-        stopped = null;
-        started = new Date();
         jd.isStarted = true;
 
         if ( isDateSet() ) {
@@ -340,7 +322,7 @@ public class JobView extends Fragment {
         }
         else {
             setViewStartJob();
-            Integer process_index = shell.execScript(path);
+            Integer process_index = shell.execScript(jd.name_in_path);
             if ( process_index != -1 ) {
                 jd.processes.add(process_index);
             }
@@ -479,17 +461,16 @@ public class JobView extends Fragment {
      */
     public void writeState() {
         jd.dump();
-        jd.writeState(getContext(), StorageManager.getTerminalPart(state_file));
+        jd.writeState(getContext(), shell.sm.getStateFileNameInPath());
     }
 
-    /*
+    /**
      * Read the state at start
      *   => pas d'update dans l'ui, c'est le probleme
      */
     public void readState(Context context, String path_name) {
         Logger.debug("readState from JobFragment");
-
-        jd.readFromInternalStorage(context,StorageManager.getTerminalPart(state_file));
+        jd.readFromInternalStorage(context,shell.sm.getStateFileNameInPath());
         String script_name_path = path_name;
         this.shell.sm.setScriptName(script_name_path);
     }

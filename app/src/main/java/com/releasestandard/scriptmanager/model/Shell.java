@@ -24,20 +24,8 @@ public class Shell {
     private static List<Process> processes = new ArrayList<Process>();
     private static List<PendingIntent> intents = new ArrayList<PendingIntent>();
 
-
     public StorageManager sm = null;
     public BashInterface bi = null;
-
-    public void dump() { Logger.debug(dump("")); }
-    public String dump(String offset) {
-        return "" +
-                offset + "Shell { \n" +
-                offset + "\tprocesses=" + processes.size() + "\n" +
-                offset + "\tintents=" + intents.size() + "\n" +
-                bi.dump(offset + "\t" ) +
-                sm.dump(offset + "\t") +
-                offset + "}\n";
-    }
 
     /**
      *  Constructor will build the storage required to store scripts.
@@ -46,21 +34,6 @@ public class Shell {
             this.sm = new StorageManager(sm);
             this.bi = new BashInterface(sm);
             EventsReceiver.listeners.add(this);
-    }
-
-    /**
-     *  Run one time
-     * @param cmd
-     * @return
-     */
-    public int execCmd(String cmd) {
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh","-c",cmd});
-            processes.add(p);
-        } catch (IOException e) {
-            return 1;
-        }
-        return 0;
     }
 
     /**
@@ -156,14 +129,15 @@ public class Shell {
         intents.get(i).cancel();
         return true;
     }
-    public void terminateAll() {
-        for(Process p : processes) {
-            p.destroy();
-        }
-        processes.clear();
-        for(PendingIntent p : intents) {
-            p.cancel();
-        }
-        intents.clear();
+
+    public void dump() { Logger.debug(dump("")); }
+    public String dump(String offset) {
+        return "" +
+                offset + "Shell { \n" +
+                offset + "\tprocesses=" + processes.size() + "\n" +
+                offset + "\tintents=" + intents.size() + "\n" +
+                bi.dump(offset + "\t" ) +
+                sm.dump(offset + "\t") +
+                offset + "}\n";
     }
 }

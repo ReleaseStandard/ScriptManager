@@ -113,24 +113,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void showFileWithEditor(String path) {
-        Context context = getApplicationContext();
-        String pvd = context.getApplicationContext().getPackageName() + ".provider";
-        File f = new File(path);
-        if (!f.exists()) {
-            try {
-                f.createNewFile();
-            } catch (IOException e) {
-                return;
-            }
-        }
-        Uri uri = FileProvider.getUriForFile(context, pvd, f);
-
-        Intent myIntent = new Intent(Intent.ACTION_VIEW);
-        myIntent.setData(uri);
-        myIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(myIntent);
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -253,6 +235,25 @@ public class MainActivity extends AppCompatActivity {
         // Start service at boot / enregistrement sur disk
         return true;
     }
+    public void showFileWithEditor(String path) {
+        Context context = getApplicationContext();
+        String pvd = context.getApplicationContext().getPackageName() + ".provider";
+        File f = new File(path);
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                return;
+            }
+        }
+        Uri uri = FileProvider.getUriForFile(context, pvd, f);
+
+        Intent myIntent = new Intent(Intent.ACTION_VIEW);
+        myIntent.setData(uri);
+        myIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(myIntent);
+    }
+
     /*
      * Handle result of the import action.
      */
