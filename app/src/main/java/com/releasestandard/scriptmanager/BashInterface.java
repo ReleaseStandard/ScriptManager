@@ -85,7 +85,7 @@ public class BashInterface {
                 "#\n" +
                 "#\n" +
                 "while true ; do\n" +
-                "\tsleep 100 &\n" +
+                "\tsleep 2 &\n" +
                 "\twait $!\n" +
                 "done\n";
 
