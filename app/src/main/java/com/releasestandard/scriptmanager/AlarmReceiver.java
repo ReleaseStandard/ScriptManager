@@ -39,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             jd.processes.add(j);
         }
 
-        if ( TimeManager.isRepeated(sched)) {
+        if ( jd.isSchedulded && TimeManager.isRepeated(sched)) {
             Integer i =s.scheduleScript(context,scriptname,sched);
             if ( i != -1) {
                 jd.intents.add(i);

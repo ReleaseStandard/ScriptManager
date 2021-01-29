@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 
 import com.releasestandard.scriptmanager.model.Shell;
+import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.util.ArrayList;
 

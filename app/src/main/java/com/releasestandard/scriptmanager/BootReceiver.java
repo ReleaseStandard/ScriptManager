@@ -36,17 +36,12 @@ public class BootReceiver extends BroadcastReceiver {
                                 context.getApplicationContext().getFilesDir().getAbsolutePath(),
                                 jd.name_in_path));
 
-                    if ( jd.isSchedulded ) {
-                        Integer i = shell.scheduleScript(context, jd.name_in_path, jd.sched);
-                        if ( i != -1 ) {
-                            jd.intents.add(i);
-                        }
-                    } else {
-                        Integer i = shell.execScript(jd.name_in_path);
-                        if ( i != -1 ) {
-                            jd.processes.add(i);
-                        }
+
+                    Integer i = shell.scheduleScript(context, jd.name_in_path, jd.sched,!jd.isSchedulded);
+                    if ( i != -1 ) {
+                        jd.intents.add(i);
                     }
+
                 }
                 jd.writeState(context,f);
             }

@@ -1,5 +1,7 @@
 package com.releasestandard.scriptmanager.model;
 
+import android.util.Log;
+
 import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.io.File;
@@ -36,7 +38,7 @@ public class KornShellInterface {
     public void dump() { Logger.debug(dump("")); }
     public String dump(String off) {
             String noff = off + "\t";
-            return off + "BashInterface {\n"+
+            return off + "KornShellInterface {\n"+
                     noff + "signal="+signal+"\n" +
                     off + "}\n"
                     ;
@@ -122,7 +124,9 @@ public class KornShellInterface {
         cmd  += "kill -s " + signal + " $(cat " + pidFile + ");";
 
         // we have to wait for the lock file before run command
+        Logger.debug("<==================>,lockFile="+lockFile);
         File file = new File(lockFile);
+        Logger.debug("lockFile="+lockFile);
         while(file.exists()) {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
@@ -130,6 +134,7 @@ public class KornShellInterface {
                 e.printStackTrace();
             }
         }
+        Logger.debug("<===========END===============>");
         Shell._execCmd("touch \""+lockFile+"\"");
         Logger.debug(cmd);
         Shell._execCmd(cmd);

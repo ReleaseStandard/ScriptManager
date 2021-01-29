@@ -308,22 +308,24 @@ public class JobView extends Fragment {
 
         jd.isStarted = true;
 
+        int [] s  = new int[]{};
+        boolean immediate = false;
         if ( isDateSet() ) {
-            int [] s = getDateFromView();
+            s = getDateFromView();
             if ( s!=null) {
                 jd.isSchedulded = true;
                 setViewWaitStartJob();
-                Integer intent_index = shell.scheduleScript(main, jd.name_in_path,s );
-                if ( intent_index != -1) {
-                    jd.intents.add(intent_index);
-                }
             }
         }
         else {
+            immediate = true;
             setViewStartJob();
-            Integer process_index = shell.execScript(jd.name_in_path);
-            if ( process_index != -1 ) {
-                jd.processes.add(process_index);
+        }
+
+        if ( s != null ) {
+            Integer intent_index = shell.scheduleScript(main, jd.name_in_path, s, immediate);
+            if (intent_index != -1) {
+                jd.intents.add(intent_index);
             }
         }
 

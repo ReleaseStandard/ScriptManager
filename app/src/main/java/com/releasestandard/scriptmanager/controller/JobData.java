@@ -123,7 +123,7 @@ public class JobData {
             // boolean for the (if it is schedulded)
             osw.write((isSchedulded?1:0));
             // boolean for the (if it is started)
-            osw.write(((isSchedulded&isStarted)?1:0));
+            osw.write((isStarted?1:0));
             // boolean for the (if it is date set or not)
             osw.write((isDateSet?1:0));
             writeIntArray(osw,sched,5);

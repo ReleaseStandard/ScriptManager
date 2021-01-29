@@ -50,6 +50,12 @@ public class TimeManager {
         return false;
     }
 
+    public static Calendar getImmediate() {
+        Calendar c = new GregorianCalendar();
+        int off = 100;
+        c.setTimeInMillis(c.getTimeInMillis() + off);
+        return c;
+    }
     public static Calendar nextSched(int [] sched) {
         Calendar c = new GregorianCalendar();
         int parts[]={ Calendar.MINUTE,Calendar.HOUR,

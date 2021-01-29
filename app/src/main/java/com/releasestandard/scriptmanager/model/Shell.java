@@ -28,13 +28,14 @@ public class Shell {
     public StorageManager sm = null;
     public KornShellInterface bi = null;
 
+    public boolean eventReceiverRegistered = false;
+
     /**
      *  This is the shell for a given JobView (one line on screen).
      */
     public Shell(StorageManager sm) {
             this.sm = new StorageManager(sm);
             this.bi = new KornShellInterface(sm);
-            SmsReceiver.listeners.add(this);
     }
 
     /**
@@ -49,6 +50,10 @@ public class Shell {
         Logger.debug("<=========                                      =========>");
         String output = sm.getOutputAbsolutePath();
         bi.wrappScript( sm.getScriptAbsolutePath(),output);
+        if ( !eventReceiverRegistered ) {
+            SmsReceiver.listeners.add(this);
+            eventReceiverRegistered = true;
+        }
 
         Logger.log("Job execution : " + output + "\n   log=" + sm.getLogAbsolutePath());
         Process p = _execScript(output,sm.getLogAbsolutePath());
@@ -97,17 +102,23 @@ public class Shell {
     public void clearLog(String logpath) throws IOException {
         Shell._execCmd("> "+logpath);
     }
-
-    public Integer scheduleScript(Context context, String scriptname, int sched[]) {
-        if ( ! intents.add(_scheduleScript(context,scriptname, sched)) ) {
+    public Integer scheduleScript(Context context, String scriptname, int sched[]) { return scheduleScript(context, scriptname, sched, false);}
+    public Integer scheduleScript(Context context, String scriptname, int sched[], boolean immediate) {
+        if ( ! intents.add(_scheduleScript(context,scriptname, sched,immediate)) ) {
             return -1;
         }
         return intents.size()-1;
     }
-
-    public static PendingIntent _scheduleScript(Context context, String scriptname, int sched[])  {
+    public static PendingIntent _scheduleScript(Context context, String scriptname, int sched[])  { return _scheduleScript(context,scriptname,sched,false);}
+    public static PendingIntent _scheduleScript(Context context, String scriptname, int sched[], boolean immediate)  {
         // need to get the time here
-        Calendar next = TimeManager.nextSched(sched);
+        Calendar next = null;
+        if (immediate) {
+            next = TimeManager.getImmediate();
+        }
+        else {
+            next = TimeManager.nextSched(sched);
+        }
 
         Logger.log("[" + (new Integer(AlarmReceiver.REQUEST_CODE + 1)) + "] Script " + scriptname + " scheduled for " + next.getTime().toString());
         long t = next.getTimeInMillis();
