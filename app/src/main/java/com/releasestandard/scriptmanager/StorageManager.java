@@ -86,6 +86,8 @@ public class StorageManager {
     private String getOutputPath(String scriptname) { return addSuffixeIfNeeded(scriptname,SUFFIX_OUTPUT); }
     public String getOutputAbsolutePath() { return this.getOutputAbsolutePath(this.script_name); }
     public String getOutputAbsolutePath(String scriptname) { return this.getExternalAbsolutePath(getOutputPath(scriptname)); }
+    public String getStateFileNameInPath() { return this.getStateFileNameInPath(this.script_name); }
+    public String getStateFileNameInPath(String script_name) { return script_name + SUFFIX_STATE ; }
     /**
      * Input  : script name or abs path
      *  Output : script abs path to external storage
@@ -136,5 +138,14 @@ public class StorageManager {
             return null;
         }
         return tab[tab.length-1];
+    }
+
+    // This function will be executed when no access to Regex object
+    public static boolean isStateFile(String fname) {
+        int i = fname.lastIndexOf(SUFFIX_STATE);
+        if ( i < 0 ) {
+            return false;
+        }
+        return (SUFFIX_STATE.length() + i ) == fname.length();
     }
 }

@@ -29,8 +29,12 @@ public class StartAppOnBoot extends BroadcastReceiver {
             Logger.debug("[StartAppOnBoot] : onReceive boot signal received, starting the service");
 
             for ( String f : context.fileList())  {
+                if ( ! StorageManager.isStateFile(f) ) {
+                    continue;
+                }
+                Logger.debug("statefile found : " + f);
                 JobData jd = new JobData();
-                jd.readFromInternalStorage(context, f);
+                jd.readFromInternalStorage(context, f, true);
                 if (jd.isStarted) {
                     Shell shell = new Shell(
                             new StorageManager(
@@ -39,9 +43,15 @@ public class StartAppOnBoot extends BroadcastReceiver {
                                 jd.name_in_path));
 
                     if ( jd.isSchedulded ) {
-                        jd.index_in_array = shell.scheduleJob(context, jd.name_in_path, jd.sched);
+                        Integer i = shell.scheduleJob(context, jd.name_in_path, jd.sched);
+                        if ( i != -1 ) {
+                            jd.intents.add(i);
+                        }
                     } else {
-                        jd.index_in_array = shell.execScript(jd.name_in_path);
+                        Integer i = shell.execScript(jd.name_in_path);
+                        if ( i != -1 ) {
+                            jd.processes.add(i);
+                        }
                     }
                 }
             }

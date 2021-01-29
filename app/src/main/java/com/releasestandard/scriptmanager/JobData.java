@@ -6,9 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.invoke.MethodHandles;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  Classe used to parse offline data, extract information and do the thing.
@@ -37,7 +36,9 @@ public class JobData {
             EACH_TIME,        // month
             EACH_TIME };      // year
     // index in array (intents for schedulded and processes for started)
-    public Integer index_in_array = -1;
+    public Integer processes_sz = 0;
+    public List<Integer> processes = new ArrayList<Integer>();
+    public List<Integer> intents = new ArrayList<>();
     //
     // Not stored
     public String name_in_path = "";
@@ -60,10 +61,34 @@ public class JobData {
                 init + " isDateSet=" + isDateSet + "\n" +
                 init + " sched=" + TimeManager.sched2str(sched) + "\n" +
                 init + "  (" + sched_as_ints + ")\n" +
-                init + " index_in_array=" + index_in_array + "\n" +
+                init + " processes_sz=" + processes.size()+ "\n" +
+                init + " intent_sz=" + intents.size() + "\n" +
                 init + " name_in_path=" + name_in_path + "\n" +
                 init + "}\n"
         ;
+    }
+    public int[] readIntArray(InputStreamReader isr) throws IOException { return readIntArray(isr,isr.read()); }
+    public int[] readIntArray(InputStreamReader isr, Integer i) throws IOException {
+        int[] tab = new int[i];
+        for(int ii = 0; ii < i ; ii += 1) {
+            int j = isr.read();
+            // since any of secondes, minutes, hours, day, month year will go to much high we stop here
+            short jj = (short)j;
+            tab[ii]=jj;
+        }
+        return tab;
+    }
+    public List<Integer> readIntegerArray(InputStreamReader isr) throws IOException { return readIntegerArray(isr,isr.read()); }
+    public List<Integer> readIntegerArray(InputStreamReader isr, Integer i) throws IOException {
+        List<Integer> tab = new ArrayList<Integer>();
+        for(int ii = 0; ii < i ; ii += 1) {
+            int j = isr.read();
+            // since any of secondes, minutes, hours, day, month year will go to much high we stop here
+            short jj = (short)j;
+            Logger.debug("readIntegerArray,j="+j+",jj="+jj);
+            tab.add((int) jj);
+        }
+        return tab;
     }
     /**
      *  Beware this method is used at boot time to set alarms, Object like Matcher, File
@@ -71,7 +96,9 @@ public class JobData {
      * @param context
      * @param state_file
      */
-    public void readFromInternalStorage(Context context, String state_file) {
+    public void readFromInternalStorage(Context context, String state_file) { readFromInternalStorage(context,state_file,false); }
+    public void readFromInternalStorage(Context context, String state_file, boolean ignore_intents_processes) {
+        Logger.debug("readFromInternalStorage,state_file="+state_file);
         InputStreamReader isr;
         try {
             int index1 = state_file.lastIndexOf('/');
@@ -97,18 +124,29 @@ public class JobData {
             // boolean for the (if it is date set or not)
             isDateSet = (isr.read() == 0)?false:true;
             // get The date
-            for(int ii = 0; ii < 5 ; ii += 1) {
-                int j = isr.read();
-                // since any of secondes, minutes, hours, day, month year will go to much high we stop here
-                short jj = (short)j;
-                sched[ii]=jj;
+            sched = readIntArray(isr,5);
+            if ( ! ignore_intents_processes ) {
+                processes = readIntegerArray(isr);
+                intents = readIntegerArray(isr);
             }
-            index_in_array = isr.read();
             isr.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public void writeIntArray(OutputStreamWriter osw, int tab[], int sz) throws IOException {
+        for(int i = 0; i < sz ; i += 1){
+            osw.write(tab[i]);
+        }
+    }
+    public void writeIntegerArray(OutputStreamWriter osw, List<Integer> tab) throws IOException {
+        osw.write(tab.size());
+        for(int i = 0; i < tab.size() ; i += 1){
+            Integer ii = tab.get(i);
+            Logger.debug("writeIntegerArray,ii="+ii);
+            osw.write(ii);
         }
     }
     /**
@@ -132,11 +170,12 @@ public class JobData {
             osw.write(((isSchedulded&isStarted)?1:0));
             // boolean for the (if it is date set or not)
             osw.write((isDateSet?1:0));
-            for(int i = 0; i < 5 ; i += 1){
-                osw.write(sched[i]);
-            }
+            writeIntArray(osw,sched,5);
             // index of (intent, process) in array (intents, processes)
-            osw.write(index_in_array);
+            Logger.debug("write processes");
+            writeIntegerArray(osw,processes);
+            Logger.debug("write intents");
+            writeIntegerArray(osw,intents);
             osw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

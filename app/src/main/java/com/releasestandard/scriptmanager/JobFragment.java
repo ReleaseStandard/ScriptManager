@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.function.LongFunction;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -289,13 +290,15 @@ public class JobFragment extends Fragment {
         tv.setText(name);
     }
     public void stopJob() {
-        if ( jd.isStarted) {
-            if ( jd.isSchedulded) {
-                shell.terminateIntent(jd.index_in_array);
-            }
-            else {
-                shell.terminateProcess(jd.index_in_array);
-            }
+        Logger.debug("stopJob");
+        readState(getContext(),jd.name_in_path);
+        Logger.debug("kill " + jd.intents.size() + "intents");
+        for (Integer i : jd.intents) {
+            shell.terminateIntent(i);
+        }
+        Logger.debug("kill " + jd.processes.size() + "processes");
+        for (Integer i : jd.processes) {
+            shell.terminateProcess(i);
         }
         jd.isSchedulded = false;
         jd.isStarted = false;
@@ -319,23 +322,26 @@ public class JobFragment extends Fragment {
         started = new Date();
         jd.isStarted = true;
 
-        Integer index_in_array = -1;
         if ( isDateSet() ) {
             int [] s = getDateFromView();
             if ( s!=null) {
                 jd.isSchedulded = true;
                 setViewWaitStartJob();
-                index_in_array = shell.scheduleJob(main, jd.name_in_path,s );
-                writeState();
+                Integer intent_index = shell.scheduleJob(main, jd.name_in_path,s );
+                if ( intent_index != -1) {
+                    jd.intents.add(intent_index);
+                }
             }
         }
         else {
             setViewStartJob();
-            index_in_array = shell.execScript(path);
+            Integer process_index = shell.execScript(path);
+            if ( process_index != -1 ) {
+                jd.processes.add(process_index);
+            }
         }
-        if ( index_in_array != -1 ) {
-            jd.index_in_array = index_in_array;
-        }
+
+        writeState();
 
         if( isSelected ) {
             main.ow_menu.callbackSelectAndRunning(main);

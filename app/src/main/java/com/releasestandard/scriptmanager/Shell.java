@@ -96,14 +96,11 @@ public class Shell {
     }
     public static Process _execCmd(String cmd, String log) {
         try {
-            ProcessBuilder builder = null;
             if ( log != null) {
-                builder = new ProcessBuilder("sh", "-c", "&>> " + log + "  " + cmd);
+                return Runtime.getRuntime().exec(new String[]{"sh", "-c", "&>> " + log + "  " + cmd});
             } else {
-                builder = new ProcessBuilder("sh", "-c",cmd);
+                return Runtime.getRuntime().exec(new String[]{"sh", "-c",cmd});
             }
-            Process p = builder.start();
-            return p;
         } catch (IOException e) {
             return null;
         }
