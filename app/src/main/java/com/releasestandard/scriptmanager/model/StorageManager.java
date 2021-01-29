@@ -100,11 +100,11 @@ public class StorageManager {
     private String getScriptPath() { return getScriptPath(this.script_name);}
     private String getScriptPath(String script_name) { return addSuffixeIfNeeded(script_name,SUFFIX_SCRIPT);}
     public String getScriptAbsolutePath() { return this.getScriptAbsolutePath(this.script_name); }
-    public String getScriptAbsolutePath(String scriptname) { return this.getExternalAbsolutePath(getScriptPath(scriptname)); }
+    public String getScriptAbsolutePath(String scriptname) { return getExternalAbsolutePath(getScriptPath(scriptname)); }
     private String getOutputPath() { return getOutputPath(this.script_name);  }
     private String getOutputPath(String scriptname) { return addSuffixeIfNeeded(scriptname,SUFFIX_OUTPUT); }
     public String getOutputAbsolutePath() { return this.getOutputAbsolutePath(this.script_name); }
-    public String getOutputAbsolutePath(String scriptname) { return this.getExternalAbsolutePath(getOutputPath(scriptname)); }
+    public String getOutputAbsolutePath(String scriptname) { return getInternalAbsolutePath(getOutputPath(scriptname)); }
     public String getStateFileNameInPath() { return this.getStateFileNameInPath(this.script_name); }
     public String getStateFileNameInPath(String script_name) { return script_name + SUFFIX_STATE ; }
     /**

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * By convention, we use prefix _scriptmanager_ for our internal bash variables.
  */
-public class BashInterface {
+public class KornShellInterface {
 
     // these files are used only for this classe so we don't use the StorageManager //
     private static String SUFFIX_PID = ".pid";
@@ -42,7 +42,7 @@ public class BashInterface {
                     ;
     }
 
-    public BashInterface(StorageManager sm) {
+    public KornShellInterface(StorageManager sm) {
         pidFile = sm.getInternalAbsolutePath("dummy.pid");
     }
 
@@ -110,7 +110,7 @@ public class BashInterface {
         String cmd ="";
         Method method = null;
         try {
-            method = BashInterface.class.getDeclaredMethod(methodToCall,String.class,String.class);
+            method = KornShellInterface.class.getDeclaredMethod(methodToCall,String.class,String.class);
             cmd += method.invoke(this, args[0], args[1]);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -147,5 +147,21 @@ public class BashInterface {
                 "echo \"" + from + "\" > " + arg0 + " && " +
                 "echo \"" + body + "\" > " + arg1 + " && " +
                 "";
+    }
+
+    /**
+     * Offer a way to attach process to root (by cmd wrapping) (don't be killed by application when user close it)
+     * @return
+     */
+    public static String attachToRoot(String cmd) {
+        // Working example to attach to PPID 1 but get killed anyway :/
+        // return "" + cmd + " &";
+        return cmd;
+    }
+    public static String outputToLog(String cmd, String log) {
+        return "&>> " + log + "  " + cmd;
+    }
+    public static String[] packIn(String cmd) {
+        return new String[]{"sh", "-c", cmd};
     }
 }

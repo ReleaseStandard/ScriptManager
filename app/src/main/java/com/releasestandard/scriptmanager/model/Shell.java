@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import com.releasestandard.scriptmanager.AlarmReceiver;
 import com.releasestandard.scriptmanager.SmsReceiver;
@@ -25,14 +26,14 @@ public class Shell {
     private static List<PendingIntent> intents = new ArrayList<PendingIntent>();
 
     public StorageManager sm = null;
-    public BashInterface bi = null;
+    public KornShellInterface bi = null;
 
     /**
      *  This is the shell for a given JobView (one line on screen).
      */
     public Shell(StorageManager sm) {
             this.sm = new StorageManager(sm);
-            this.bi = new BashInterface(sm);
+            this.bi = new KornShellInterface(sm);
             SmsReceiver.listeners.add(this);
     }
 
@@ -43,9 +44,9 @@ public class Shell {
      */
     public Integer execScript(String scriptname) {
         sm.setScriptName(scriptname);
-        Logger.debug("<===============>");
+        Logger.debug("<======== State before execScript =======>");
         sm.dump();
-        Logger.debug("<==================>");
+        Logger.debug("<=========                                      =========>");
         String output = sm.getOutputAbsolutePath();
         bi.wrappScript( sm.getScriptAbsolutePath(),output);
 
@@ -64,17 +65,30 @@ public class Shell {
     public static Process _execScript(String script) {
         return _execScript(script,null);
     }
-    public static Process _execScript(String script, String log) { return _execCmd(". "+script,log); }
+    public static Process _execScript(String script, String log) { return _execCmd(". "+script,log,true); }
     public static Process _execCmd(String cmd) {
         return _execCmd(cmd,null);
     }
-    public static Process _execCmd(String cmd, String log) {
+    public static Process _execCmd(String cmd,String log) {
+        return _execCmd(cmd,log,false);
+    }
+    public static Process _execCmd(String cmd, String log,boolean attachToRoot) {
         try {
+            String real_cmd = cmd;
             if ( log != null) {
-                return Runtime.getRuntime().exec(new String[]{"sh", "-c", "&>> " + log + "  " + cmd});
+                if ( attachToRoot ) {
+                    real_cmd=KornShellInterface.attachToRoot(
+                                            KornShellInterface.outputToLog(cmd, log));
+                } else {
+                    real_cmd=KornShellInterface.outputToLog(cmd, log);
+                }
             } else {
-                return Runtime.getRuntime().exec(new String[]{"sh", "-c",cmd});
+                if ( attachToRoot ) {
+                    real_cmd=KornShellInterface.attachToRoot(cmd);
+                }
             }
+            Logger.debug("real_cmd="+real_cmd);
+            return Runtime.getRuntime().exec(KornShellInterface.packIn(real_cmd));
         } catch (IOException e) {
             return null;
         }
