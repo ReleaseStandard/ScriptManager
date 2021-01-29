@@ -68,8 +68,8 @@ public class StorageManager {
         this.script_name = script;
     }
 
-    public StorageManager(String internalStorage, String scriptStorage) {
-        this.externalStorage = scriptStorage;
+    public StorageManager(String externalStorage, String internalStorage) {
+        this.externalStorage = externalStorage;
         this.internalStorage = internalStorage;
     }
     public StorageManager() {

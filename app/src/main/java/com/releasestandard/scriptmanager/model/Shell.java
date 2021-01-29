@@ -43,6 +43,9 @@ public class Shell {
      */
     public Integer execScript(String scriptname) {
         sm.setScriptName(scriptname);
+        Logger.debug("<===============>");
+        sm.dump();
+        Logger.debug("<==================>");
         String output = sm.getOutputAbsolutePath();
         bi.wrappScript( sm.getScriptAbsolutePath(),output);
 

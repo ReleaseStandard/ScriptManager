@@ -32,8 +32,8 @@ public class BootReceiver extends BroadcastReceiver {
                 if (jd.isStarted) {
                     Shell shell = new Shell(
                             new StorageManager(
-                                context.getApplicationContext().getFilesDir().getAbsolutePath(),
                                 context.getApplicationContext().getExternalFilesDir(null).getAbsolutePath(),
+                                context.getApplicationContext().getFilesDir().getAbsolutePath(),
                                 jd.name_in_path));
 
                     if ( jd.isSchedulded ) {

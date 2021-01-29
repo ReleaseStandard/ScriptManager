@@ -29,7 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         int [] sched = intent.getIntArrayExtra("sched");
 
         Logger.debug("AlarmReceiver : scriptname="+scriptname+",sched="+ TimeManager.sched2str(sched));
-        StorageManager sm = new StorageManager(context.getFilesDir().getAbsolutePath(), context.getExternalFilesDir(null).getAbsolutePath(),scriptname);
+        StorageManager sm = new StorageManager(context.getExternalFilesDir(null).getAbsolutePath(), context.getFilesDir().getAbsolutePath(), scriptname);
         JobData jd = new JobData();
         jd.readFromInternalStorage(context, sm.getStateFileNameInPath());
 

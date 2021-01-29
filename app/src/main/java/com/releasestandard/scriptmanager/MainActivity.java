@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get Shell locations path
-        this.sm = new StorageManager(getApplicationContext().getFilesDir().getAbsolutePath(),
-                getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
+        this.sm = new StorageManager(getApplicationContext().getExternalFilesDir(null).getAbsolutePath(),
+                getApplicationContext().getFilesDir().getAbsolutePath());
 
         FloatingActionButton fab = findViewById(R.id.main_activity_fab);
         fab.setOnClickListener(new View.OnClickListener() {
