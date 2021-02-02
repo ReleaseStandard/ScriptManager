@@ -19,6 +19,9 @@ F="./app/build.gradle";
 T="$F.temp";
 sed "s/\(versionName \"\)[^\"]\+/\1${VERSION}/" $F > $T;
 mv $T $F;
+vcode=$(python3 -c "a=${VERSION};print(str(int(a*10)));");
+sed "s/\(versionCode \)[0-9]\+/\1${vcode}/" $F > $T;
+mv $T $F;
 git add $F;
 git commit -m "Version $VERSION";
 git tag $VERSION

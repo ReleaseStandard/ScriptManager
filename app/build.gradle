@@ -10,8 +10,8 @@ android {
         applicationId "com.releasestandard.scriptmanager"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "0.3"
+        versionCode 4
+        versionName "0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
