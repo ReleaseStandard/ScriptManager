@@ -218,6 +218,9 @@ public class MainActivity extends AppCompatActivity {
             CompatAPI.openDocument(this, selectedUri.toString());
             jobs_view.unselectAllFragments();
         }
+        //
+        // features : import multiple scripts (putExtra EXTRA_ALLOW_MULTIPLE true API 18), also ACTION_OPEN_DOCUMENT_TREE for a complete directory (API 21+)
+        //
         if (R.id.action_import_script == id) {
             CompatAPI.openDocument(this);
             jobs_view.unselectAllFragments();

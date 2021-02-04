@@ -6,7 +6,12 @@
     <PreferenceCategory
         android:key="preferences_display"
         android:title="@string/settings_fragment_display_group">
-
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/settings_fragment_direct_open_documents_dv"
+            android:key="preferences_direct_open_documents"
+            android:title="@string/settings_fragment_direct_open_documents"
+            android:summary="@string/settings_fragment_direct_open_documents_summary"
+            />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -14,11 +19,11 @@
         android:title="@string/settings_fragment_developper_group">
 
         <SwitchPreferenceCompat
+            android:defaultValue="@bool/settings_fragment_debug_mode_dv"
             android:key="preferences_developper_debug_mode"
             android:title="@string/settings_fragment_debug_mode"
             android:summary="@string/settings_fragment_debug_mode_summary"
             />
-
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

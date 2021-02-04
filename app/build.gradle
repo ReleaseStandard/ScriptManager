@@ -8,9 +8,8 @@ android {
 
     defaultConfig {
         applicationId "com.releasestandard.scriptmanager"
-        minSdkVersion 19
-	targetSdkVersion 28
-	maxSdkVersion 29
+        minSdkVersion 14
+        targetSdkVersion 28
         versionCode 4
         versionName "0.4"
 

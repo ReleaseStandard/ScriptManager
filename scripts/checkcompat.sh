@@ -7,11 +7,11 @@
 
 t="/tmp/t";
 g="./app/build.gradle";
-l=$(find app/src/main/java/ -name "*.java" -exec bash -c 'grep "* compat" {} | sed "s/^ \+\* compat //g"' \; |sort -u -n|tail -n 1)
+l=$(find app/src/main/java/ -name "*.java" -exec bash -c 'grep "* compat" {} | sed "s/^ \+\* compat \\([0-9]\\+\\).*/\1/g"' \; |sort -u -n|tail -n 1)
 echo "$l";
 
 if [ "$1" = "write" ] ; then
 	echo "Modify build.gradle";
-	sed 's/\(minSdkVersion \+\)[0-9]\+/\1'${l}'/g' $g > $t;
+	sed "s/\\(minSdkVersion \\+\\)[0-9]\\+/\\1${l}/g" $g > $t;
 	mv $t $g;
 fi
