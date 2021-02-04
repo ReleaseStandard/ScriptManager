@@ -35,6 +35,9 @@ public class KornShellInterface {
 
     }};
 
+    /**
+     * compat 1
+     */
     public void dump() { Logger.debug(dump("")); }
     public String dump(String off) {
             String noff = off + "\t";
@@ -50,6 +53,7 @@ public class KornShellInterface {
 
     /**
      *  This is a wrapper allow a script to handle events from android.
+     *  compat 23 (printf) + ?? (filepath)
      * @return
      */
     public  String wrappScript(String in,String out)  {
@@ -108,6 +112,13 @@ public class KornShellInterface {
 
         return out;
     }
+
+    /**
+     * Trigger a script callback method
+     * compat 14+ ??? filepath
+     * @param methodToCall
+     * @param args
+     */
     public void triggerCallback(String methodToCall,String... args) {
         String cmd ="";
         Method method = null;
@@ -141,7 +152,8 @@ public class KornShellInterface {
 
     }
         /**
-     * React to events
+         * React to events
+         * compat 14 + ??? filepath
          * @return
          */
     public String triggerRecvMsg(String from, String body) {
@@ -163,9 +175,22 @@ public class KornShellInterface {
         // return "" + cmd + " &";
         return cmd;
     }
+
+    /**
+     * compat 14 + ??? filepath
+     * @param cmd
+     * @param log
+     * @return
+     */
     public static String outputToLog(String cmd, String log) {
         return "&>> " + log + "  " + cmd;
     }
+
+    /**
+     * compat 1
+     * @param cmd
+     * @return
+     */
     public static String[] packIn(String cmd) {
         return new String[]{"sh", "-c", cmd};
     }

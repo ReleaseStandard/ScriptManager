@@ -19,12 +19,12 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.releasestandard.scriptmanager.controller.OverflowMenu;
 import com.releasestandard.scriptmanager.model.StorageManager;
+import com.releasestandard.scriptmanager.tools.CompatAPI;
 import com.releasestandard.scriptmanager.tools.Logger;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.provider.DocumentsContract;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar = null;
 
     private static boolean FIRST_CREATION = true;
-    private static int ACTIVITY_REQUEST_CODE_IMPORT = 1;
+    public static int ACTIVITY_REQUEST_CODE_IMPORT = 1;
     public boolean isInSelectMode = false;
 
      // Objects that encapsulate the data //
@@ -215,17 +215,11 @@ public class MainActivity extends AppCompatActivity {
         if (R.id.action_browse_scripts == id) {
             JobView jf = jobs_view.getSelected();
             Uri selectedUri = Uri.parse(sm.externalStorage );
-
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("text/*");
-            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, selectedUri);
-            startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
+            CompatAPI.openDocument(this, selectedUri.toString());
             jobs_view.unselectAllFragments();
         }
         if (R.id.action_import_script == id) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("text/*");
-            startActivityForResult(intent, ACTIVITY_REQUEST_CODE_IMPORT);
+            CompatAPI.openDocument(this);
             jobs_view.unselectAllFragments();
         }
         if ( R.id.action_test_button == id) {

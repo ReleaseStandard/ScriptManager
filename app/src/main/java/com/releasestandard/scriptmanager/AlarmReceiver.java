@@ -22,6 +22,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public static int REQUEST_CODE = (new Random()).nextInt();
 
+    /**
+     * compat 8
+     *  TODO : will not work on devices with devices without external storage
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         Calendar next = new GregorianCalendar();
@@ -32,7 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         StorageManager sm = new StorageManager(context.getExternalFilesDir(null).getAbsolutePath(), context.getFilesDir().getAbsolutePath(), scriptname);
         JobData jd = new JobData();
         jd.readFromInternalStorage(context, sm.getStateFileNameInPath());
-
+        jd.dump("\t");
         Shell s = new Shell(sm);
         Integer j = s.execScript(scriptname);
         if ( j != -1 ) {

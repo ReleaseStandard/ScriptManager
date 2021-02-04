@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
+ * compat 11
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
@@ -75,6 +76,7 @@ public class JobView extends Fragment {
     }
 
     /**
+     * compat 1
      * Used to initialize the JobFragment
      */
     public void initializeInstance() {
@@ -96,6 +98,11 @@ public class JobView extends Fragment {
         jd.dump();
     }
 
+    /**
+     * compat 11
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -170,6 +177,13 @@ public class JobView extends Fragment {
         Logger.debug("JogFragment:onCreate");
     }
 
+    /**
+     * compat 11
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -299,7 +313,7 @@ public class JobView extends Fragment {
         writeState();
     }
     public void startJob() {
-        Logger.debug("JobFragment::stopJob");
+        Logger.debug("JobFragment::starJob");
         MainActivity main = (MainActivity)getActivity();
         int i = main.jobs_view.getNumberStarted();
         if ( i == 0) {

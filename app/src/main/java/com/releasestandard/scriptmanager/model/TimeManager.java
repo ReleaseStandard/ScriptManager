@@ -5,6 +5,10 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Handle time conversions between different formats.
+ * compat 1
+ */
 public class TimeManager {
 
     public final static Integer EACH_TIME = -1;

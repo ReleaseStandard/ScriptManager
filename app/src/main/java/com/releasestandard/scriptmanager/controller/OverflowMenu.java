@@ -42,8 +42,8 @@ public class OverflowMenu {
     }
 
     // helpers
-    /*
-     * Hide or show the overflow menu
+    /**
+     * Hide or show the overflow menu.
      */
     public void setMenuVisibility(boolean b) {
         Toolbar toolbar = (Toolbar) main.findViewById(R.id.toolbar);
@@ -104,6 +104,10 @@ public class OverflowMenu {
             mi.setVisible(false);
         }
     }
+
+    /**
+     * compat 11
+     */
     public void enterSelectMode() {
         ActionBar ab = main.getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -116,6 +120,9 @@ public class OverflowMenu {
         enterOneOnlySelectMode();
     }
 
+    /**
+     * compat 11
+     */
     public void leaveSelectMode() {
         ActionBar ab = main.getSupportActionBar();
         int color = main.getColorFromId(main, R.attr.colorPrimaryVariant);

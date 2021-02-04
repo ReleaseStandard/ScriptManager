@@ -23,6 +23,11 @@ public class TimeManagerView {
 
     }
 
+    /**
+     * compat 1
+     * @param v
+     * @param sched
+     */
     public void show(View v, int []sched) {
         show(v,sched[0],sched[1],sched[2],sched[3],sched[4]);
     }

@@ -7,6 +7,7 @@ import com.releasestandard.scriptmanager.R;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,27 +27,51 @@ public class StorageManager {
     public static String SUFFIX_STATE = ".xml";
     public static String SUFFIX_OUTPUT= ".out";
 
-    /**
-     * In reality that's the script name (not path part inside).
-     */
+
     public String script_name = "";
-
-    public static List<Integer> readIntegerArray(JobData jobData, InputStreamReader isr) throws IOException { return readIntegerArray(isr,isr.read()); }
-
-    public static List<Integer> readIntegerArray(InputStreamReader isr, Integer i) throws IOException {
-        List<Integer> tab = new ArrayList<Integer>();
-        for(int ii = 0; ii < i ; ii += 1) {
-            int j = isr.read();
-            // since any of secondes, minutes, hours, day, month year will go to much high we stop here
-            short jj = (short)j;
-            tab.add((int) jj);
+    /**
+      * compat 1
+     */
+    public static void writeIntArray(OutputStreamWriter osw, int tab[], int sz) throws IOException {
+        Logger.debug("sz="+(new Integer(sz)).toString());
+        osw.write(sz);
+        for(int i = 0; i < sz ; i += 1){
+            osw.write(tab[i]);
         }
-        return tab;
     }
 
-    public static int[] readIntArray(InputStreamReader isr) throws IOException { return readIntArray(isr,isr.read()); }
-
-    public static int[] readIntArray(InputStreamReader isr, Integer i) throws IOException {
+    /**
+     * compat 1
+     * @param osw
+     * @param tab
+     * @throws IOException
+     */
+    public static void writeIntegerArray(OutputStreamWriter osw, List<Integer> tab) throws IOException {
+        int[] tabi = new int[tab.size()];
+        for (int i = 0; i < tab.size(); i = i +1 ) {
+            tabi[i]=tab.get(i);
+        }
+        writeIntArray(osw,tabi,tab.size());
+    }
+    /**
+     * Read an int array from input stream.
+     * compat 1
+     * @param isr input stream
+     * @return array readed
+     * @throws IOException
+     */
+    public static List<Integer> readIntegerArray(InputStreamReader isr) throws IOException {
+        List<Integer> tab = new ArrayList<Integer>();
+        for( int j : readIntArray(isr) ) { tab.add(j); }
+        return tab;
+    }
+    public static int[] readIntArray(InputStreamReader isr) throws IOException {
+        int j = isr.read();
+        short jj = (short)j;
+        return readIntArray(isr,new Integer(jj));
+    }
+    private static int[] readIntArray(InputStreamReader isr, Integer i) throws IOException {
+        if ( i < 0 ) { return null; }
         int[] tab = new int[i];
         for(int ii = 0; ii < i ; ii += 1) {
             int j = isr.read();
@@ -88,6 +113,7 @@ public class StorageManager {
     /**
      * Input    : script name or abs path
      * Output : log path
+     *  compat ? => certains chemins sont désactivés dans android 30+
      */
     private String getLogPath() { return getLogPath(this.script_name);  }
     private String getLogPath(String script_name) { return addSuffixeIfNeeded(script_name , SUFFIX_LOG); }
@@ -110,6 +136,7 @@ public class StorageManager {
     /**
      * Input  : script name or abs path
      *  Output : script abs path to external storage
+     *  compat ?=>
      */
     private String getExternalAbsolutePath() { return getExternalAbsolutePath(this.script_name);  }
     public String getExternalAbsolutePath(String name) { return getResolvedPath(name,this.externalStorage); }
@@ -123,6 +150,10 @@ public class StorageManager {
         }
         return name;
     }
+    /**
+    *  Check if a filename has a suffix and add it if needed.
+     *  compat 1
+     */
     private String addSuffixeIfNeeded(String string, String suf) {
         Pattern p = Pattern.compile(suf+"$");
         Matcher m = p.matcher(script_name);
@@ -133,6 +164,7 @@ public class StorageManager {
     }
     /**
      * Output : script names (usables by get*AbsolutePath)
+     * compat 1
      */
     public ArrayList<String> getScriptsFromFilesystem() {
         ArrayList<String>l = new ArrayList();
@@ -151,6 +183,13 @@ public class StorageManager {
         }
         return l;
     }
+
+    /**
+     * Extract filename from file path.
+     * compat 1
+     * @param pathname
+     * @return
+     */
     public static String getTerminalPart(String pathname) {
         String [] tab = pathname.split("/");
         if ( tab.length <= 0) {
@@ -160,6 +199,13 @@ public class StorageManager {
     }
 
     // This function will be executed when no access to Regex object
+
+    /**
+     * Check if a file is a "state file" of a given job.
+     * compat 1
+     * @param fname
+     * @return
+     */
     public static boolean isStateFile(String fname) {
         int i = fname.lastIndexOf(SUFFIX_STATE);
         if ( i < 0 ) {
@@ -168,6 +214,9 @@ public class StorageManager {
         return (SUFFIX_STATE.length() + i ) == fname.length();
     }
 
+    /**
+     * compat 1
+     */
     public void dump() { Logger.debug(dump("")); }
     public String dump(String off) {
         String noff = off + "\t";

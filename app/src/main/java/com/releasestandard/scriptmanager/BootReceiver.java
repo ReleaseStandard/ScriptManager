@@ -13,7 +13,11 @@ import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.tools.Logger;
 
 public class BootReceiver extends BroadcastReceiver {
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    /**
+     * compat 8
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
 

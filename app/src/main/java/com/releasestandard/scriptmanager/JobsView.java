@@ -17,6 +17,10 @@ import com.releasestandard.scriptmanager.tools.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Used to display many jobs on screen.
+ * compat 11
+ */
 public class JobsView extends Fragment {
 
     // list of Jobs
@@ -48,6 +52,11 @@ public class JobsView extends Fragment {
         }
         super.onCreate(savedInstanceState);
     }
+
+    /**
+     * compat 1
+     * @return
+     */
     public ArrayList<JobView>getSelecteds() {
         ArrayList<JobView> list = new ArrayList<>();
         for(JobView js : fragments) {
@@ -57,6 +66,11 @@ public class JobsView extends Fragment {
         }
         return list;
     }
+
+    /**
+     * compat 1
+     * @return
+     */
     public JobView getSelected() {
         for(JobView js : fragments) {
             if(js.isSelected) {
@@ -65,7 +79,13 @@ public class JobsView extends Fragment {
         }
         return null;
     }
-    // here we need registerJobs
+
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -81,12 +101,20 @@ public class JobsView extends Fragment {
         return v;
     }
 
+    /**
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Logger.debug("ViewJobsFragment:onViewCreated");
     }
 
+    /**
+     * compat 11
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -94,6 +122,9 @@ public class JobsView extends Fragment {
     }
 
     @Override
+    /**
+     *  compat 11
+     */
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         Integer in = new Integer(getFragmentManager().getFragments().size());
@@ -102,6 +133,9 @@ public class JobsView extends Fragment {
         restoreFragments();
     }
 
+    /**
+     * compat 11
+     */
     public void restoreFragments() {
         // we need to restore the view for all childs
         FragmentManager fm = getChildFragmentManager();
@@ -117,6 +151,10 @@ public class JobsView extends Fragment {
         stopAllFragments(false);
     }
 
+    /**
+     * compat 1
+     * @param onlySelected
+     */
     public void stopAllFragments(boolean onlySelected) {
         for (JobView jf : fragments) {
             if( onlySelected)  {
@@ -131,6 +169,9 @@ public class JobsView extends Fragment {
         }
     }
 
+    /**
+     * compat 1
+     */
     public void unselectAllFragments() {
         for (JobView jf : fragments) {
             jf.unselectView();
@@ -141,6 +182,10 @@ public class JobsView extends Fragment {
         }
     }
 
+    /**
+     * compat 1
+     * @return
+     */
     public int getNumberSelected() {
         int count = 0;
         for (JobView jf : fragments) {
@@ -151,6 +196,10 @@ public class JobsView extends Fragment {
         return count;
     }
 
+    /**
+     * compat 1
+     * @return
+     */
     public int getNumberStartedAndSelected() {
         int count = 0;
         for (JobView jf : fragments) {
@@ -161,6 +210,10 @@ public class JobsView extends Fragment {
         return count;
     }
 
+    /**
+     * compat 1
+     * @return
+     */
     public int getNumberStarted() {
         int count = 0;
         for (JobView jf : fragments) {
@@ -172,9 +225,11 @@ public class JobsView extends Fragment {
     }
 
 
-    public JobView addNewJob(){
-        return addNewJob(null);
-    }
+    /**
+     * compat 11
+     * @return
+     */
+    public JobView addNewJob(){ return addNewJob(null); }
     public JobView addNewJob(String scriptname) {
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -194,12 +249,18 @@ public class JobsView extends Fragment {
         return f;
     }
 
+    /**
+     * compat 1
+     */
     public void writeState() {
         for ( JobView jf : fragments) {
             jf.writeState();
         }
     }
 
+    /**
+     * compat 1
+     */
     public void readState() {
         for(String scriptname : this.ptr_sm.getScriptsFromFilesystem()) {
             JobView jf = addNewJob(scriptname);

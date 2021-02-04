@@ -49,6 +49,7 @@ public class JobData {
     /**
      *  Beware this method is used at boot time to set alarms, Object like Matcher, File
      *  could cause crashes.
+     *  compat 1
      * @param context
      * @param state_file
      */
@@ -79,10 +80,13 @@ public class JobData {
             // boolean for the (if it is date set or not)
             isDateSet = (isr.read() == 0)?false:true;
             // get The date
-            sched = StorageManager.readIntArray(isr,5);
+            sched = StorageManager.readIntArray(isr);
             if ( ! ignore_intents_processes ) {
-                processes = StorageManager.readIntegerArray(this, isr);
-                intents = StorageManager.readIntegerArray(this, isr);
+                Logger.debug("read processes");
+                processes = StorageManager.readIntegerArray( isr);
+                dump();
+                Logger.debug("read intents");
+                intents = StorageManager.readIntegerArray( isr);
             }
             Logger.debug("after read from internal storage");
             dump();
@@ -93,21 +97,11 @@ public class JobData {
             e.printStackTrace();
         }
     }
-    public void writeIntArray(OutputStreamWriter osw, int tab[], int sz) throws IOException {
-        for(int i = 0; i < sz ; i += 1){
-            osw.write(tab[i]);
-        }
-    }
-    public void writeIntegerArray(OutputStreamWriter osw, List<Integer> tab) throws IOException {
-        osw.write(tab.size());
-        for(int i = 0; i < tab.size() ; i += 1){
-            Integer ii = tab.get(i);
-            osw.write(ii);
-        }
-    }
+
     /**
      * Write the state of user interface
      *  WARNING state_file is just the terminal part of the path
+     *  compat 1
      */
     public void writeState(Context context, String state_file) {
         OutputStreamWriter osw = null;
@@ -126,12 +120,12 @@ public class JobData {
             osw.write((isStarted?1:0));
             // boolean for the (if it is date set or not)
             osw.write((isDateSet?1:0));
-            writeIntArray(osw,sched,5);
+            StorageManager.writeIntArray(osw,sched,5);
             // index of (intent, process) in array (intents, processes)
             Logger.debug("write processes");
-            writeIntegerArray(osw,processes);
+            StorageManager.writeIntegerArray(osw,processes);
             Logger.debug("write intents");
-            writeIntegerArray(osw,intents);
+            StorageManager.writeIntegerArray(osw,intents);
             osw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -140,6 +134,9 @@ public class JobData {
         }
     }
 
+    /**
+     * compat 1
+     */
     public void dump() {
         Logger.debug(dump(""));
     }

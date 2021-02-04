@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.releasestandard.scriptmanager.AlarmReceiver;
 import com.releasestandard.scriptmanager.SmsReceiver;
+import com.releasestandard.scriptmanager.tools.CompatAPI;
 import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.io.IOException;
@@ -17,11 +18,12 @@ import java.util.Calendar;
 import java.util.List;
 
 /*
- * This class is a wrapper for an underlying shell : e.g. sh
+ * This class use {KornShellInterface,StorageManager} to provide interface with Java.
+ * all JobView got a Shell associated with it.
  */
-
 public class Shell {
 
+    // The object is used by recursive alarms, so many processes can be setup
     private static List<Process> processes = new ArrayList<Process>();
     private static List<PendingIntent> intents = new ArrayList<PendingIntent>();
 
@@ -67,6 +69,13 @@ public class Shell {
         Logger.debug("Shell: Process failed to start");
         return -1;
     }
+
+    /**
+     * Execute script & cmd and return a Process
+     * compat 1
+     * @param script
+     * @return
+     */
     public static Process _execScript(String script) {
         return _execScript(script,null);
     }
@@ -98,10 +107,24 @@ public class Shell {
             return null;
         }
     }
+
+    /**
+     * Clear logs
+     * compat 14
+     * @throws IOException
+     */
     public void clearLog() throws IOException { clearLog(this.sm.script_name); }
     public void clearLog(String logpath) throws IOException {
         Shell._execCmd("> "+logpath);
     }
+
+    /**
+     * compat 1
+     * @param context
+     * @param scriptname
+     * @param sched
+     * @return
+     */
     public Integer scheduleScript(Context context, String scriptname, int sched[]) { return scheduleScript(context, scriptname, sched, false);}
     public Integer scheduleScript(Context context, String scriptname, int sched[], boolean immediate) {
         if ( ! intents.add(_scheduleScript(context,scriptname, sched,immediate)) ) {
@@ -109,6 +132,10 @@ public class Shell {
         }
         return intents.size()-1;
     }
+    /**
+     * Schedule a script for execution.
+     * compat 1
+     */
     public static PendingIntent _scheduleScript(Context context, String scriptname, int sched[])  { return _scheduleScript(context,scriptname,sched,false);}
     public static PendingIntent _scheduleScript(Context context, String scriptname, int sched[], boolean immediate)  {
         // need to get the time here
@@ -127,19 +154,14 @@ public class Shell {
         intent.putExtra("script",scriptname);
         intent.putExtra("sched",sched);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, AlarmReceiver.REQUEST_CODE++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (Build.VERSION.SDK_INT < 23) {
-            if (Build.VERSION.SDK_INT >= 19) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, t, alarmIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, t, alarmIntent);
-            }
-        } else {
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, t, alarmIntent);
-            }
+        CompatAPI.setAlarmIntentTime(context,t,alarmIntent);
+
         return alarmIntent;
     }
 
+    /**
+     * compat 1
+     */
     public boolean terminateProcess(Integer i) {
         if ( i < 0 || i >= processes.size()) {
             Logger.debug("terminateProcess : invalid index");
@@ -148,6 +170,12 @@ public class Shell {
         processes.get(i).destroy();
         return true;
     }
+
+    /**
+     * compat 1
+     * @param i
+     * @return
+     */
     public boolean terminateIntent(Integer i) {
         if ( i < 0 || i >= intents.size()) {
             Logger.debug("terminateProcess : invalid index");
@@ -157,6 +185,9 @@ public class Shell {
         return true;
     }
 
+    /**
+     * compat 1
+     */
     public void dump() { Logger.debug(dump("")); }
     public String dump(String offset) {
         return "" +
