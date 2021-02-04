@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- See also KornShellInterface for the public API definition -->
+<resources>
+
+
+    <string name="ioctlSmsReceived">smsReceived</string>
+    <string name="callbackSmsReceived">triggerRecvMsg</string>
+
+
+</resources>

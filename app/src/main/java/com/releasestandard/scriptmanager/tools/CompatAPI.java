@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.provider.DocumentsContract;
 
@@ -12,6 +13,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.releasestandard.scriptmanager.MainActivity;
+import com.releasestandard.scriptmanager.R;
 import com.releasestandard.scriptmanager.tools.Logger;
 
 /**
@@ -63,8 +65,9 @@ public class CompatAPI {
      * Modify settings when features are not avaliable.
      */
     public static boolean modifySettings(PreferenceFragmentCompat settings) {
+        Resources r = settings.getContext().getResources();
         if ( Build.VERSION.SDK_INT < 19 ) {
-            Preference p = settings.findPreference("preferences_direct_open_documents");
+            Preference p = settings.findPreference(r.getString(R.string.settings_fragment_direct_open_documents));
             p.setVisible(false);
         }
         return true;

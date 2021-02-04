@@ -1,7 +1,9 @@
 package com.releasestandard.scriptmanager.model;
 
+import android.content.res.Resources;
 import android.util.Log;
 
+import com.releasestandard.scriptmanager.R;
 import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.io.File;
@@ -27,13 +29,13 @@ public class KornShellInterface {
     private String arg1 = null;
     private String signal = "USR1";
 
-    // API definition
-    // event -> function name associated
-    public HashMap<String,String> API = new HashMap<String, String>() {{
+    // public API definition
+    public HashMap<Integer,String> API = new HashMap<Integer, String>() {{
 
-        put("smsReceived","smsReceived"); // $1 : from $2 : body
+        put(R.string.ioctlSmsReceived,"smsReceived"); // $1 : from $2 : body
 
     }};
+
 
     /**
      * compat 1
@@ -158,9 +160,8 @@ public class KornShellInterface {
          */
     public String triggerRecvMsg(String from, String body) {
         Logger.debug("triggerRecvMsg,from="+from+",body="+body);
-
-                return "" +
-                "echo \"" + API.get("smsReceived") + "\" > " + functNameFile + " && " +
+            return "" +
+                "echo \""+ API.get(R.string.ioctlSmsReceived) +"\" > " + functNameFile + " && " +
                 "echo \"" + from + "\" > " + arg0 + " && " +
                 "echo \"" + body + "\" > " + arg1 + " && " +
                 "";

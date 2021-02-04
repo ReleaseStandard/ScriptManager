@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
@@ -24,6 +25,7 @@ public class SmsReceiver extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
             SmsMessage[] msgs = null;
             String msg_from;
+            Resources r = context.getResources();
             if (bundle != null){
                 //---retrieve the SMS message received---
                 try{
@@ -34,7 +36,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         msg_from = msgs[i].getOriginatingAddress();
                         String msgBody = msgs[i].getMessageBody();
                         for (Shell s : listeners) {
-                            s.bi.triggerCallback("triggerRecvMsg",msg_from,msgBody);
+                            s.bi.triggerCallback(r.getString(R.string.callbackSmsReceived),msg_from,msgBody);
                         }
                     }
                 }catch(Exception e){
