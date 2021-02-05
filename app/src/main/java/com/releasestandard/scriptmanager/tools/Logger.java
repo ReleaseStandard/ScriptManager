@@ -2,7 +2,6 @@ package com.releasestandard.scriptmanager.tools;
 
 import android.util.Log;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -12,8 +11,8 @@ import java.io.PrintStream;
  */
 public class Logger {
 
-    public static boolean DEBUG = true;
-    private static final String appname = "scriptmanager";
+    public static boolean DEBUG = false;
+    public static final String appname = "scriptmanager";
     private static String RED = "31";
     private static String GREEN = "32";
     private static String YELLOW = "33";

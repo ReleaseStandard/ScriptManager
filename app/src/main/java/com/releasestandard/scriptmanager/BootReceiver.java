@@ -36,11 +36,7 @@ public class BootReceiver extends BroadcastReceiver {
                 InputStreamReader isr = StorageManager.getISR(context,f);
                 jd.readState(isr, true);
                 if (jd.isStarted) {
-                    Shell shell = new Shell(
-                            new StorageManager(
-                                context.getApplicationContext().getExternalFilesDir(null).getAbsolutePath(),
-                                context.getApplicationContext().getFilesDir().getAbsolutePath(),
-                                jd.name_in_path));
+                    Shell shell = new Shell(new StorageManager(context, jd.name_in_path));
 
                     Integer i = shell.scheduleScript(context, jd.name_in_path, jd.sched,!jd.isSchedulded);
                     if ( i != -1 ) {

@@ -1,5 +1,7 @@
 package com.releasestandard.scriptmanager;
 
+import android.os.storage.StorageManager;
+
 import com.releasestandard.scriptmanager.model.StorageManager;
 
 import junit.framework.TestCase;

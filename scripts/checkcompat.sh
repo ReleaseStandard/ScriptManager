@@ -7,7 +7,7 @@
 
 t="/tmp/t";
 g="./app/build.gradle";
-l=$(find app/src/main/java/ -name "*.java" -exec bash -c 'grep "* compat" {} | sed "s/^ \+\* compat \\([0-9]\\+\\).*/\1/g"' \; |sort -u -n|tail -n 1)
+l=$(find app/src/main/java/ -name "*.java" -exec bash -c 'grep "* compat" {} | sed "s/^ \+\* \+compat \+\\([0-9]\\+\\).*/\1/g"' \; |sort -u -n|tail -n 1)
 echo "$l";
 
 if [ "$1" = "write" ] ; then

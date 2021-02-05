@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get Shell locations path
-        this.sm = new StorageManager(getApplicationContext().getExternalFilesDir(null).getAbsolutePath(),
-                getApplicationContext().getFilesDir().getAbsolutePath());
+        this.sm = new StorageManager(getApplicationContext());
 
         FloatingActionButton fab = findViewById(R.id.main_activity_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -226,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
             jobs_view.unselectAllFragments();
         }
         if ( R.id.action_test_button == id) {
+            //showFileWithEditor("/data/data/com.releasestandard.scriptmanager/files/script_0.xml");
             jobs_view.writeState();
         }
         if ( R.id.action_test_button2 == id) {
@@ -235,9 +235,14 @@ public class MainActivity extends AppCompatActivity {
         // Start service at boot / enregistrement sur disk
         return true;
     }
+
+    /**
+     * compat 1
+     * @param path
+     */
     public void showFileWithEditor(String path) {
-        Context context = getApplicationContext();
-        String pvd = context.getApplicationContext().getPackageName() + ".provider";
+        Context context = this;
+        String pvd = context.getPackageName() + ".provider";
         File f = new File(path);
         if (!f.exists()) {
             try {
@@ -247,11 +252,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         Uri uri = FileProvider.getUriForFile(context, pvd, f);
-
         Intent myIntent = new Intent(Intent.ACTION_VIEW);
         myIntent.setData(uri);
-        myIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(myIntent);
+        myIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        context.startActivity(myIntent);
     }
 
     /*

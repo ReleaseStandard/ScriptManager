@@ -127,7 +127,7 @@ public class JobsView extends Fragment {
      */
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        Integer in = new Integer(getFragmentManager().getFragments().size());
+        Integer in = new Integer(getParentFragmentManager().getFragments().size());
         Logger.debug("ViewJobsFragment:nb of frags "+in);
         Logger.debug("ViewJobsFragment:onViewStateRestored");
         restoreFragments();

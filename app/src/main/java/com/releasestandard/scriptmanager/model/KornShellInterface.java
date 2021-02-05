@@ -1,8 +1,5 @@
 package com.releasestandard.scriptmanager.model;
 
-import android.content.res.Resources;
-import android.util.Log;
-
 import com.releasestandard.scriptmanager.R;
 import com.releasestandard.scriptmanager.tools.Logger;
 
@@ -55,7 +52,8 @@ public class KornShellInterface {
 
     /**
      *  This is a wrapper allow a script to handle events from android.
-     *  compat 23 (printf) + ?? (filepath)
+     * compat 23
+     *  (printf)
      * @return
      */
     public  String wrappScript(String in,String out)  {
@@ -117,7 +115,7 @@ public class KornShellInterface {
 
     /**
      * Trigger a script callback method
-     * compat 14+ ??? filepath
+     * compat 14
      * @param methodToCall
      * @param args
      */
@@ -155,7 +153,7 @@ public class KornShellInterface {
     }
         /**
          * React to events
-         * compat 14 + ??? filepath
+         * compat 14
          * @return
          */
     public String triggerRecvMsg(String from, String body) {
@@ -178,7 +176,7 @@ public class KornShellInterface {
     }
 
     /**
-     * compat 14 + ??? filepath
+     * compat 14
      * @param cmd
      * @param log
      * @return

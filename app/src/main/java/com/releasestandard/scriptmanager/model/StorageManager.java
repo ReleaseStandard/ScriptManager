@@ -1,8 +1,9 @@
 package com.releasestandard.scriptmanager.model;
 
 import android.content.Context;
-import android.renderscript.ScriptGroup;
 
+import com.releasestandard.scriptmanager.controller.OverflowMenu;
+import com.releasestandard.scriptmanager.tools.CompatAPI;
 import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.R;
 
@@ -86,20 +87,33 @@ public class StorageManager {
         return tab;
     }
 
+    /**
+     * compat 1
+     * @param sm
+     */
     public StorageManager(StorageManager sm) {
+        setInstance(sm);
+    }
+    public  StorageManager(Context ctx, String script_name) { StorageManager sm = newInstance(ctx,script_name); setInstance(sm);}
+    public  StorageManager(Context ctx) { StorageManager sm = newInstance(ctx); setInstance(sm);}
+    public static StorageManager newInstance(Context ctx) { return newInstance(ctx,null); }
+    public static StorageManager newInstance(Context ctx,String script_name) {
+        StorageManager sm = new StorageManager();
+        if ( script_name != null ) {
+            sm.script_name = script_name;
+        }
+        sm.internalStorage = ctx.getFilesDir().getAbsolutePath();
+        sm.externalStorage = CompatAPI.getExternalStorage(ctx);
+        if ( sm.externalStorage == null ) {
+            sm.externalStorage = sm.internalStorage;
+            OverflowMenu.gotoMode(OverflowMenu.MODE_NO_EXT);
+        }
+        return sm;
+    }
+    public void setInstance(StorageManager sm) {
         this.externalStorage = sm.externalStorage;
         this.internalStorage = sm.internalStorage;
         this.script_name = sm.script_name;
-    }
-    public StorageManager(String externalStorage, String internalStorage, String script) {
-        this.externalStorage = externalStorage;
-        this.internalStorage = internalStorage;
-        this.script_name = script;
-    }
-
-    public StorageManager(String externalStorage, String internalStorage) {
-        this.externalStorage = externalStorage;
-        this.internalStorage = internalStorage;
     }
     public StorageManager() {
 
@@ -117,7 +131,7 @@ public class StorageManager {
     /**
      * Input    : script name or abs path
      * Output : log path
-     *  compat ? => certains chemins sont désactivés dans android 30+
+     *  compat
      */
     private String getLogPath() { return getLogPath(this.script_name);  }
     private String getLogPath(String script_name) { return addSuffixeIfNeeded(script_name , SUFFIX_LOG); }
@@ -136,7 +150,7 @@ public class StorageManager {
     /**
      * Input  : script name or abs path
      *  Output : script abs path to external storage
-     *  compat ?=>
+     *  compat 1
      */
     private String getExternalAbsolutePath() { return getExternalAbsolutePath(this.script_name);  }
     public String getExternalAbsolutePath(String name) { return getResolvedPath(name,this.externalStorage); }
@@ -167,7 +181,7 @@ public class StorageManager {
      * compat 1
      */
     public ArrayList<String> getScriptsFromFilesystem(Context c) {
-        ArrayList<String>l = new ArrayList();
+        ArrayList <String> l = new ArrayList<>();
         File directory = c.getFilesDir();
         File[] files = directory.listFiles();
         Arrays.sort(files);

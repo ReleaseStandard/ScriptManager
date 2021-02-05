@@ -51,6 +51,7 @@ public class JobData {
      */
     public void readState(InputStreamReader isr) { readState(isr,false); }
     public void readState(InputStreamReader isr, boolean ignore_intents_processes) {
+        if ( isr == null ) { return; }
         try {
             // id of the script
             int id = isr.read();
@@ -91,6 +92,7 @@ public class JobData {
      *  compat 1
      */
     public void writeState(OutputStreamWriter osw) {
+        if ( osw == null ) { return; }
         try {
             // id of the script
             osw.write(id.intValue());

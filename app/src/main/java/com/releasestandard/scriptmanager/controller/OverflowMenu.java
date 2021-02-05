@@ -19,15 +19,26 @@ public class OverflowMenu {
 
     private Menu optionsMenu = null;
 
+    public static int MODE_STANDARD = 0;
+    public static int MODE_NO_EXT = 1;
+    private static int MODE = MODE_STANDARD;
+
     private ArrayList<MenuItem> optionsMenuItemBackup = new ArrayList<MenuItem>();
 
     // Collection off ids for the menu
-    int any_selection_buttons[] = {R.id.action_stopselected,
-            R.id.action_unselectall,R.id.action_anyselection_delete};
 
-    int one_only_selection_buttons[] = {R.id.action_oneonly_edit,
+    public static int any_selection_buttons_standard[] = {R.id.action_stopselected,
+            R.id.action_unselectall,R.id.action_anyselection_delete};
+    public  static  int any_selection_buttons[] = any_selection_buttons_standard;
+    public static int any_selection_buttons_compat_no_external[] = any_selection_buttons;
+
+    public static int one_only_selection_buttons_standard[] = {R.id.action_oneonly_edit,
             R.id.action_oneonly_rename, R.id.action_oneonly_show_log ,
             R.id.action_oneonly_clear_log
+    };
+    public static int one_only_selection_buttons[] =  one_only_selection_buttons_standard;
+    public static int one_only_selection_buttons_no_external[] = {
+            R.id.action_oneonly_rename
     };
 
     int debug_mode[] = {/*R.id.settings_fragment_debug_mode*/};
@@ -36,6 +47,19 @@ public class OverflowMenu {
 
     private MainActivity main = null;
 
+    public static void gotoMode() { gotoMode(MODE_STANDARD);}
+    public static void gotoMode(int mod) {
+        if ( MODE == mod ) { return; }
+        if ( mod == MODE_NO_EXT) {
+            any_selection_buttons = any_selection_buttons_compat_no_external;
+            one_only_selection_buttons = one_only_selection_buttons_no_external;
+        }
+        if ( mod == MODE_STANDARD) {
+            any_selection_buttons = any_selection_buttons_standard;
+            one_only_selection_buttons = one_only_selection_buttons_standard;
+        }
+        MODE = mod;
+    }
     public OverflowMenu(MainActivity main, Menu menu) {
         this.main = main;
         this.optionsMenu = menu;

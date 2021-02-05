@@ -6,7 +6,7 @@
             <string name="preferences_developper_debug_mode_title">Debug mode</string>
             <string name="preferences_developper_debug_mode_summary">Send messages to logcat</string>
             <string name="preferences_developper_debug_mode">preferences_developper_debug_mode</string>
-            <bool name="preferences_developper_debug_mode">true</bool><!-- have to update Logger.DEBUG also -->
+            <bool name="preferences_developper_debug_mode">false</bool><!-- have to update Logger.DEBUG also -->
 
     <string name="preferences_display_group">Display</string>
 
