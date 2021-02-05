@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScriptManager</string>
+    <string name="app_packageid">com.releasestandard.scriptmanager</string>
+    <string name="settings_page_title">Settings</string>
+    <string name="settings_stopselected">Stop selected</string>
+    <string name="settings_stopall">Stop all</string>
+    <string name="settings_unselectall">Unselect all</string>
+    <string name="settings_oneonly_edit">Edit</string>
+    <string name="settings_oneonly_rename">Rename</string>
+    <string name="action_oneonly_rename">Rename</string>
+    <string name="settings_oneonly_show_log">Show log</string>
+    <string name="settings_oneonly_clear_log">Clear log</string>
+    <string name="action_oneonly_rename_ok">Ok</string>
+    <string name="action_oneonly_rename_cancel">Cancel</string>
+    <string name="settings_browse_scripts">Browse scripts</string>
+    <string name="settings_import_script">Import script</string>
+    <string name="settings_anyselection_delete">Delete</string>
+</resources>

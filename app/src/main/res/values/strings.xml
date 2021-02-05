@@ -1,47 +1,5 @@
 <resources>
-    <string name="app_name">ScriptManager</string>
-    <string name="app_packageid">com.releasestandard.scriptmanager</string>
-    <string name="settings_page_title">Settings</string>
-    <string name="settings_stopselected">Stop selected</string>
-    <string name="settings_stopall">Stop all</string>
-    <string name="settings_unselectall">Unselect all</string>
-    <string name="settings_oneonly_edit">Edit</string>
-    <string name="settings_oneonly_rename">Rename</string>
-    <string name="action_oneonly_rename">Rename</string>
-    <string name="settings_oneonly_show_log">Show log</string>
-    <string name="settings_oneonly_clear_log">Clear log</string>
-    <string name="action_oneonly_rename_ok">Ok</string>
-    <string name="action_oneonly_rename_cancel">Cancel</string>
-    <string name="settings_browse_scripts">Browse scripts</string>
-    <string name="settings_import_script">Import script</string>
-    <string name="settings_anyselection_delete">Delete</string>
 
-    <!-- Settings page modification -->
-    <string name="settings_fragment_debug_mode">Debug mode</string>
-    <string name="settings_fragment_debug_mode_summary">Send messages to logcat</string>
-    <bool name="settings_fragment_debug_mode_dv">false</bool>
-    <string name="settings_fragment_direct_open_documents">Direct open documents</string>
-    <string name="settings_fragment_direct_open_documents_summary">Open Documents/ folder by default when importing scripts</string>
-    <bool name="settings_fragment_direct_open_documents_dv">true</bool>
-    <string name="settings_fragment_developper_group">Developper</string>
-    <string name="settings_fragment_display_group">Display</string>
-
-
-    <string name="dialog_back_title">Leave</string>
-    <string name="dialog_back_content">Really leave the application ?</string>
-
-
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-
-    <!-- create localized buttons -->
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!-- Strings of the settings page -->
 
 
 </resources>

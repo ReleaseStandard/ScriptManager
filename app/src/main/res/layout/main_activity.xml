@@ -44,7 +44,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:navGraph="@navigation/nav_graph"
         tools:layout_conversion_absoluteHeight="675dp"
         tools:layout_conversion_absoluteWidth="411dp">
 
