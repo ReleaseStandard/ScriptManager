@@ -2,16 +2,12 @@
 <resources>
 
 
-    <string name="settings_fragment_developper_group">Developper</string>
-            <string name="settings_fragment_debug_mode">Debug mode</string>
-            <string name="settings_fragment_debug_mode_summary">Send messages to logcat</string>
-            <!-- have to update Logger.DEBUG also -->
-            <bool name="settings_fragment_debug_mode_dv">true</bool>
+    <string name="preferences_developper_group">Developper</string>
+            <string name="preferences_developper_debug_mode_title">Debug mode</string>
+            <string name="preferences_developper_debug_mode_summary">Send messages to logcat</string>
+            <string name="preferences_developper_debug_mode">preferences_developper_debug_mode</string>
+            <bool name="preferences_developper_debug_mode">true</bool><!-- have to update Logger.DEBUG also -->
 
-    <string name="settings_fragment_display_group">Display</string>
-            <string name="settings_fragment_direct_open_documents">Direct open documents</string>
-            <string name="settings_fragment_direct_open_documents_summary">Open Documents/ folder by default when importing scripts</string>
-            <bool name="settings_fragment_direct_open_documents_dv">true</bool>
-
+    <string name="preferences_display_group">Display</string>
 
 </resources>

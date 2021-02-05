@@ -8,13 +8,11 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.provider.DocumentsContract;
 
-import androidx.core.app.AlarmManagerCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.releasestandard.scriptmanager.MainActivity;
 import com.releasestandard.scriptmanager.R;
-import com.releasestandard.scriptmanager.tools.Logger;
 
 /**
  * Handle API differences in Android.
@@ -28,13 +26,8 @@ public class CompatAPI {
     public static boolean openDocument(MainActivity main) { return openDocument(main,null); }
     public static boolean openDocument(MainActivity main, String selectedUri) {
             Intent intent;
-            if (Build.VERSION.SDK_INT >= 19) {
-                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            }
-            else {
-                intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-            }
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("text/*");
             if ( selectedUri != null ) {
                 intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, selectedUri);
@@ -66,10 +59,6 @@ public class CompatAPI {
      */
     public static boolean modifySettings(PreferenceFragmentCompat settings) {
         Resources r = settings.getContext().getResources();
-        if ( Build.VERSION.SDK_INT < 19 ) {
-            Preference p = settings.findPreference(r.getString(R.string.settings_fragment_direct_open_documents));
-            p.setVisible(false);
-        }
         return true;
     }
 }

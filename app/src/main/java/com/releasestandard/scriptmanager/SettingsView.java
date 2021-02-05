@@ -2,9 +2,7 @@ package com.releasestandard.scriptmanager;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -13,8 +11,6 @@ import androidx.preference.PreferenceManager;
 
 import com.releasestandard.scriptmanager.tools.CompatAPI;
 import com.releasestandard.scriptmanager.tools.Logger;
-
-import java.util.Map;
 
 public class SettingsView extends PreferenceFragmentCompat {
 
@@ -45,6 +41,11 @@ public class SettingsView extends PreferenceFragmentCompat {
         }
         return c;
     }
+
+    /**
+     * Works only if at least one setting is defined in xml file
+     *  (eg: used to hide when all settings of  given group are not usable)
+     */
     private void hideUnusedGroups() {
         SharedPreferences sp =
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -62,20 +63,16 @@ public class SettingsView extends PreferenceFragmentCompat {
         }
     }
 
-    public void applySettings() {        SharedPreferences sp =
-            PreferenceManager.getDefaultSharedPreferences(getActivity());
-            applySettings(sp);
+    public void applySettings() {
+        SharedPreferences sp =
+        PreferenceManager.getDefaultSharedPreferences(getActivity());
+        applySettings(sp);
     }
     public void applySettings(SharedPreferences sp) {
         Resources r = getActivity().getResources();
-
-        Boolean preferences_developper_debug_mode = sp.getBoolean(r .getString(R.string.settings_fragment_debug_mode), r .getBoolean(R.bool.settings_fragment_debug_mode_dv));
+        Boolean preferences_developper_debug_mode = sp.getBoolean(r .getString(R.string.preferences_developper_debug_mode), r .getBoolean(R.bool.preferences_developper_debug_mode));
         Logger.DEBUG = preferences_developper_debug_mode;
-        Logger.debug(r .getString(R.string.settings_fragment_debug_mode) + "="+preferences_developper_debug_mode);
-
-        sp.get
-        Boolean preferences_direct_open_documents = sp.getBoolean(r .getString(R.string.settings_fragment_direct_open_documents), r .getBoolean(R.bool.settings_fragment_direct_open_documents_dv));
-        Logger.debug(r .getString(R.string.settings_fragment_direct_open_documents) + "="+preferences_direct_open_documents);
+        Logger.debug(r .getString(R.string.preferences_developper_debug_mode) + "="+preferences_developper_debug_mode);
 
     }
 }
