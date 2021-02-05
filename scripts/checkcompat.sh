@@ -15,3 +15,5 @@ if [ "$1" = "write" ] ; then
 	sed "s/\\(minSdkVersion \\+\\)[0-9]\\+/\\1${l}/g" $g > $t;
 	mv $t $g;
 fi
+
+# Currently studio say 16 min maybe
