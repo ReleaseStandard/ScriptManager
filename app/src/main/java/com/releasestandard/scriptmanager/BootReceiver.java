@@ -3,15 +3,13 @@ package com.releasestandard.scriptmanager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.releasestandard.scriptmanager.controller.JobData;
 import com.releasestandard.scriptmanager.model.Shell;
 import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.tools.Logger;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
@@ -36,8 +34,7 @@ public class BootReceiver extends BroadcastReceiver {
                 Logger.debug("statefile found : " + f);
                 JobData jd = new JobData();
                 InputStreamReader isr = StorageManager.getISR(context,f);
-                OutputStreamWriter osw = StorageManager.getOSW(context,f);
-                jd.readFromInternalStorage(isr, true);
+                jd.readState(isr, true);
                 if (jd.isStarted) {
                     Shell shell = new Shell(
                             new StorageManager(
@@ -51,7 +48,19 @@ public class BootReceiver extends BroadcastReceiver {
                     }
 
                 }
+                try {
+                    isr.close();
+                } catch (IOException e) {
+                    e.printStackTrace(Logger.getTraceStream());
+                }
+                OutputStreamWriter osw = StorageManager.getOSW(context,f);
                 jd.writeState(osw);
+                try {
+                    osw.flush();
+                    osw.close();
+                } catch (IOException e) {
+                    e.printStackTrace(Logger.getTraceStream());
+                }
             }
 
         }

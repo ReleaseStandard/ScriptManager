@@ -68,6 +68,7 @@ public class SettingsView extends PreferenceFragmentCompat {
         Resources r = getActivity().getResources();
 
         Boolean preferences_developper_debug_mode = sp.getBoolean(r .getString(R.string.settings_fragment_debug_mode), r .getBoolean(R.bool.settings_fragment_debug_mode_dv));
+        Logger.DEBUG = preferences_developper_debug_mode;
         Logger.debug(r .getString(R.string.settings_fragment_debug_mode) + "="+preferences_developper_debug_mode);
 
         Boolean preferences_direct_open_documents = sp.getBoolean(r .getString(R.string.settings_fragment_direct_open_documents), r .getBoolean(R.bool.settings_fragment_direct_open_documents_dv));

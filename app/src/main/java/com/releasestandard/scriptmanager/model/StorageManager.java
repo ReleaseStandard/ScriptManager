@@ -1,11 +1,13 @@
 package com.releasestandard.scriptmanager.model;
 
 import android.content.Context;
+import android.renderscript.ScriptGroup;
 
 import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.R;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -227,7 +229,9 @@ public class StorageManager {
      */
     public static InputStreamReader getISR(Context ctx, String name) {
         try {
-            return new InputStreamReader(ctx.openFileInput(name));
+            FileInputStream fis = ctx.openFileInput(name);
+            InputStreamReader isr = new InputStreamReader(fis);
+            return isr;
         } catch (FileNotFoundException e) {
             return null;
         }

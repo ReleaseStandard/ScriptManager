@@ -29,8 +29,7 @@ import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.controller.TimeManagerView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -483,6 +482,12 @@ public class JobView extends Fragment {
         jd.dump();
         OutputStreamWriter osw = StorageManager.getOSW(getContext(),shell.sm.getStateFileNameInPath());
         jd.writeState(osw);
+        try {
+            osw.flush();
+            osw.close();
+        } catch (IOException e) {
+            e.printStackTrace(Logger.getTraceStream());
+        }
     }
 
     /**
@@ -492,7 +497,12 @@ public class JobView extends Fragment {
     public void readState(Context context, String path_name) {
         Logger.debug("readState from JobFragment");
         InputStreamReader isr = StorageManager.getISR(context,shell.sm.getStateFileNameInPath());
-        jd.readFromInternalStorage(isr);
+        jd.readState(isr);
+        try {
+            isr.close();
+        } catch (IOException e) {
+            e.printStackTrace(Logger.getTraceStream());
+        }
         String script_name_path = path_name;
         this.shell.sm.setScriptName(script_name_path);
     }

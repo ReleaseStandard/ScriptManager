@@ -3,6 +3,7 @@ package com.releasestandard.scriptmanager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.releasestandard.scriptmanager.controller.JobData;
 import com.releasestandard.scriptmanager.model.Shell;
@@ -10,10 +11,10 @@ import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.model.TimeManager;
 import com.releasestandard.scriptmanager.tools.Logger;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Random;
 
 /*
@@ -32,7 +33,6 @@ public class AlarmReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Calendar next = new GregorianCalendar();
         String scriptname = intent.getStringExtra("script");
         int [] sched = intent.getIntArrayExtra("sched");
 
@@ -40,10 +40,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         StorageManager sm = new StorageManager(context.getExternalFilesDir(null).getAbsolutePath(), context.getFilesDir().getAbsolutePath(), scriptname);
         JobData jd = new JobData();
 
-        OutputStreamWriter osw = StorageManager.getOSW(context,sm.getStateFileNameInPath());
         InputStreamReader isr = StorageManager.getISR(context,sm.getStateFileNameInPath());
 
-        jd.readFromInternalStorage(isr);
+        jd.readState(isr);
         jd.dump("\t");
         Shell s = new Shell(sm);
         Integer j = s.execScript(scriptname);
@@ -57,7 +56,20 @@ public class AlarmReceiver extends BroadcastReceiver {
                 jd.intents.add(i);
             }
         }
+        try {
+            isr.close();
+        } catch (IOException e) {
+            e.printStackTrace(Logger.getTraceStream());
+        }
+
+        OutputStreamWriter osw = StorageManager.getOSW(context,sm.getStateFileNameInPath());
         jd.writeState(osw);
+        try {
+            osw.flush();
+            osw.close();
+        } catch (IOException e) {
+            e.printStackTrace(Logger.getTraceStream());
+        }
     }
 
 }

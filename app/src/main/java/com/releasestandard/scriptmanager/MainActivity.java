@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 jf.shell.clearLog(jf.shell.sm.getLogAbsolutePath());
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(Logger.getTraceStream());
             }
             jobs_view.unselectAllFragments();
         }
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 is = getContentResolver().openInputStream(uri);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace(Logger.getTraceStream());
             }
 
             handlerFabClick();
@@ -281,14 +281,14 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     f2.createNewFile();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(Logger.getTraceStream());
                 }
             }
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(f2);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace(Logger.getTraceStream());
             }
             try {
                 int c;
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                 is.close();
                 fos.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(Logger.getTraceStream());
             }
         }
     }

@@ -1,7 +1,5 @@
 package com.releasestandard.scriptmanager.controller;
 
-import android.content.Context;
-
 import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.model.TimeManager;
 import com.releasestandard.scriptmanager.tools.Logger;
@@ -51,8 +49,8 @@ public class JobData {
      *  could cause crashes.
      *  compat 1
      */
-    public void readFromInternalStorage(InputStreamReader isr) { readFromInternalStorage(isr,false); }
-    public void readFromInternalStorage(InputStreamReader isr, boolean ignore_intents_processes) {
+    public void readState(InputStreamReader isr) { readState(isr,false); }
+    public void readState(InputStreamReader isr, boolean ignore_intents_processes) {
         try {
             // id of the script
             int id = isr.read();
@@ -81,9 +79,9 @@ public class JobData {
             dump();
             isr.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         }
     }
 
@@ -112,11 +110,12 @@ public class JobData {
             StorageManager.writeIntegerArray(osw,processes);
             Logger.debug("write intents");
             StorageManager.writeIntegerArray(osw,intents);
+            osw.flush();
             osw.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         }
     }
 

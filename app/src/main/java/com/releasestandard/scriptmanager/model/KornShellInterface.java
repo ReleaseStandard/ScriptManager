@@ -109,7 +109,7 @@ public class KornShellInterface {
             Shell._execCmd(cmd).waitFor();
         } catch (InterruptedException e) {
             Logger.debug("Wrapping has failed");
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         }
 
         return out;
@@ -128,11 +128,11 @@ public class KornShellInterface {
             method = KornShellInterface.class.getDeclaredMethod(methodToCall,String.class,String.class);
             cmd += method.invoke(this, args[0], args[1]);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getTraceStream());
         }
         cmd  += "kill -s " + signal + " $(cat " + pidFile + ");";
 
@@ -144,7 +144,7 @@ public class KornShellInterface {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                e.printStackTrace(Logger.getTraceStream());
             }
         }
         Logger.debug("<===========END===============>");
