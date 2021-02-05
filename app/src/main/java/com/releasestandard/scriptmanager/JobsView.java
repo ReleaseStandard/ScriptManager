@@ -262,7 +262,7 @@ public class JobsView extends Fragment {
      * compat 1
      */
     public void readState() {
-        for(String scriptname : this.ptr_sm.getScriptsFromFilesystem()) {
+        for(String scriptname : this.ptr_sm.getScriptsFromFilesystem(getContext())) {
             JobView jf = addNewJob(scriptname);
             jf.readState(getActivity(),scriptname);
             jf.dump();

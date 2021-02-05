@@ -29,6 +29,10 @@ import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.controller.TimeManagerView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -368,9 +372,10 @@ public class JobView extends Fragment {
 
         // remove the script file
         ArrayList<String> files = new ArrayList<String>();
-        files.add(shell.sm.getScriptAbsolutePath()); //script file remove
+        files.add(shell.sm.getScriptAbsolutePath());       //script file remove
         files.add(shell.sm.getLogAbsolutePath());           // remove log file
-        files.add(shell.sm.getStateFileAbsolutePath());        // remove state file
+        getContext().deleteFile(shell.sm.getStateFileNameInPath()); // remove statefile in the private storage
+        // remove state file
         for ( String s : files ) {
             Logger.log(s);
             File f = new File(s);
@@ -476,7 +481,8 @@ public class JobView extends Fragment {
      */
     public void writeState() {
         jd.dump();
-        jd.writeState(getContext(), shell.sm.getStateFileNameInPath());
+        OutputStreamWriter osw = StorageManager.getOSW(getContext(),shell.sm.getStateFileNameInPath());
+        jd.writeState(osw);
     }
 
     /**
@@ -485,7 +491,8 @@ public class JobView extends Fragment {
      */
     public void readState(Context context, String path_name) {
         Logger.debug("readState from JobFragment");
-        jd.readFromInternalStorage(context,shell.sm.getStateFileNameInPath());
+        InputStreamReader isr = StorageManager.getISR(context,shell.sm.getStateFileNameInPath());
+        jd.readFromInternalStorage(isr);
         String script_name_path = path_name;
         this.shell.sm.setScriptName(script_name_path);
     }

@@ -50,21 +50,10 @@ public class JobData {
      *  Beware this method is used at boot time to set alarms, Object like Matcher, File
      *  could cause crashes.
      *  compat 1
-     * @param context
-     * @param state_file
      */
-    public void readFromInternalStorage(Context context, String state_file) { readFromInternalStorage(context,state_file,false); }
-    public void readFromInternalStorage(Context context, String state_file, boolean ignore_intents_processes) {
-        Logger.debug("readFromInternalStorage,state_file="+state_file);
-        InputStreamReader isr;
+    public void readFromInternalStorage(InputStreamReader isr) { readFromInternalStorage(isr,false); }
+    public void readFromInternalStorage(InputStreamReader isr, boolean ignore_intents_processes) {
         try {
-            int index1 = state_file.lastIndexOf('/');
-            if ( index1 == -1) {
-                index1=0;
-            }
-            int index2 = state_file.lastIndexOf(StorageManager.SUFFIX_STATE);
-            name_in_path = state_file.substring(index1,index2);
-            isr = new InputStreamReader(context.openFileInput(state_file));
             // id of the script
             int id = isr.read();
             this.id = id;
@@ -103,11 +92,8 @@ public class JobData {
      *  WARNING state_file is just the terminal part of the path
      *  compat 1
      */
-    public void writeState(Context context, String state_file) {
-        OutputStreamWriter osw = null;
+    public void writeState(OutputStreamWriter osw) {
         try {
-            // private storage
-            osw = new OutputStreamWriter(context.openFileOutput(state_file, Context.MODE_PRIVATE));
             // id of the script
             osw.write(id.intValue());
             // size of the string

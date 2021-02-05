@@ -50,7 +50,7 @@ public class KornShellInterface {
     }
 
     public KornShellInterface(StorageManager sm) {
-        pidFile = sm.getInternalAbsolutePath("dummy.pid");
+
     }
 
     /**

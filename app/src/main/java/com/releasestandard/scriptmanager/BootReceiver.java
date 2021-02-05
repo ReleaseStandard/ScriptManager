@@ -12,6 +12,9 @@ import com.releasestandard.scriptmanager.model.Shell;
 import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.tools.Logger;
 
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 public class BootReceiver extends BroadcastReceiver {
     /**
      * compat 8
@@ -32,7 +35,9 @@ public class BootReceiver extends BroadcastReceiver {
                 }
                 Logger.debug("statefile found : " + f);
                 JobData jd = new JobData();
-                jd.readFromInternalStorage(context, f, true);
+                InputStreamReader isr = StorageManager.getISR(context,f);
+                OutputStreamWriter osw = StorageManager.getOSW(context,f);
+                jd.readFromInternalStorage(isr, true);
                 if (jd.isStarted) {
                     Shell shell = new Shell(
                             new StorageManager(
@@ -40,14 +45,13 @@ public class BootReceiver extends BroadcastReceiver {
                                 context.getApplicationContext().getFilesDir().getAbsolutePath(),
                                 jd.name_in_path));
 
-
                     Integer i = shell.scheduleScript(context, jd.name_in_path, jd.sched,!jd.isSchedulded);
                     if ( i != -1 ) {
                         jd.intents.add(i);
                     }
 
                 }
-                jd.writeState(context,f);
+                jd.writeState(osw);
             }
 
         }

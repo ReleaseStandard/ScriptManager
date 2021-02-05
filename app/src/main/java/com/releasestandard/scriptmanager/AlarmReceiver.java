@@ -10,6 +10,8 @@ import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.model.TimeManager;
 import com.releasestandard.scriptmanager.tools.Logger;
 
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
@@ -37,7 +39,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         Logger.debug("AlarmReceiver : scriptname="+scriptname+",sched="+ TimeManager.sched2str(sched));
         StorageManager sm = new StorageManager(context.getExternalFilesDir(null).getAbsolutePath(), context.getFilesDir().getAbsolutePath(), scriptname);
         JobData jd = new JobData();
-        jd.readFromInternalStorage(context, sm.getStateFileNameInPath());
+
+        OutputStreamWriter osw = StorageManager.getOSW(context,sm.getStateFileNameInPath());
+        InputStreamReader isr = StorageManager.getISR(context,sm.getStateFileNameInPath());
+
+        jd.readFromInternalStorage(isr);
         jd.dump("\t");
         Shell s = new Shell(sm);
         Integer j = s.execScript(scriptname);
@@ -51,7 +57,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 jd.intents.add(i);
             }
         }
-        jd.writeState(context,sm.getStateFileNameInPath());
+        jd.writeState(osw);
     }
 
 }

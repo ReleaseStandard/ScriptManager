@@ -1,10 +1,12 @@
 package com.releasestandard.scriptmanager.model;
 
-import com.releasestandard.scriptmanager.controller.JobData;
+import android.content.Context;
+
 import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -119,10 +121,6 @@ public class StorageManager {
     private String getLogPath(String script_name) { return addSuffixeIfNeeded(script_name , SUFFIX_LOG); }
     public String getLogAbsolutePath() { return getLogAbsolutePath(this.script_name);  }
     public String getLogAbsolutePath(String script_name) { return getExternalAbsolutePath(getLogPath(script_name)); }
-    private String getStateFilePath() { return getStateFilePath(this.script_name) ; }
-    private String getStateFilePath(String script_name) { return addSuffixeIfNeeded(script_name , SUFFIX_STATE); }
-    public String getStateFileAbsolutePath() { return getStateFileAbsolutePath(this.script_name) ; }
-    public String getStateFileAbsolutePath(String scriptname) { return getInternalAbsolutePath(getStateFilePath(scriptname)); }
     private String getScriptPath() { return getScriptPath(this.script_name);}
     private String getScriptPath(String script_name) { return addSuffixeIfNeeded(script_name,SUFFIX_SCRIPT);}
     public String getScriptAbsolutePath() { return this.getScriptAbsolutePath(this.script_name); }
@@ -166,14 +164,13 @@ public class StorageManager {
      * Output : script names (usables by get*AbsolutePath)
      * compat 1
      */
-    public ArrayList<String> getScriptsFromFilesystem() {
+    public ArrayList<String> getScriptsFromFilesystem(Context c) {
         ArrayList<String>l = new ArrayList();
-        File directory = new File(this.internalStorage);
+        File directory = c.getFilesDir();
         File[] files = directory.listFiles();
         Arrays.sort(files);
         for (int i = 0; i < files.length; i++) {
             File file = files[i];
-            Logger.debug(file.getAbsolutePath());
             String n = file.getName();
             Pattern p = Pattern.compile("([^/]+)" + SUFFIX_STATE + "$");
             Matcher m = p.matcher(n);
@@ -212,6 +209,28 @@ public class StorageManager {
             return false;
         }
         return (SUFFIX_STATE.length() + i ) == fname.length();
+    }
+
+    /**
+     * compat 1
+     */
+    public static OutputStreamWriter getOSW(Context ctx, String name) {
+        try {
+            return new OutputStreamWriter(ctx.openFileOutput(name,Context.MODE_PRIVATE));
+        } catch (FileNotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * compat 1
+     */
+    public static InputStreamReader getISR(Context ctx, String name) {
+        try {
+            return new InputStreamReader(ctx.openFileInput(name));
+        } catch (FileNotFoundException e) {
+            return null;
+        }
     }
 
     /**
