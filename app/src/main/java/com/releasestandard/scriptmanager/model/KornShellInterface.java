@@ -1,5 +1,7 @@
 package com.releasestandard.scriptmanager.model;
 
+import android.util.Log;
+
 import com.releasestandard.scriptmanager.R;
 import com.releasestandard.scriptmanager.tools.Logger;
 
@@ -7,6 +9,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,15 +19,10 @@ public class KornShellInterface {
 
     // these files are used only for this classe so we don't use the StorageManager //
     private static String SUFFIX_PID = ".pid";
-    private static String SUFFIX_ARG = ".arg";
-    private static String SUFFIX_CALLED = ".status";
-    private static String SUFFIX_LOCK = ".lock";
     private String pidFile = null;
-    private String lockFile = null;
-    private String functNameFile = null;
-    private String arg0 = null;
-    private String arg1 = null;
+    private String evts_path;
     private String signal = "USR1";
+    private String events_path;
 
     // public API definition
     public HashMap<Integer,String> API = new HashMap<Integer, String>() {{
@@ -47,7 +45,6 @@ public class KornShellInterface {
     }
 
     public KornShellInterface(StorageManager sm) {
-
     }
 
     /**
@@ -59,22 +56,17 @@ public class KornShellInterface {
     public  String wrappScript(String in,String out)  {
         Logger.debug("Transform "+in+" > "+out);
         pidFile = out + SUFFIX_PID;
-        lockFile = out + SUFFIX_LOCK;
-        arg0 = out + SUFFIX_ARG + "0";
-        arg1 = out + SUFFIX_ARG + "1";
-        functNameFile = out + SUFFIX_CALLED;
+        evts_path = StorageManager.getEventsAbsolutePath(StorageManager.getTerminalPart(in));
+        KSHEvent kse = new KSHEvent(evts_path);
+        kse.prereq();
 
         String header = "" +
                  "       _scriptmanager_pidf=\"" + pidFile + "\" ;     \n" +
                 "        _scriptmanager_SIG=\""+signal+"\" ;         \n" +
                 "\n" +
+                kse.packLib() + "\n" +
                 "events_interface () { \n" +
-                "         arg0=\"$(cat "+arg0+")\"      ;             \n" +
-                "         arg1=\"$(cat "+arg1+")\" ;                  \n" +
-                "         functname=\"$(cat "+ functNameFile +")\" ;     \n" +
-                "         type $functname &> /dev/null && " + // if user has defined a callback
-                "          $functname \"$arg0\" \"$arg1\" ;                  \n" +
-                "          rm -f \"" + lockFile + "\"; \n" +                                      // action is done, we can remove the lock
+                        kse.recvJava2ksh("    ") + "\n" +
                 "}\n" +
                 "trap \"events_interface\" $_scriptmanager_SIG; \n" +
                 "\n" +
@@ -125,6 +117,7 @@ public class KornShellInterface {
         try {
             method = KornShellInterface.class.getDeclaredMethod(methodToCall,String.class,String.class);
             cmd += method.invoke(this, args[0], args[1]);
+            cmd += " && ";
         } catch (NoSuchMethodException e) {
             e.printStackTrace(Logger.getTraceStream());
         } catch (IllegalAccessException e) {
@@ -134,19 +127,6 @@ public class KornShellInterface {
         }
         cmd  += "kill -s " + signal + " $(cat " + pidFile + ");";
 
-        // we have to wait for the lock file before run command
-        Logger.debug("<==================>,lockFile="+lockFile);
-        File file = new File(lockFile);
-        Logger.debug("lockFile="+lockFile);
-        while(file.exists()) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace(Logger.getTraceStream());
-            }
-        }
-        Logger.debug("<===========END===============>");
-        Shell._execCmd("touch \""+lockFile+"\"");
         Logger.debug(cmd);
         Shell._execCmd(cmd);
 
@@ -158,11 +138,11 @@ public class KornShellInterface {
          */
     public String triggerRecvMsg(String from, String body) {
         Logger.debug("triggerRecvMsg,from="+from+",body="+body);
-            return "" +
-                "echo \""+ API.get(R.string.ioctlSmsReceived) +"\" > " + functNameFile + " && " +
-                "echo \"" + from + "\" > " + arg0 + " && " +
-                "echo \"" + body + "\" > " + arg1 + " && " +
-                "";
+        KSHEvent kshe = new KSHEvent(evts_path,
+          API.get(R.string.ioctlSmsReceived),
+          new String[]{from,body});
+
+        return kshe.prereq() + " && " + kshe.sendJava2ksh();
     }
 
     /**
@@ -193,4 +173,5 @@ public class KornShellInterface {
     public static String[] packIn(String cmd) {
         return new String[]{"sh", "-c", cmd};
     }
+
 }

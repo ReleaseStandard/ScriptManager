@@ -11,7 +11,7 @@ import java.io.PrintStream;
  */
 public class Logger {
 
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
     public static final String appname = "scriptmanager";
     private static String RED = "31";
     private static String GREEN = "32";

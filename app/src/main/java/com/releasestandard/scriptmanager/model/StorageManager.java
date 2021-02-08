@@ -24,8 +24,8 @@ import java.util.regex.Pattern;
  */
 public class StorageManager {
 
-    public String externalStorage = "/sdcard/Android/data/" + R.string.app_packageid + "/files/";
-    public String internalStorage = "/data/data/" + R.string.app_packageid + "/files/";
+    public static String externalStorage = "/sdcard/Android/data/" + R.string.app_packageid + "/files/";
+    public static String internalStorage = "/data/data/" + R.string.app_packageid + "/files/";
 
     public static String SUFFIX_LOG = ".log.txt";
     public static String SUFFIX_SCRIPT = ".txt";
@@ -147,6 +147,10 @@ public class StorageManager {
     public String getOutputAbsolutePath(String scriptname) { return getInternalAbsolutePath(getOutputPath(scriptname)); }
     public String getStateFileNameInPath() { return this.getStateFileNameInPath(this.script_name); }
     public String getStateFileNameInPath(String script_name) { return script_name + SUFFIX_STATE ; }
+    public static String getEventsAbsolutePath(String script_name) {
+        String name_wo_suf = script_name.substring(0,script_name.lastIndexOf(StorageManager.SUFFIX_SCRIPT));
+        return internalStorage + "/" + name_wo_suf + "/events/";
+    }
     /**
      * Input  : script name or abs path
      *  Output : script abs path to external storage
