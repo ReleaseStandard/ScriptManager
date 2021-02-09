@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.releasestandard.scriptmanager.controller.JobData;
+import com.releasestandard.scriptmanager.model.KSHEvent;
 import com.releasestandard.scriptmanager.model.Shell;
 import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.model.TimeManager;
@@ -305,6 +306,12 @@ public class JobView extends Fragment {
         for (Integer i : jd.processes) {
             shell.terminateProcess(i);
         }
+        for (Integer i : jd.listeners) {
+            JavaEventsReceiver.listeners.set(i, null);
+        }
+        jd.listeners.clear();jd.processes.clear();jd.intents.clear();
+        Shell._execCmd("rm -rf " + shell.sm.getEventsAbsolutePath(jd.name_in_path));
+
         jd.isSchedulded = false;
         jd.isStarted = false;
         setViewStopJob();

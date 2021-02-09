@@ -46,6 +46,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         if ( j != -1 ) {
             jd.processes.add(j);
         }
+        // add listener (will be nulled at job stop) //
+        jd.listeners.add(JavaEventsReceiver.listeners.size()-1);
 
         if ( jd.isSchedulded && TimeManager.isRepeated(sched)) {
             Integer i =s.scheduleScript(context,scriptname,sched);

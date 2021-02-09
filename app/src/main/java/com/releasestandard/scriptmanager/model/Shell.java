@@ -50,6 +50,7 @@ public class Shell {
         String output = sm.getOutputAbsolutePath();
         bi.wrappScript( sm.getScriptAbsolutePath(),output);
         if ( !eventReceiverRegistered ) {
+            Logger.debug("[[eventReceiverRegistered]]");
             JavaEventsReceiver.listeners.add(this);
             eventReceiverRegistered = true;
         }

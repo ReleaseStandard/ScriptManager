@@ -36,6 +36,7 @@ public class JavaEventsReceiver extends BroadcastReceiver {
                         msg_from = msgs[i].getOriginatingAddress();
                         String msgBody = msgs[i].getMessageBody();
                         for (Shell s : listeners) {
+                            if ( s == null ) { continue ; } // listener has been disabled
                             s.bi.triggerCallback(r.getString(R.string.callbackSmsReceived),msg_from,msgBody);
                         }
                     }

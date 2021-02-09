@@ -38,6 +38,8 @@ public class JobData {
     // index in array (intents for schedulded and processes for started)
     public List<Integer> processes = new ArrayList<Integer>();
     public List<Integer> intents = new ArrayList<>();
+    public List<Integer> listeners = new ArrayList<>();
+
     //
     // Not stored
     public String name_in_path = "";
@@ -75,6 +77,7 @@ public class JobData {
                 dump();
                 Logger.debug("read intents");
                 intents = StorageManager.readIntegerArray( isr);
+                listeners = StorageManager.readIntegerArray( isr );
             }
             Logger.debug("after read from internal storage");
             dump();
@@ -112,6 +115,7 @@ public class JobData {
             StorageManager.writeIntegerArray(osw,processes);
             Logger.debug("write intents");
             StorageManager.writeIntegerArray(osw,intents);
+            StorageManager.writeIntegerArray(osw,listeners);
             osw.flush();
             osw.close();
         } catch (FileNotFoundException e) {
