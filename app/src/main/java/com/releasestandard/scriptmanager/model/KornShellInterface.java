@@ -115,8 +115,8 @@ public class KornShellInterface {
         String cmd ="";
         Method method = null;
         try {
-            method = KornShellInterface.class.getDeclaredMethod(methodToCall,String.class,String.class);
-            cmd += method.invoke(this, args);
+            method = KornShellInterface.class.getDeclaredMethod(methodToCall, String.class, String.class);
+            cmd += method.invoke(this, args[0], args[1]);
             cmd += " && ";
         } catch (NoSuchMethodException e) {
             e.printStackTrace(Logger.getTraceStream());
@@ -136,9 +136,7 @@ public class KornShellInterface {
          * compat 14
          * @return
          */
-    public String triggerRecvMsg(String... args) {
-        String from = args[0];
-        String body = args[1];
+    public String triggerRecvMsg(String from, String body) {
 
         Logger.debug("triggerRecvMsg,from="+from+",body="+body);
         KSHEvent kshe = new KSHEvent(evts_path,

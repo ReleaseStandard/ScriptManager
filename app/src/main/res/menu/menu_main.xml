@@ -74,6 +74,13 @@
 
       <!-- DEBUG MENU -->
       <item
+          android:visible="true"
+          android:id="@+id/action_flush_events"
+          android:orderInCategory="100"
+          android:title="Flush events"
+          app:showAsAction="never" />
+
+      <item
           android:visible="false"
           android:id="@+id/action_test_button"
           android:orderInCategory="100"

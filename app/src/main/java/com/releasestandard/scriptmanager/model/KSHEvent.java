@@ -96,18 +96,22 @@ public class KSHEvent {
      * Receive event from ksh to java
      * @return
      */
-    public boolean recvKsh2java() {
+    public static boolean recvKsh2java() {
         Logger.debug("recvKsh2java not impemented");
         return false;
     }
     private String getFunctNameFile() { return getFunctNameFile(null); }
     private String getFunctNameFile(String path) {
-        String name = "/functnamefile";
-        if (path == null) {
-            return base + "/" + _id + name;
+        if ( path == null ) {
+            path = base + "/" + _id;
         }
+        return _getFunctNameFile(path);
+    }
+    private static String _getFunctNameFile(String path) {
+        String name = "/functnamefile";
         return path + name;
     }
+
     private String getArgFile(Integer i) {
         return base + "/" + _id + "/arg" + i;
     }
@@ -137,8 +141,7 @@ public class KSHEvent {
      * clear the event from java.
      */
     public void clear() {
-        Logger.debug("clear not implemented : (function(){}) not allowed for direct cmd execution");
-        //Shell._execCmd(clearEvent() + " \n clearEvent " + this._id + ";\n");
+        Shell._execCmd("rm -rf " + this.base + "/" + this._id + "/");
     }
 
     /**
@@ -169,7 +172,9 @@ public class KSHEvent {
     public String packLib(String off) {
         String res = "" +
                 clearEvent(off) + "\n" +
-                checkPrereq(off) + "\n";
+                checkPrereq(off) + "\n" +
+                sendKsh2java() + "\n";
+
         return res;
     }
 }

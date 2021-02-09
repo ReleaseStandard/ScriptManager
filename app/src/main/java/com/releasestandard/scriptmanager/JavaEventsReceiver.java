@@ -10,10 +10,11 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 
 import com.releasestandard.scriptmanager.model.Shell;
+import com.releasestandard.scriptmanager.tools.Logger;
 
 import java.util.ArrayList;
 
-public class SmsReceiver extends BroadcastReceiver {
+public class JavaEventsReceiver extends BroadcastReceiver {
 
     private SharedPreferences preferences;
     public static ArrayList<Shell> listeners = new ArrayList<>();
@@ -39,7 +40,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         }
                     }
                 }catch(Exception e){
-//                            Log.d("Exception caught",e.getMessage());
+                    e.printStackTrace(Logger.getTraceStream());
                 }
             }
         }

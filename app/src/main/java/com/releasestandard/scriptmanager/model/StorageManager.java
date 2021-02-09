@@ -7,6 +7,7 @@ import com.releasestandard.scriptmanager.tools.CompatAPI;
 import com.releasestandard.scriptmanager.tools.Logger;
 import com.releasestandard.scriptmanager.R;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -148,9 +149,43 @@ public class StorageManager {
     public String getStateFileNameInPath() { return this.getStateFileNameInPath(this.script_name); }
     public String getStateFileNameInPath(String script_name) { return script_name + SUFFIX_STATE ; }
     public static String getEventsAbsolutePath(String script_name) {
-        String name_wo_suf = script_name.substring(0,script_name.lastIndexOf(StorageManager.SUFFIX_SCRIPT));
+        String name_wo_suf = removeSuffix(script_name);
         return internalStorage + "/" + name_wo_suf + "/events/";
     }
+    public static String getEventsRelativePath(String script_name) {
+            String name_wo_suf = removeSuffix(script_name);
+            return name_wo_suf + "/events/";
+        }
+    public static String getEventRelativePath(String script_name, String eid) {
+        return getEventsRelativePath(script_name) + "/"+eid+"/";
+    }
+    public static Boolean isArgFile(String path) {
+        return getTerminalPart(path).lastIndexOf("arg") != -1;
+    }
+
+    /**
+     * Remove any suffix from script_name.
+     * @return
+     */
+    public String removeSuffix() { return removeSuffix(this.script_name); }
+    public static String removeSuffix(String script_name) {
+        String [] suffixes = new String[]{
+                StorageManager.SUFFIX_LOG,
+                StorageManager.SUFFIX_SCRIPT,
+                StorageManager.SUFFIX_OUTPUT,
+                StorageManager.SUFFIX_STATE
+        };
+        for(String suffixe : suffixes) {
+            int i = script_name.lastIndexOf(suffixe);
+            if (i < 0) {
+                continue;
+            }
+            String name_wo_suf = script_name.substring(0, i);
+            return name_wo_suf;
+        }
+        return script_name;
+    }
+
     /**
      * Input  : script name or abs path
      *  Output : script abs path to external storage
@@ -253,6 +288,42 @@ public class StorageManager {
         } catch (FileNotFoundException e) {
             return null;
         }
+    }
+    /**
+     * better implementation
+     * @param ctx
+     * @param path
+     * @return
+     */
+    public static InputStreamReader newGetISR(Context ctx, String path) {
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(new File(path));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace(Logger.getTraceStream());
+            return null;
+        }
+        InputStreamReader isr = new InputStreamReader(fis);
+        return isr;
+    }
+    public static String fileAsText(Context ctx, String path) {
+        String res = "";
+        InputStreamReader isr = newGetISR(ctx,path);
+        BufferedReader buffr = new BufferedReader(isr);
+        while (true) {
+            String l = null;
+            try {
+                l = buffr.readLine();
+            } catch (IOException e) {
+                e.printStackTrace(Logger.getTraceStream());
+                break;
+            }
+            if ( l == null ) {
+                break;
+            }
+            res += l;
+        }
+        return res;
     }
 
     /**

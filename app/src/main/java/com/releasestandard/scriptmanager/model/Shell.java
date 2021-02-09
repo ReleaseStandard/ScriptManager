@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.releasestandard.scriptmanager.AlarmReceiver;
-import com.releasestandard.scriptmanager.SmsReceiver;
+import com.releasestandard.scriptmanager.JavaEventsReceiver;
 import com.releasestandard.scriptmanager.tools.CompatAPI;
 import com.releasestandard.scriptmanager.tools.Logger;
 
@@ -50,7 +50,7 @@ public class Shell {
         String output = sm.getOutputAbsolutePath();
         bi.wrappScript( sm.getScriptAbsolutePath(),output);
         if ( !eventReceiverRegistered ) {
-            SmsReceiver.listeners.add(this);
+            JavaEventsReceiver.listeners.add(this);
             eventReceiverRegistered = true;
         }
 

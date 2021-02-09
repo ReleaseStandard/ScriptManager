@@ -18,6 +18,7 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.releasestandard.scriptmanager.controller.OverflowMenu;
+import com.releasestandard.scriptmanager.model.KSHEvent;
 import com.releasestandard.scriptmanager.model.StorageManager;
 import com.releasestandard.scriptmanager.tools.CompatAPI;
 import com.releasestandard.scriptmanager.tools.Logger;
@@ -223,6 +224,9 @@ public class MainActivity extends AppCompatActivity {
         if (R.id.action_import_script == id) {
             CompatAPI.openDocument(this);
             jobs_view.unselectAllFragments();
+        }
+        if ( R.id.action_flush_events == id ) {
+            KSHEvent.recvKsh2java();
         }
         if ( R.id.action_test_button == id) {
             //showFileWithEditor("/data/data/com.releasestandard.scriptmanager/files/script_0.xml");
