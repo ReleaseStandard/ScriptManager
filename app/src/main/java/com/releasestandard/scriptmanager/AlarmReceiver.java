@@ -36,8 +36,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         Logger.debug("AlarmReceiver : scriptname="+scriptname+",sched="+ TimeManager.sched2str(sched));
         StorageManager sm = new StorageManager(context, scriptname);
         JobData jd = new JobData();
-
+        sm.dump();
         InputStreamReader isr = StorageManager.getISR(context,sm.getStateFileNameInPath());
+        if ( isr == null ) {
+            Logger.debug("AlarmReceiver : isr is null");
+        }
+        Logger.debug(sm.getStateFileNameInPath());
 
         jd.readState(isr);
         jd.dump("\t");

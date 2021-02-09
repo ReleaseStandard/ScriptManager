@@ -81,7 +81,6 @@ public class JobData {
             }
             Logger.debug("after read from internal storage");
             dump();
-            isr.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace(Logger.getTraceStream());
         } catch (IOException e) {
@@ -117,7 +116,6 @@ public class JobData {
             StorageManager.writeIntegerArray(osw,intents);
             StorageManager.writeIntegerArray(osw,listeners);
             osw.flush();
-            osw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace(Logger.getTraceStream());
         } catch (IOException e) {

@@ -35,9 +35,11 @@ public class BootReceiver extends BroadcastReceiver {
                 JobData jd = new JobData();
                 InputStreamReader isr = StorageManager.getISR(context,f);
                 jd.readState(isr, true);
+                jd.name_in_path = StorageManager.removeSuffix(StorageManager.getTerminalPart(f));
+                jd.dump();
                 if (jd.isStarted) {
                     Shell shell = new Shell(new StorageManager(context, jd.name_in_path));
-
+                    Logger.debug(jd.name_in_path + " is null");
                     Integer i = shell.scheduleScript(context, jd.name_in_path, jd.sched,!jd.isSchedulded);
                     if ( i != -1 ) {
                         jd.intents.add(i);
