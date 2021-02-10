@@ -84,7 +84,7 @@ public class JobView extends Fragment {
      * Used to initialize the JobFragment
      */
     public void initializeInstance() {
-        Logger.debug("JobView :: initializeInstance");
+        Logger.debug("initializeInstance");
         Calendar rn = Calendar.getInstance();
         jd.sched = TimeManager.packIn(rn.get(Calendar.MINUTE),
                 rn.get(Calendar.HOUR),
@@ -158,27 +158,27 @@ public class JobView extends Fragment {
             }
         });
 
-        Logger.debug("JogFragment:onViewCreated");
+        Logger.debug("");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Logger.debug("JogFragment:onSaveInstanceState");
+        Logger.debug("");
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         restoreView();
-        Logger.debug("JogFragment:ViewStateRestored");
+        Logger.debug("");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Logger.debug("JogFragment:onCreate");
+        Logger.debug("");
     }
 
     /**
@@ -191,7 +191,7 @@ public class JobView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Logger.debug("JobFragment:onCreateView");
+        Logger.debug("");
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.job_view, container, false);
         TextView tv = v.findViewById(R.id.job_title);
@@ -296,7 +296,6 @@ public class JobView extends Fragment {
         tv.setText(name);
     }
     public void stopJob() {
-        Logger.debug("JobFragment::stopJob");
         readState(getContext(),jd.name_in_path);
         Logger.debug("kill " + jd.intents.size() + " intents");
         for (Integer i : jd.intents) {
@@ -323,7 +322,7 @@ public class JobView extends Fragment {
         writeState();
     }
     public void startJob() {
-        Logger.debug("JobFragment::starJob");
+        Logger.debug("");
         MainActivity main = (MainActivity)getActivity();
         int i = main.jobs_view.getNumberStarted();
         if ( i == 0) {
@@ -371,7 +370,7 @@ public class JobView extends Fragment {
 
     // View //
     public void removeViewJob() {
-        Logger.debug("JobFragments : remove");
+        Logger.debug("");
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(this);
         ft.commit();
@@ -502,7 +501,7 @@ public class JobView extends Fragment {
      *   => pas d'update dans l'ui, c'est le probleme
      */
     public void readState(Context context, String path_name) {
-        Logger.debug("readState from JobFragment");
+        Logger.debug("");
         InputStreamReader isr = StorageManager.getISR(context,shell.sm.getStateFileNameInPath());
         jd.readState(isr);
         try {

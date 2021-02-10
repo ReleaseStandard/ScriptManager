@@ -50,7 +50,7 @@ public class Shell {
         String output = sm.getOutputAbsolutePath();
         bi.wrappScript( sm.getScriptAbsolutePath(),output);
         if ( !eventReceiverRegistered ) {
-            Logger.debug("[[eventReceiverRegistered]]");
+            Logger.debug("eventReceiverRegistered");
             JavaEventsReceiver.listeners.add(this);
             eventReceiverRegistered = true;
         }
@@ -162,7 +162,7 @@ public class Shell {
      */
     public boolean terminateProcess(Integer i) {
         if ( i < 0 || i >= processes.size()) {
-            Logger.debug("terminateProcess : invalid index");
+            Logger.debug("invalid index");
             return false;
         }
         processes.get(i).destroy();
@@ -176,7 +176,7 @@ public class Shell {
      */
     public boolean terminateIntent(Integer i) {
         if ( i < 0 || i >= intents.size()) {
-            Logger.debug("terminateProcess : invalid index");
+            Logger.debug("invalid index");
             return false;
         }
         intents.get(i).cancel();

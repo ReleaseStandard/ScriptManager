@@ -67,7 +67,7 @@ public class CompatAPI {
      *  Return a path to external storage or null, if unmounted or doesn't exists.
      */
     public static String getExternalStorage(Context ctx) {
-        Logger.debug("getExternalStorage decision:");
+        Logger.debug("decision:");
         String state = Environment.getExternalStorageState();
         String bad_states[] = new String[]{Environment.MEDIA_REMOVED, Environment.MEDIA_UNMOUNTED, Environment.MEDIA_NOFS, Environment.MEDIA_MOUNTED_READ_ONLY,
                 Environment.MEDIA_BAD_REMOVAL, Environment.MEDIA_UNMOUNTABLE};

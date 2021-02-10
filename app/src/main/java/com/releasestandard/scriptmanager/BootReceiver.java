@@ -25,7 +25,7 @@ public class BootReceiver extends BroadcastReceiver {
         // This is a privileged intent, we don't have to secure it.
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
 
-            Logger.debug("[StartAppOnBoot] : onReceive boot signal received, starting the service");
+            Logger.debug("boot signal received, starting the scripts");
 
             for ( String f : context.fileList())  {
                 if ( ! StorageManager.isStateFile(f) ) {

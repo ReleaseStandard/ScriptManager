@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.nav_host_fragment, jobs_view);
         ft.commit();
 
-        Logger.debug("MainActivity:onCreate");
+        Logger.debug("");
     }
     private void requestPermissions() {
         ActivityCompat.requestPermissions(MainActivity.this,
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             jobs_view.readState(); // get the state from the storage
             FIRST_CREATION = false;
         }
-        Logger.debug("MainActivity:onStart");
+        Logger.debug("");
     }
 
 

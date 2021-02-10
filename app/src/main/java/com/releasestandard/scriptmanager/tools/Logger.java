@@ -19,7 +19,8 @@ public class Logger {
     public static void debug(String msg) { debug(msg,GREEN); }
     public static void debug(String msg, String color) {
         if ( DEBUG ) {
-            Log.v("\033["+ color + "m" + appname+"\033[0m", msg);
+            String tag =  "\033["+ color + "m" + appname+"/" + CallStack.getLastCaller(6) ;
+            Log.v(tag, "\033[0m" + msg);
         }
     }
     public static void log(String msg) {

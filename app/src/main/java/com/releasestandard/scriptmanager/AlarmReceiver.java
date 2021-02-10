@@ -33,13 +33,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         String scriptname = intent.getStringExtra("script");
         int [] sched = intent.getIntArrayExtra("sched");
 
-        Logger.debug("AlarmReceiver : scriptname="+scriptname+",sched="+ TimeManager.sched2str(sched));
+        Logger.debug("scriptname="+scriptname+",sched="+ TimeManager.sched2str(sched));
         StorageManager sm = new StorageManager(context, scriptname);
         JobData jd = new JobData();
         sm.dump();
         InputStreamReader isr = StorageManager.getISR(context,sm.getStateFileNameInPath());
         if ( isr == null ) {
-            Logger.debug("AlarmReceiver : isr is null");
+            Logger.debug("isr is null");
         }
         Logger.debug(sm.getStateFileNameInPath());
 

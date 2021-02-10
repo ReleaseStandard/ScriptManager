@@ -138,7 +138,7 @@ public class KornShellInterface {
          */
     public String triggerRecvMsg(String from, String body) {
 
-        Logger.debug("triggerRecvMsg,from="+from+",body="+body);
+        Logger.debug("from="+from+",body="+body);
         KSHEvent kshe = new KSHEvent(evts_path,
           API.get(R.string.ioctlSmsReceived),
           new String[]{from,body});

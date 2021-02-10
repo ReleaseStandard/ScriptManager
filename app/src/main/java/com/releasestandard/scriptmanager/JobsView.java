@@ -94,10 +94,9 @@ public class JobsView extends Fragment {
         Integer i = new Integer(fragments.size());
         Logger.debug("size in fragments : "+i);
         if ( savedInstanceState == null ) {
-            Logger.debug("ViewJobsFragment:saveInstanceNull");
+            Logger.debug("saveInstanceNull");
         }
         View v =  inflater.inflate(R.layout.jobs_view, container, false);
-        Logger.debug("ViewJobsFragment:onCreateView");
         return v;
     }
 
@@ -108,7 +107,7 @@ public class JobsView extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Logger.debug("ViewJobsFragment:onViewCreated");
+        Logger.debug("");
     }
 
     /**
@@ -118,7 +117,7 @@ public class JobsView extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Logger.debug("ViewJobsFragment:onSaveInstanceState");
+        Logger.debug("");
     }
 
     @Override
@@ -128,8 +127,7 @@ public class JobsView extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         Integer in = new Integer(getParentFragmentManager().getFragments().size());
-        Logger.debug("ViewJobsFragment:nb of frags "+in);
-        Logger.debug("ViewJobsFragment:onViewStateRestored");
+        Logger.debug("nb of frags "+in);
         restoreFragments();
     }
 
