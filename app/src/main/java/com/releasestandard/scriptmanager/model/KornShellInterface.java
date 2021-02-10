@@ -38,9 +38,9 @@ public class KornShellInterface {
     public void dump() { Logger.debug(dump("")); }
     public String dump(String off) {
             String noff = off + "\t";
-            return off + "KornShellInterface {\n"+
-                    noff + "signal="+signal+"\n" +
-                    off + "}\n"
+            return  Logger.SZERO + off + "KornShellInterface {\n"+
+                    Logger.SZERO + noff + "signal="+signal+"\n" +
+                    Logger.SZERO + off + "}\n"
                     ;
     }
 

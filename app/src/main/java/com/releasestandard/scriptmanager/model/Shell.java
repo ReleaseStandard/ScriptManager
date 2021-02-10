@@ -189,11 +189,11 @@ public class Shell {
     public void dump() { Logger.debug(dump("")); }
     public String dump(String offset) {
         return "" +
-                offset + "Shell { \n" +
-                offset + "\tprocesses=" + processes.size() + "\n" +
-                offset + "\tintents=" + intents.size() + "\n" +
-                bi.dump(offset + "\t" ) +
-                sm.dump(offset + "\t") +
-                offset + "}\n";
+                Logger.SZERO + offset + "Shell { \n" +
+                Logger.SZERO + offset + "\tprocesses=" + processes.size() + "\n" +
+                Logger.SZERO + offset + "\tintents=" + intents.size() + "\n" +
+                Logger.SZERO + bi.dump(offset + "\t" ) +
+                Logger.SZERO + sm.dump(offset + "\t") +
+                Logger.SZERO + offset + "}\n";
     }
 }

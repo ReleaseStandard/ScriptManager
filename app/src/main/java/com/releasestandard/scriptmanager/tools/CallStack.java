@@ -19,14 +19,10 @@ public class CallStack {
 
     private static String getLastCaller(Set<Map.Entry<Thread, StackTraceElement[]>> set, Integer offset) {
         for (Map.Entry<Thread, StackTraceElement[]> entry : set) {
-            System.out.println(entry.getKey().getName() + ":");
             Integer n = offset;
             if (n < 0 || !entry.getKey().getName().equals("main")) {
                 continue;
             }
-            System.out.println("n=" + n);
-            for (StackTraceElement element : entry.getValue())
-                System.out.println("\t" + element);
             return clearCallerName(entry.getValue()[n].toString());
         }
         return null;

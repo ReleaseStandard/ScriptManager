@@ -333,15 +333,15 @@ public class StorageManager {
     public String dump(String off) {
         String noff = off + "\t";
         return "" +
-                off + "StorageManager {\n" +
-                noff + "externalStorage="+externalStorage+"\n" +
-                noff + "internalStorage="+internalStorage+"\n"+
-                noff + "SUFFIX_LOG=" + SUFFIX_LOG + "\n" +
-                noff + "SUFFIX_SCRIPT=" + SUFFIX_SCRIPT + "\n" +
-                noff + "SUFFIX_STATE=" + SUFFIX_STATE + "\n" +
-                noff + "SUFFIX_OUTPUT=" + SUFFIX_OUTPUT + "\n" +
-                noff + "script_name=" + script_name + "\n" +
-                off + "}\n"
+                Logger.SZERO + off + "StorageManager {\n" +
+                Logger.SZERO + noff + "externalStorage="+externalStorage+"\n" +
+                Logger.SZERO + noff + "internalStorage="+internalStorage+"\n"+
+                Logger.SZERO + noff + "SUFFIX_LOG=" + SUFFIX_LOG + "\n" +
+                Logger.SZERO + noff + "SUFFIX_SCRIPT=" + SUFFIX_SCRIPT + "\n" +
+                Logger.SZERO + noff + "SUFFIX_STATE=" + SUFFIX_STATE + "\n" +
+                Logger.SZERO + noff + "SUFFIX_OUTPUT=" + SUFFIX_OUTPUT + "\n" +
+                Logger.SZERO + noff + "script_name=" + script_name + "\n" +
+                Logger.SZERO + off + "}\n"
                 ;
     }
 }

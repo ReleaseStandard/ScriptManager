@@ -135,18 +135,18 @@ public class JobData {
             sched_as_ints = sched_as_ints + (new Integer(i)) + " ";
         }
         return
-                init + "JobData {\n" +
-                        init + " id=" + id + "\n" +
-                        init + " name=" + name + "\n" +
-                        init + " isSchedulded=" + isSchedulded + "\n" +
-                        init + " isStarted=" + isStarted + "\n" +
-                        init + " isDateSet=" + isDateSet + "\n" +
-                        init + " sched=" + TimeManager.sched2str(sched) + "\n" +
-                        init + "  (" + sched_as_ints + ")\n" +
-                        init + " processes_sz=" + processes.size()+ "\n" +
-                        init + " intent_sz=" + intents.size() + "\n" +
-                        init + " name_in_path=" + name_in_path + "\n" +
-                        init + "}\n"
+                Logger.SZERO + init + "JobData {\n" +
+                Logger.SZERO +         init + " id=" + id + "\n" +
+                Logger.SZERO +         init + " name=" + name + "\n" +
+                Logger.SZERO +         init + " isSchedulded=" + isSchedulded + "\n" +
+                Logger.SZERO +         init + " isStarted=" + isStarted + "\n" +
+                Logger.SZERO +         init + " isDateSet=" + isDateSet + "\n" +
+                Logger.SZERO +         init + " sched=" + TimeManager.sched2str(sched) + "\n" +
+                Logger.SZERO +         init + "  (" + sched_as_ints + ")\n" +
+                Logger.SZERO +         init + " processes_sz=" + processes.size()+ "\n" +
+                Logger.SZERO +         init + " intent_sz=" + intents.size() + "\n" +
+                Logger.SZERO +         init + " name_in_path=" + name_in_path + "\n" +
+                Logger.SZERO +         init + "}\n"
                 ;
     }
 }
