@@ -56,8 +56,7 @@ public class TimeManager {
 
     public static Calendar getImmediate() {
         Calendar c = new GregorianCalendar();
-        int off = 100;
-        c.setTimeInMillis(c.getTimeInMillis() + off);
+        c.setTimeInMillis(System.currentTimeMillis());
         return c;
     }
     public static Calendar nextSched(int [] sched) {

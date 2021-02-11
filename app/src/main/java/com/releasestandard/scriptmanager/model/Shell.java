@@ -1,8 +1,10 @@
 package com.releasestandard.scriptmanager.model;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 
 import com.releasestandard.scriptmanager.AlarmReceiver;
 import com.releasestandard.scriptmanager.JavaEventsReceiver;
@@ -139,6 +141,7 @@ public class Shell {
         // need to get the time here
         Calendar next = null;
         if (immediate) {
+            Logger.debug("We got an immediate time here");
             next = TimeManager.getImmediate();
         }
         else {
@@ -153,7 +156,7 @@ public class Shell {
         intent.putExtra("sched",sched);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, AlarmReceiver.REQUEST_CODE++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         CompatAPI.setAlarmIntentTime(context,t,alarmIntent);
-
+        Logger.debug("official end");
         return alarmIntent;
     }
 

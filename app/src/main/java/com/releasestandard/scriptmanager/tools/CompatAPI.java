@@ -9,17 +9,21 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 
+import androidx.core.app.AlarmManagerCompat;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.releasestandard.scriptmanager.MainActivity;
 
 import java.io.File;
 
+import static android.app.AlarmManager.RTC_WAKEUP;
+
 /**
  * Handle API differences in Android.
  */
 public class CompatAPI {
 
+    private static AlarmManager am = null;
     /**
      * Open a file or directory
      * compat 1
@@ -42,16 +46,10 @@ public class CompatAPI {
      * compat 1
      */
     public static boolean setAlarmIntentTime(Context context, long t, PendingIntent alarmIntent) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (Build.VERSION.SDK_INT < 23) {
-            if (Build.VERSION.SDK_INT >= 19) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, t, alarmIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, t, alarmIntent);
-            }
-        } else {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, t, alarmIntent);
+        if ( am == null ) {
+            am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         }
+        AlarmManagerCompat.setExactAndAllowWhileIdle(am, RTC_WAKEUP, t, alarmIntent);
         return true;
     }
 

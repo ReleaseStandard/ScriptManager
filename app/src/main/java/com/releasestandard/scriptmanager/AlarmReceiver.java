@@ -13,6 +13,8 @@ import com.releasestandard.scriptmanager.tools.Logger;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Random;
 
 /*
@@ -33,7 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String scriptname = intent.getStringExtra("script");
         int [] sched = intent.getIntArrayExtra("sched");
 
-        Logger.debug("scriptname="+scriptname+",sched="+ TimeManager.sched2str(sched));
+        Logger.debug("at:" + (new GregorianCalendar()).getTime().toString() + "scriptname="+scriptname+",sched="+ TimeManager.sched2str(sched));
         StorageManager sm = new StorageManager(context, scriptname);
         JobData jd = new JobData();
         sm.dump();
