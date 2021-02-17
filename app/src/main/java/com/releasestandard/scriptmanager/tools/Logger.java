@@ -13,6 +13,7 @@ public class Logger {
 
     public static boolean DEBUG = true;
     public static final String appname = "scriptmanager";
+    public static final String packageid = "com.releasestandard.scriptmanager";
     private static String RED = "31";
     private static String GREEN = "32";
     private static String YELLOW = "33";
