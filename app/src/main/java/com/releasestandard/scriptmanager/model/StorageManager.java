@@ -1,6 +1,7 @@
 package com.releasestandard.scriptmanager.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.releasestandard.scriptmanager.controller.OverflowMenu;
 import com.releasestandard.scriptmanager.tools.CompatAPI;

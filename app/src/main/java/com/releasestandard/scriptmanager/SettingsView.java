@@ -1,5 +1,7 @@
 package com.releasestandard.scriptmanager;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -63,13 +65,17 @@ public class SettingsView extends PreferenceFragmentCompat {
         }
     }
 
-    public void applySettings() {
-        SharedPreferences sp =
-        PreferenceManager.getDefaultSharedPreferences(getActivity());
-        applySettings(sp);
-    }
+    public void applySettings() { applySettings(getActivity());}
     public void applySettings(SharedPreferences sp) {
-        Resources r = getActivity().getResources();
+        applySettings(getActivity(),sp);
+    }
+    public static void applySettings(Context ctx) {
+        SharedPreferences sp =
+        PreferenceManager.getDefaultSharedPreferences(ctx);
+        applySettings(ctx,sp);
+    }
+    public static void applySettings(Context ctx, SharedPreferences sp) {
+        Resources r = ctx.getResources();
         Boolean preferences_developper_debug_mode = sp.getBoolean(r .getString(R.string.preferences_developper_debug_mode), r .getBoolean(R.bool.preferences_developper_debug_mode));
         Logger.DEBUG = preferences_developper_debug_mode;
         Logger.debug(r .getString(R.string.preferences_developper_debug_mode) + "="+preferences_developper_debug_mode);

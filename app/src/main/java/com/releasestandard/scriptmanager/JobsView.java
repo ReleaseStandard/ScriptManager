@@ -142,6 +142,7 @@ public class JobsView extends Fragment {
             ft.add(R.id.view_jobs_linearlayout, jf);
         }
         ft.commit();
+        readState();
     }
 
     // Tools
@@ -261,6 +262,18 @@ public class JobsView extends Fragment {
      */
     public void readState() {
         for(String scriptname : this.ptr_sm.getScriptsFromFilesystem(getContext())) {
+            JobView alrdyIn = null;
+            for(JobView jv : fragments) {
+                if ( jv.jd.name_in_path.equals(scriptname ) ) {
+                    alrdyIn = jv;
+                    break;
+                }
+            }
+            if ( alrdyIn != null ) {
+                alrdyIn.readState(getActivity(),scriptname);
+                alrdyIn.dump();
+                continue;
+            }
             JobView jf = addNewJob(scriptname);
             jf.readState(getActivity(),scriptname);
             jf.dump();

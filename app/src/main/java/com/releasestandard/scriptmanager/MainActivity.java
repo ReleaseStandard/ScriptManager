@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        SettingsView.applySettings(this);
         getMenuInflater().inflate(R.menu.menu_main, menu);
         ow_menu = new OverflowMenu(this, menu);
         return true;
