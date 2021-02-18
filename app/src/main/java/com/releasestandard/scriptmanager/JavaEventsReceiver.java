@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
@@ -21,18 +22,24 @@ public class JavaEventsReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        /**
+         * compat 19
+         */
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-            Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
+            Bundle bundle = intent.getExtras();
             SmsMessage[] msgs = null;
             String msg_from;
             Resources r = context.getResources();
             if (bundle != null){
-                //---retrieve the SMS message received---
                 try{
                     Object[] pdus = (Object[]) bundle.get("pdus");
                     msgs = new SmsMessage[pdus.length];
                     for(int i=0; i<msgs.length; i++){
-                        msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i], bundle.getString("format"));
+                        } else {
+                            msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                        }
                         msg_from = msgs[i].getOriginatingAddress();
                         String msgBody = msgs[i].getMessageBody();
                         for (Shell s : listeners) {

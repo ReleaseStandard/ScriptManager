@@ -37,7 +37,6 @@ throught an sh API.<br />
 <table>
   <th><td>property</td><td>avaliable</td></th>
   <tr><td></td><td>smsReceived</td><td>yes</td></tr>
-  <tr><td></td><td>smsSendTextMessage</td><td></td></tr>
 </table>
 All GUI is well advanced but the sh api, documentation requires tons of work lol.<br />
 Feel free to fork/reuse/complete it !<br />
