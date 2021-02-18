@@ -37,7 +37,9 @@
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
         <item name="colorSurface">@color/pcolorAccent</item>
         <item name="android:textColorPrimary">@color/pcolorSecondary</item>
-
+        <!-- SwitchPreferenceCompat: settings summary android 7 -->
+        <item name="android:textColorSecondary">@color/pcolorVariant</item>
+        <item name="android:colorAccent">@color/pcolorSecondary</item>
     </style>
 
     <style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay">
@@ -117,7 +119,7 @@
 
 
     <!-- Tests -->
-    <!--
+<!--
     <style name="debug">
         <item name="android:colorPressedHighlight">#FF00FF</item>
         <item name="android:textColorAlertDialogListItem">#FF0000</item>
@@ -133,11 +135,11 @@
         <item name="colorOnPrimary">#00aa00</item>
         <item name="colorOnSecondary">#0000aa</item>
         <item name="colorOnBackground">#aaaa00</item>
-        <item name="android:windowBackground">#FF00FF</item>
+        <item name="android:windowBackground">#5B185B</item>
         <item name="colorOnSurface">#00aaaa</item>
         <item name="colorOnError">#aa00aa</item>
         <item name="android:text">#ff0000</item>
-        <item name="android:textColorPrimary">#FFff00</item>
+        <item name="android:textColorPrimary">#00ff00</item>
         <item name="android:textColorSecondary">#ffff00</item>
         <item name="android:textColorPrimaryInverse">#FF00FF</item>
         <item name="colorAccent">#00FFFF</item>
@@ -147,11 +149,11 @@
         <item name="chipSurfaceColor">#00FF11</item>
         <item name="android:textColor">#44FFF0</item>
         <item name="android:colorSecondary">#ff00FF</item>
-        <item name="colorBackgroundFloating">#ff00FF</item>
-        <item name="android:colorAccent">#ff00FF</item>
-        <item name="colorSwitchThumbNormal">#ff00FF</item>
-        <item name="android:colorActivatedHighlight">#ff00FF</item>
-        <item name="android:windowBackgroundFallback">#FF00FF</item>
+        <item name="colorBackgroundFloating">#673AB7</item>
+        <item name="android:colorAccent">#FFC107</item>
+        <item name="colorSwitchThumbNormal">#00BCD4</item>
+        <item name="android:colorActivatedHighlight">#009688</item>
+        <item name="android:windowBackgroundFallback">#4CAF50</item>
     </style>
-    -->
+-->
 </resources>
