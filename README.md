@@ -1,4 +1,6 @@
 
+This project is no longer maintained but has been integrated and improved part of [scriptmanagerfree](https://play.google.com/store/apps/details?id=com.releasestandard.scriptmanagerpro.free).
+
 #  ScriptManager
 <p>
   <img src="https://raw.githubusercontent.com/ReleaseStandard/ScriptManager/master/app/src/main/res/mipmap-xxxhdpi/logo2.png">
@@ -41,7 +43,6 @@ throught an sh API.<br />
 All GUI is well advanced but the sh api, documentation requires tons of work lol.<br />
 Feel free to fork/reuse/complete it !<br />
 Also if you have any question you can use releasestandard chez netcourrier point com<br />
-
 
 ## Documentation
 Everything is on the [wiki](https://github.com/ReleaseStandard/ScriptManager/wiki).
