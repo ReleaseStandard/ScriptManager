@@ -1,5 +1,5 @@
 
-This project is no longer maintained but has been integrated and improved part of [scriptmanagerfree](https://play.google.com/store/apps/details?id=com.releasestandard.scriptmanagerpro.free).
+This project is no longer maintained but has been integrated and improved part of [scriptmanagerfree](https://github.com/ReleaseStandard/ScriptManagerFree).
 
 #  ScriptManager
 <p>
